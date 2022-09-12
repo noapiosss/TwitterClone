@@ -23,9 +23,7 @@ As a final project was chosen "Twitter clone"
 - PUT /api/users/{username}/posts/{postId} (countOfLike++)
 - PATCH /api/users/{username(from session)} BODY=follow/unfollow+username(another user)
 - GET /api/users/{username{from sesseion}}/posts BODY=posts
-
-!!!FINISH IT!!!
-
+  
 ## Models
 
 ### User
