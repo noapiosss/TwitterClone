@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterClone.Contracts", "TwitterClone.Contracts\TwitterClone.Contracts.csproj", "{C818B883-B181-47AC-9356-1F24B531FE6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterClone.Api", "TwitterClone.Api\TwitterClone.Api.csproj", "{493B5A81-DC2D-4487-87E4-65F1D18AEED0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterClone.Domain", "TwitterClone.Domain\TwitterClone.Domain.csproj", "{8CFA527A-92EF-4CD2-8534-4D2D86549428}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterClone.IntegrationTests", "TwitterClone.IntegrationTests\TwitterClone.IntegrationTests.csproj", "{F3C9E53D-418E-4D3E-8B21-6198D6220280}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterClone.UnitTests", "TwitterClone.UnitTests\TwitterClone.UnitTests.csproj", "{5752D448-CEFA-459C-87AE-644475AA23A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C818B883-B181-47AC-9356-1F24B531FE6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C818B883-B181-47AC-9356-1F24B531FE6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C818B883-B181-47AC-9356-1F24B531FE6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C818B883-B181-47AC-9356-1F24B531FE6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{493B5A81-DC2D-4487-87E4-65F1D18AEED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{493B5A81-DC2D-4487-87E4-65F1D18AEED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{493B5A81-DC2D-4487-87E4-65F1D18AEED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{493B5A81-DC2D-4487-87E4-65F1D18AEED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CFA527A-92EF-4CD2-8534-4D2D86549428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CFA527A-92EF-4CD2-8534-4D2D86549428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CFA527A-92EF-4CD2-8534-4D2D86549428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CFA527A-92EF-4CD2-8534-4D2D86549428}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3C9E53D-418E-4D3E-8B21-6198D6220280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3C9E53D-418E-4D3E-8B21-6198D6220280}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3C9E53D-418E-4D3E-8B21-6198D6220280}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3C9E53D-418E-4D3E-8B21-6198D6220280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5752D448-CEFA-459C-87AE-644475AA23A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5752D448-CEFA-459C-87AE-644475AA23A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5752D448-CEFA-459C-87AE-644475AA23A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5752D448-CEFA-459C-87AE-644475AA23A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
