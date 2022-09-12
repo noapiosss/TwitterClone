@@ -15,14 +15,14 @@ As a final project was chosen "Twitter clone"
 ## HTTP API
 
 - PUT /api/users BODY=username+login+password (signup)
-- GET /api/users BODY=username+login+password (signin)
+- GET /api/users BODY=username+login+password (signin) !!!fix!!!
 - PUT /api/posts BODY=username+postDate+message
 - DELETE /api/posts/{postId}
-- GET /api/users/{username} BODY=posts
+- GET /api/users/{username} BODY=posts !!!fix!!!
 - PUT /apo/posts/{postId} BODY=username+postDate+commentTo+message
 - PUT /api/users/{username}/posts/{postId} (countOfLike++)
 - PATCH /api/users/{username(from session)} BODY=follow/unfollow+username(another user)
-- GET /api/users/{username{from sesseion}}/posts BODY=posts
+- GET /api/users/{username{from sesseion}}/posts BODY=posts !!!fix!!!
   
 ## Models
 
