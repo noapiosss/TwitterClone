@@ -36,7 +36,7 @@ As a final project was chosen "Twitter clone"
 ### Post
 
 - id
-- username
+- author
 - commentTo (comment to another post (as id) optional field: if it is comment should be a reference on post)
 - postDate
 - message
