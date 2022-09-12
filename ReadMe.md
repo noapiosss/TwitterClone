@@ -20,7 +20,7 @@ As a final project was chosen "Twitter clone"
 - DELETE /api/posts/{postId}
 - GET /api/users/{username}
 - PUT /apo/posts/{postId} BODY=username+postDate+commentTo+message
-- PUT /api/users/{username}/posts/{postId} (countOfLike++)
+- PATCH /api/users/{username(another user)}/posts/{postId} BODY=like/unlike+username(from session)
 - PATCH /api/users/{username(from session)} BODY=follow/unfollow+username(another user)
 - GET /api/users/{username{from sesseion}}/posts
   
@@ -40,4 +40,4 @@ As a final project was chosen "Twitter clone"
 - commentTo (comment to another post (as id) optional field: if it is comment should be a reference on post)
 - postDate
 - message
-- countOfLikes
+- likedBy (list of usernames)
