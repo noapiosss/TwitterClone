@@ -16,13 +16,13 @@ As a final project was chosen "Twitter clone"
 
 - PUT /api/users BODY=username+login+password (signup)
 - GET /api/users (signin)
-- PUT /api/posts BODY=username+postDate+message
-- DELETE /api/posts/{postId}
-- GET /api/users/{username}
-- PUT /apo/posts/{postId} BODY=username+postDate+message
+- PUT /api/posts BODY=username+postDate+message (make post)
+- DELETE /api/posts/{postId} (delete post)
+- GET /api/users/{username} (observe another user)
+- PUT /apo/posts/{postId} BODY=username+postDate+message (make comment)
 - PATCH /api/users/{username(another user)}/posts/{postId} BODY=like/unlike+username(from session)
 - PATCH /api/users/{username(from session)} BODY=follow/unfollow+username(another user)
-- GET /api/users/{username{from sesseion}}/posts
+- GET /api/users/{username{from sesseion}}/posts (home page)
   
 ## Models
 
