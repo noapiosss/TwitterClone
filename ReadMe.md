@@ -31,13 +31,21 @@ As a final project was chosen "Twitter clone"
 - username
 - email
 - password
-- followTo (username list)
 
 ### Post
 
-- id
-- author
+- postId
+- authorUsername
 - commentTo (comment to another post (as id) optional field: if it is comment should be a reference on post)
 - postDate
 - message
-- likedBy (list of usernames)
+
+### Like
+
+- postId
+- username
+
+### Following
+
+- follow_by
+- follow_for
