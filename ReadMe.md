@@ -47,5 +47,5 @@ As a final project was chosen "Twitter clone"
 
 ### Following
 
-- follow_by
-- follow_for
+- followBy
+- followFor

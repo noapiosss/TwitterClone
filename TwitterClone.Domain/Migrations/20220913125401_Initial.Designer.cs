@@ -12,7 +12,7 @@ using TwitterClone.Domain.Database;
 namespace TwitterClone.Domain.Migrations
 {
     [DbContext(typeof(TwitterCloneDbContext))]
-    [Migration("20220913122530_Initial")]
+    [Migration("20220913125401_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

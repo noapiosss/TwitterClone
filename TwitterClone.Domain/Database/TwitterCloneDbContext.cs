@@ -19,7 +19,7 @@ public class TwitterCloneDbContext : DbContext
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("User ID=postgres;Password=fyfnjksq123;Host=localhost;Port=5432;Database=twitterclonedb;Pooling=true;Min Pool Size=0;Max Pool Size=30;Connection Lifetime=0;");
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=twitterclonedb;Username=postgres;Password=fyfnjksq123");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
