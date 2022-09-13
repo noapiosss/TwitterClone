@@ -24,7 +24,7 @@ public class TwitterCloneDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Like>().HasKey(nameof(Like.PostId), nameof(Like.Username));
+        modelBuilder.Entity<Like>().HasKey(nameof(Like.PostId), nameof(Like.LikedByUsername));
         modelBuilder.Entity<Following>().HasKey(nameof(Following.FollowByUsername), nameof(Following.FollowForUsername));
     }
 }

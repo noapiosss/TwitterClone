@@ -83,11 +83,11 @@ namespace TwitterClone.Domain.Migrations
                 columns: table => new
                 {
                     post_id = table.Column<int>(type: "integer", nullable: false),
-                    username = table.Column<string>(type: "character varying(50)", nullable: false)
+                    liked_by_username = table.Column<string>(type: "character varying(50)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tbl_likes", x => new { x.post_id, x.username });
+                    table.PrimaryKey("PK_tbl_likes", x => new { x.post_id, x.liked_by_username });
                     table.ForeignKey(
                         name: "FK_tbl_likes_tbl_posts_post_id",
                         column: x => x.post_id,
@@ -96,8 +96,8 @@ namespace TwitterClone.Domain.Migrations
                         principalColumn: "post_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_tbl_likes_tbl_users_username",
-                        column: x => x.username,
+                        name: "FK_tbl_likes_tbl_users_liked_by_username",
+                        column: x => x.liked_by_username,
                         principalSchema: "public",
                         principalTable: "tbl_users",
                         principalColumn: "username",
@@ -111,10 +111,10 @@ namespace TwitterClone.Domain.Migrations
                 column: "follow_for");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tbl_likes_username",
+                name: "IX_tbl_likes_liked_by_username",
                 schema: "public",
                 table: "tbl_likes",
-                column: "username");
+                column: "liked_by_username");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tbl_posts_author_username",

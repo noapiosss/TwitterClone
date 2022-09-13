@@ -43,7 +43,7 @@ As a final project was chosen "Twitter clone"
 ### Like
 
 - postId
-- username
+- likedByUsername
 
 ### Following
 

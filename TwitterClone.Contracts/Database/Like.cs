@@ -10,14 +10,14 @@ public class Like
     [Key]
     [Column("post_id")]
     public int PostId { get; set; }
-    
+
     [ForeignKey("PostId")]
     public Post Post { get; set;}
 
     [Key]
-    [Column("username")]
-    public string Username { get; set; }
+    [Column("liked_by_username")]
+    public string LikedByUsername { get; set; }
     
-    [ForeignKey("Username")]
+    [ForeignKey("LikedByUsername")]
     public User User { get; set; }
 }

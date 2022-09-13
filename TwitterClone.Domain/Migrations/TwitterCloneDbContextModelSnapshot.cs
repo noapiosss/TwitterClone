@@ -45,13 +45,13 @@ namespace TwitterClone.Domain.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("post_id");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("LikedByUsername")
                         .HasColumnType("character varying(50)")
-                        .HasColumnName("username");
+                        .HasColumnName("liked_by_username");
 
-                    b.HasKey("PostId", "Username");
+                    b.HasKey("PostId", "LikedByUsername");
 
-                    b.HasIndex("Username");
+                    b.HasIndex("LikedByUsername");
 
                     b.ToTable("tbl_likes", "public");
                 });
@@ -135,15 +135,15 @@ namespace TwitterClone.Domain.Migrations
 
             modelBuilder.Entity("TwitterClone.Contracts.Database.Like", b =>
                 {
-                    b.HasOne("TwitterClone.Contracts.Database.Post", "Post")
+                    b.HasOne("TwitterClone.Contracts.Database.User", "User")
                         .WithMany("Likes")
-                        .HasForeignKey("PostId")
+                        .HasForeignKey("LikedByUsername")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TwitterClone.Contracts.Database.User", "User")
+                    b.HasOne("TwitterClone.Contracts.Database.Post", "Post")
                         .WithMany("Likes")
-                        .HasForeignKey("Username")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
