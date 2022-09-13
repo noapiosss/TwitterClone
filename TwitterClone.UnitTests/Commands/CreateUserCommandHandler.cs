@@ -50,7 +50,7 @@ public class CreateUserCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.ReturnMessage.ShouldBeEquivalentTo("Successful registration");
+        result.IsRegistrationSuccessful.ShouldBeTrue();
     }
 
     [Fact]
@@ -96,7 +96,7 @@ public class CreateUserCommandHandlerTests
         var addThirdUserResult = await _handler.Handle(addThirdUserCommand, CancellationToken.None);
 
         // Assert
-        addSecondUserResult.ReturnMessage.ShouldBeEquivalentTo("User already exist");
-        addThirdUserResult.ReturnMessage.ShouldBeEquivalentTo("User already exist");
+        addSecondUserResult.IsRegistrationSuccessful.ShouldBeFalse();
+        addThirdUserResult.IsRegistrationSuccessful.ShouldBeFalse();
     }
 }

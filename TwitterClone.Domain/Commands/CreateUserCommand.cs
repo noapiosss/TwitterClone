@@ -21,7 +21,7 @@ public class CreateUserCommand : IRequest<CreateUserCommandResult>
 
 public class CreateUserCommandResult
 {
-    public string ReturnMessage { get; set; }
+    public bool IsRegistrationSuccessful { get; set; }
 }
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResult>
@@ -48,7 +48,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Creat
         {
             return new CreateUserCommandResult
             {
-                ReturnMessage = "User already exist"
+                IsRegistrationSuccessful = false
             };
         }
 
@@ -58,7 +58,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Creat
 
         return new CreateUserCommandResult
         {
-            ReturnMessage = "Successful registration"
+            IsRegistrationSuccessful = true
         };
     }
 }
