@@ -14,7 +14,7 @@ using System.IO;
 
 namespace TwitterClone.UnitTests.Commands;
 
-public class CreateUserCommandHandlerTests
+public class CreateUserCommandHandlerTests : IDisposable
 {
     private readonly TwitterCloneDbContext _dbContext;
     private readonly IRequestHandler<CreateUserCommand, CreateUserCommandResult> _handler;
@@ -98,5 +98,11 @@ public class CreateUserCommandHandlerTests
         // Assert
         addSecondUserResult.IsRegistrationSuccessful.ShouldBeFalse();
         addThirdUserResult.IsRegistrationSuccessful.ShouldBeFalse();
+    }
+
+    public void Dispose()
+    {
+        _dbContext.Database.EnsureDeleted();
+        _dbContext.Dispose();
     }
 }
