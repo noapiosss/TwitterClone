@@ -6,18 +6,18 @@ public class CreateUserRequest
 {
     [Required]
     [MaxLength(50)]
-    public string Username { get; set; }
+    public string Username { get; init; }
 
     [Required]
     [MaxLength(50)]
-    public string Email { get; set; }
+    public string Email { get; init; }
     
     [Required]
     [MaxLength(50)]
-    public string Password { get; set; }
+    public string Password { get; init; }
 }
 
 public class CreateUserResponse
 {
-    public bool IsRegistrationSuccessful { get; set; }
+    public bool IsRegistrationSuccessful { get; init; }
 }
