@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using TwitterClone.Domain.Commands;
 using TwitterClone.Domain.Database;
 using System.IO;
+using TwitterClone.UnitTests.Helpers;
 
 namespace TwitterClone.UnitTests.Commands;
 
@@ -21,14 +22,7 @@ public class CreateUserCommandHandlerTests : IDisposable
 
     public CreateUserCommandHandlerTests()
     {
-        var tempFile = Path.GetTempFileName();
-        var options = new DbContextOptionsBuilder<TwitterCloneDbContext>()
-            .UseSqlite($"Data Source={tempFile};")
-            .Options;
-
-        _dbContext = new TwitterCloneDbContext(options);
-        _dbContext.Database.Migrate();
-
+        _dbContext = DbContextHelper.CreateTestDb();
         _handler = new CreateUserCommandHandler(_dbContext);
     }
 
