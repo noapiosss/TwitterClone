@@ -1,7 +1,11 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
+
+using Microsoft.EntityFrameworkCore;
 
 using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
@@ -15,7 +19,7 @@ public class UserQuery : IRequest<UserQueryResult>
 
 public class UserQueryResult
 {
-    public User User { get; set; }
+    public List<Post> UserPosts { get; set; }
 }
 
 public class UserQueryHandler : IRequestHandler<UserQuery, UserQueryResult>
@@ -27,8 +31,13 @@ public class UserQueryHandler : IRequestHandler<UserQuery, UserQueryResult>
         _dbContext = dbContext;
     }
 
-    public Task<UserQueryResult> Handle(UserQuery request, CancellationToken cancellationToken)
+    public async Task<UserQueryResult> Handle(UserQuery request, CancellationToken cancellationToken)
     {
-        throw new System.NotImplementedException();
+        var userPosts = _dbContext.Posts.ToListAsync().Result.ToList().Where(p => p.AuthorUsername == request.Username).ToList();
+
+        return new UserQueryResult
+        {
+            UserPosts = userPosts
+        };
     }
 }

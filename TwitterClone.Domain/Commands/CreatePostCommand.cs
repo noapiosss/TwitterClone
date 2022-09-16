@@ -9,6 +9,7 @@ using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace TwitterClone.Domain.Commands;
 
@@ -34,13 +35,14 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Creat
     }
     public async Task<CreatePostCommandResult> Handle(CreatePostCommand request, CancellationToken cancellationToken = default)
     {
-
+        var commentTo = (request.CommentTo == 0) ? null : request.CommentTo;
         var post = new Post
         {
             AuthorUsername = request.AuthorUsername,
-            CommentTo = request.CommentTo,
+            CommentTo = commentTo,
             PostDate = DateTime.UtcNow,
-            Message = request.Message
+            Message = request.Message,
+            Likes = new List<Like>()
         };
 
         await _dbContext.AddAsync(post, cancellationToken);
