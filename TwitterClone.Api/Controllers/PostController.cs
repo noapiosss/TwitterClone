@@ -40,5 +40,23 @@ public class PostController : BaseController
 
             return Created("http://todo.com", response);
         }, cancellationToken);
-    
+
+    [HttpDelete]
+    public Task<IActionResult> DeletePost([FromBody] DeletePostRequest request, CancellationToken cancellationToken) =>
+        SafeExecute(async () => 
+        {
+            var command = new DeletePostCommand
+            {
+                Username = request.Username,
+                PostId = request.PostId
+            };
+
+            var result = await _mediator.Send(command, cancellationToken);
+            var response = new DeletePostResponse
+            {
+                IsDeleteSuccessful = result.IsDeleteSuccessful
+            };
+
+            return Ok(response);
+        }, cancellationToken);
 }

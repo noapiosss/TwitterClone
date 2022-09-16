@@ -16,11 +16,11 @@ As a final project was chosen "Twitter clone"
 
 - PUT /api/users BODY=username+login+password (signup)
 - GET /api/users (signin)
-- PUT /api/posts BODY=username+postDate+message (make post)
-- DELETE /api/posts/{postId} (delete post)
-- GET /api/users/{username} (observe another user)
-- PUT /apo/posts/{postId} BODY=username+postDate+message (make comment)
-- PATCH /api/users/{username(another user)}/posts/{postId} BODY=like/unlike+username(from session)
+- PUT /api/posts BODY=username+message (make post)
+- PUT /api/posts BODY=username+commetTo+message (make comment), probably the same thing that doing default post, so don't know about separated request
+- DELETE /api/posts BODY=username+postId (delete post)
+- GET /api/users/{username} (observe another user posts)
+- PATCH /api/users/{username(another user)}/posts/{postId} BODY=username(from session) (like = !like)
 - PATCH /api/users/{username(from session)} BODY=follow/unfollow+username(another user)
 - GET /api/users/{username{from sesseion}}/posts (home page)
   
