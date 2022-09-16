@@ -8,10 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using TwitterClone.Contracts.Http;
 using TwitterClone.Domain.Commands;
-<<<<<<< HEAD
 using TwitterClone.Domain.Queries;
-=======
->>>>>>> 8795c817b61f1fec30c7164f3cc39b3f582c398c
 
 namespace TwitterClone.Api.Controllers;
 
@@ -44,7 +41,6 @@ public class UserController : BaseController
 
             return Created("http://todo.com", response);
         }, cancellationToken);
-<<<<<<< HEAD
 
     [HttpGet("{username}")]
 
@@ -65,8 +61,5 @@ public class UserController : BaseController
 
             return Ok(response);
         }, cancellationToken);
-
-=======
->>>>>>> 8795c817b61f1fec30c7164f3cc39b3f582c398c
     
 }
