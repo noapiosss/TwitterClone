@@ -11,7 +11,7 @@ using TwitterClone.Domain.Commands;
 
 namespace TwitterClone.Api.Controllers;
 
-[Route("api/Posts")]
+[Route("api/posts")]
 public class PostController : BaseController
 {
     private readonly IMediator _mediator;
