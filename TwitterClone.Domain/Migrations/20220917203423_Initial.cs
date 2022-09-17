@@ -20,7 +20,7 @@ namespace TwitterClone.Domain.Migrations
                 {
                     username = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    password = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                    password = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,17 +61,17 @@ namespace TwitterClone.Domain.Migrations
                 {
                     post_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    author_username = table.Column<string>(type: "character varying(50)", nullable: true),
+                    author = table.Column<string>(type: "character varying(50)", nullable: true),
                     comment_to = table.Column<int>(type: "integer", nullable: true),
                     post_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    message = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                    message = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tbl_posts", x => x.post_id);
                     table.ForeignKey(
-                        name: "FK_tbl_posts_tbl_users_author_username",
-                        column: x => x.author_username,
+                        name: "FK_tbl_posts_tbl_users_author",
+                        column: x => x.author,
                         principalSchema: "public",
                         principalTable: "tbl_users",
                         principalColumn: "username");
@@ -83,11 +83,11 @@ namespace TwitterClone.Domain.Migrations
                 columns: table => new
                 {
                     post_id = table.Column<int>(type: "integer", nullable: false),
-                    liked_by_username = table.Column<string>(type: "character varying(50)", nullable: false)
+                    liked_by = table.Column<string>(type: "character varying(50)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tbl_likes", x => new { x.post_id, x.liked_by_username });
+                    table.PrimaryKey("PK_tbl_likes", x => new { x.post_id, x.liked_by });
                     table.ForeignKey(
                         name: "FK_tbl_likes_tbl_posts_post_id",
                         column: x => x.post_id,
@@ -96,8 +96,8 @@ namespace TwitterClone.Domain.Migrations
                         principalColumn: "post_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_tbl_likes_tbl_users_liked_by_username",
-                        column: x => x.liked_by_username,
+                        name: "FK_tbl_likes_tbl_users_liked_by",
+                        column: x => x.liked_by,
                         principalSchema: "public",
                         principalTable: "tbl_users",
                         principalColumn: "username",
@@ -111,16 +111,16 @@ namespace TwitterClone.Domain.Migrations
                 column: "follow_for");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tbl_likes_liked_by_username",
+                name: "IX_tbl_likes_liked_by",
                 schema: "public",
                 table: "tbl_likes",
-                column: "liked_by_username");
+                column: "liked_by");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tbl_posts_author_username",
+                name: "IX_tbl_posts_author",
                 schema: "public",
                 table: "tbl_posts",
-                column: "author_username");
+                column: "author");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

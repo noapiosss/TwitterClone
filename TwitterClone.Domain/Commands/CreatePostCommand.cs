@@ -7,6 +7,7 @@ using MediatR;
 using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TwitterClone.Domain.Commands;
 
@@ -32,14 +33,20 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Creat
     }
     public async Task<CreatePostCommandResult> Handle(CreatePostCommand request, CancellationToken cancellationToken = default)
     {
-        var commentTo = (request.CommentTo == 0) ? null : request.CommentTo;
+        //if  (request.CommentTo <= 0)
+        //{
+        //    return new CreatePostCommandResult
+        //    {
+        //        Post = null
+        //    };
+        //}
+
         var post = new Post
         {
             AuthorUsername = request.AuthorUsername,
-            CommentTo = commentTo,
+            CommentTo = request.CommentTo,
             PostDate = DateTime.UtcNow,
             Message = request.Message,
-            Likes = new List<Like>()
         };
 
         await _dbContext.AddAsync(post, cancellationToken);

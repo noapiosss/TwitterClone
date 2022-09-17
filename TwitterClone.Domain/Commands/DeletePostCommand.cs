@@ -14,7 +14,6 @@ namespace TwitterClone.Domain.Commands;
 
 public class DeletePostCommand : IRequest<DeletePostCommandResult>
 {
-    public string Username { get; set; }
     public int PostId { get; set; }
 }
 
@@ -33,15 +32,15 @@ public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, Delet
     }
     public async Task<DeletePostCommandResult> Handle(DeletePostCommand request, CancellationToken cancellationToken = default)
     {
-        var post = _dbContext.Posts.ToListAsync().Result.ToList().First(p => p.PostId == request.PostId);
+        var post = await _dbContext.Posts.FirstOrDefaultAsync(p => p.PostId == request.PostId);
 
-        if (post.AuthorUsername != request.Username)
+        if (post == null)
         {
             return new DeletePostCommandResult
             {
                 IsDeleteSuccessful = false
             };
-        };
+        }
 
         _dbContext.Posts.Attach(post);
         _dbContext.Posts.Remove(post);

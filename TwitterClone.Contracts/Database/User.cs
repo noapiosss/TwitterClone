@@ -18,20 +18,16 @@ public class User
     public string Email { get; set; }
 
     [Required]
-    [MaxLength(255)]
+    [MaxLength(256)]
     [Column("password")]
     public string Password { get; set; }
-
-    [InverseProperty("Author")]
-    public virtual List<Post> AuthoredPosts { get; set; }
     
-    //[InverseProperty("LikedBy")]
-    public virtual List<Like> Likes { get; set; }
+    public ICollection<Post> Posts { get; set; }
     
-    [InverseProperty("FollowBy")]
-    public virtual List<Following> Followings { get; set; }
-
-    [InverseProperty("FollowFor")]
-    public virtual List<Following> Followers { get; set; }
+    public ICollection<Like> Likes { get; set; }
+    
+    public ICollection<Following> Followings { get; set; }
+    
+    public ICollection<Following> Followers { get; set; }
     
 }

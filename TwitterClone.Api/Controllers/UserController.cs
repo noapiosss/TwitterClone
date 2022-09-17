@@ -53,10 +53,9 @@ public class UserController : BaseController
             };
 
             var result = await _mediator.Send(query, cancellationToken);
-            var userPosts = result.UserPosts;
             var response = new GetUserPostsResponse
-            {
-                UserPosts = userPosts
+            {                
+                UserPosts = result.UserPosts
             };
 
             return Ok(response);

@@ -14,5 +14,5 @@ public class GetUserPostsRequest
 
 public class GetUserPostsResponse
 {
-    public List<Post> UserPosts { get; init; }
+    public ICollection<Post> UserPosts { get; init; }
 }

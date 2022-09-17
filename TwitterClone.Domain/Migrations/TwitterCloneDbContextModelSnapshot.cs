@@ -17,7 +17,7 @@ namespace TwitterClone.Domain.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -41,15 +41,15 @@ namespace TwitterClone.Domain.Migrations
 
             modelBuilder.Entity("TwitterClone.Contracts.Database.Like", b =>
                 {
-                    b.Property<int>("PostId")
+                    b.Property<int>("LikedPostId")
                         .HasColumnType("integer")
                         .HasColumnName("post_id");
 
                     b.Property<string>("LikedByUsername")
                         .HasColumnType("character varying(50)")
-                        .HasColumnName("liked_by_username");
+                        .HasColumnName("liked_by");
 
-                    b.HasKey("PostId", "LikedByUsername");
+                    b.HasKey("LikedPostId", "LikedByUsername");
 
                     b.HasIndex("LikedByUsername");
 
@@ -67,7 +67,7 @@ namespace TwitterClone.Domain.Migrations
 
                     b.Property<string>("AuthorUsername")
                         .HasColumnType("character varying(50)")
-                        .HasColumnName("author_username");
+                        .HasColumnName("author");
 
                     b.Property<int?>("CommentTo")
                         .HasColumnType("integer")
@@ -75,8 +75,8 @@ namespace TwitterClone.Domain.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
                         .HasColumnName("message");
 
                     b.Property<DateTime>("PostDate")
@@ -105,8 +105,8 @@ namespace TwitterClone.Domain.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
                         .HasColumnName("password");
 
                     b.HasKey("Username");
@@ -116,46 +116,46 @@ namespace TwitterClone.Domain.Migrations
 
             modelBuilder.Entity("TwitterClone.Contracts.Database.Following", b =>
                 {
-                    b.HasOne("TwitterClone.Contracts.Database.User", "FollowBy")
-                        .WithMany("Followings")
+                    b.HasOne("TwitterClone.Contracts.Database.User", "FollowByUser")
+                        .WithMany("Followers")
                         .HasForeignKey("FollowByUsername")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TwitterClone.Contracts.Database.User", "FollowFor")
-                        .WithMany("Followers")
+                    b.HasOne("TwitterClone.Contracts.Database.User", "FollowForUser")
+                        .WithMany("Followings")
                         .HasForeignKey("FollowForUsername")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("FollowBy");
+                    b.Navigation("FollowByUser");
 
-                    b.Navigation("FollowFor");
+                    b.Navigation("FollowForUser");
                 });
 
             modelBuilder.Entity("TwitterClone.Contracts.Database.Like", b =>
                 {
-                    b.HasOne("TwitterClone.Contracts.Database.User", "User")
+                    b.HasOne("TwitterClone.Contracts.Database.User", "LikedBy")
                         .WithMany("Likes")
                         .HasForeignKey("LikedByUsername")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TwitterClone.Contracts.Database.Post", "Post")
+                    b.HasOne("TwitterClone.Contracts.Database.Post", "LikedPost")
                         .WithMany("Likes")
-                        .HasForeignKey("PostId")
+                        .HasForeignKey("LikedPostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Post");
+                    b.Navigation("LikedBy");
 
-                    b.Navigation("User");
+                    b.Navigation("LikedPost");
                 });
 
             modelBuilder.Entity("TwitterClone.Contracts.Database.Post", b =>
                 {
                     b.HasOne("TwitterClone.Contracts.Database.User", "Author")
-                        .WithMany("AuthoredPosts")
+                        .WithMany("Posts")
                         .HasForeignKey("AuthorUsername");
 
                     b.Navigation("Author");
@@ -168,13 +168,13 @@ namespace TwitterClone.Domain.Migrations
 
             modelBuilder.Entity("TwitterClone.Contracts.Database.User", b =>
                 {
-                    b.Navigation("AuthoredPosts");
-
                     b.Navigation("Followers");
 
                     b.Navigation("Followings");
 
                     b.Navigation("Likes");
+
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

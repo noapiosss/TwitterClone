@@ -7,17 +7,11 @@ namespace TwitterClone.Contracts.Database;
 [Table("tbl_likes", Schema = "public")]
 public class Like 
 {
-    [Key]
     [Column("post_id")]
-    public int PostId { get; set; }
-
-    [ForeignKey("PostId")]
-    public Post Post { get; set;}
-
-    [Key]
-    [Column("liked_by_username")]
-    public string LikedByUsername { get; set; }
+    public int LikedPostId { get; set; }     
+    public Post LikedPost { get; set; }
     
-    [ForeignKey("LikedByUsername")]
-    public User User { get; set; }
+    [Column("liked_by")]
+    public string LikedByUsername { get; set; }    
+    public User LikedBy { get; set; }
 }

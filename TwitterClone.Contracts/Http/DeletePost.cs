@@ -8,8 +8,6 @@ namespace TwitterClone.Contracts.Http;
 public class DeletePostRequest
 {
     [Required]
-    public string Username { get; init; }
-    [Required]
     public int PostId { get; init; }
 }
 

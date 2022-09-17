@@ -47,9 +47,10 @@ public class PostController : BaseController
         {
             var command = new DeletePostCommand
             {
-                Username = request.Username,
                 PostId = request.PostId
             };
+
+            // var a = HttpContext.User.Claims;
 
             var result = await _mediator.Send(command, cancellationToken);
             var response = new DeletePostResponse

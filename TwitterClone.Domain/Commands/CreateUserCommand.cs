@@ -38,13 +38,13 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Creat
         {
             Username = request.Username,
             Email = request.Email,
-            Password = request.Password.GetHashCode().ToString()
+            Password = request.Password.GetHashCode().ToString() // :( fix it
         };
 
         
-        var usersList = _dbContext.Users.ToListAsync().Result.ToList();
+        var usersList = await _dbContext.Users.ToListAsync(cancellationToken); 
 
-        if (usersList.Any(u => u.Username == user.Username || u.Email == user.Email))
+        if (usersList.Any(u => u.Username == user.Username || u.Email == user.Email)) // refact as db req
         {
             return new CreateUserCommandResult
             {

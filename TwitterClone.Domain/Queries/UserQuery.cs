@@ -19,12 +19,13 @@ public class UserQuery : IRequest<UserQueryResult>
 
 public class UserQueryResult
 {
-    public List<Post> UserPosts { get; set; }
+    public ICollection<Post> UserPosts { get; set; }
 }
 
 public class UserQueryHandler : IRequestHandler<UserQuery, UserQueryResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
+
 
     public UserQueryHandler(TwitterCloneDbContext dbContext)
     {
@@ -32,7 +33,7 @@ public class UserQueryHandler : IRequestHandler<UserQuery, UserQueryResult>
     }
     public async Task<UserQueryResult> Handle(UserQuery request, CancellationToken cancellationToken)
     {
-        var userPosts = _dbContext.Posts.ToListAsync().Result.ToList().Where(p => p.AuthorUsername == request.Username).ToList();
+        var userPosts = _dbContext.Posts.Where(p => p.AuthorUsername == request.Username).ToList();
 
         return new UserQueryResult
         {

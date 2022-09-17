@@ -13,8 +13,7 @@ public class Post
     [Column("post_id")]
     public int PostId { get; set; }
 
-    [ForeignKey("Author")]
-    [Column("author_username")]
+    [Column("author")]
     public string AuthorUsername { get; set; }
     public User Author {get;set;}
 
@@ -25,12 +24,10 @@ public class Post
     public DateTime PostDate { get; set; }
     
     [Required]
-    [MaxLength(255)]
+    [MaxLength(256)]
     [Column("message")]
     public string Message { get; set; }
-
-    //[InverseProperty("LikedPost")]
-    public virtual List<Like> Likes { get; set; }
     
-
+    public ICollection<Like> Likes { get; set; }
+    
 }
