@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using TwitterClone.Contracts.Http;
 using TwitterClone.Domain.Commands;
+using TwitterClone.Domain.Queries;
 
 namespace TwitterClone.Api.Controllers;
 
@@ -38,5 +39,23 @@ public class LikeController : BaseController
             };
 
             return Created("http://todo.com", response);
+        }, cancellationToken);
+
+    [HttpGet("{postId}")]
+    public Task<IActionResult> GetUserPosts([FromRoute] int postId, CancellationToken cancellationToken) =>
+        SafeExecute(async () => 
+        {
+            var query = new LikeQuery
+            {
+                PostId = postId
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            var response = new GetLikesResponse
+            {                
+                UsersThatLikePost = result.UsersThatLikePost
+            };
+
+            return Ok(response);
         }, cancellationToken);
 }

@@ -33,14 +33,6 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Creat
     }
     public async Task<CreatePostCommandResult> Handle(CreatePostCommand request, CancellationToken cancellationToken = default)
     {
-        //if  (request.CommentTo <= 0)
-        //{
-        //    return new CreatePostCommandResult
-        //    {
-        //        Post = null
-        //    };
-        //}
-
         var post = new Post
         {
             AuthorUsername = request.AuthorUsername,

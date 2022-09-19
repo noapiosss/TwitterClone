@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using TwitterClone.Contracts.Http;
 using TwitterClone.Domain.Commands;
+using TwitterClone.Domain.Queries;
 
 namespace TwitterClone.Api.Controllers;
 
@@ -39,6 +40,24 @@ public class PostController : BaseController
             };
 
             return Created("http://todo.com", response);
+        }, cancellationToken);
+
+    [HttpGet("{postId}")]
+    public Task<IActionResult> GetUserPosts([FromRoute] int postId, CancellationToken cancellationToken) =>
+        SafeExecute(async () => 
+        {
+            var query = new PostQuery
+            {
+                PostId = postId
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            var response = new GetPostResponse
+            {                
+                Post = result.Post
+            };
+
+            return Ok(response);
         }, cancellationToken);
 
     [HttpDelete]
