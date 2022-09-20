@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Security.Cryptography;
 
 using MediatR;
 
@@ -9,6 +8,7 @@ using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using TwitterClone.Domain.Helpers;
 
 namespace TwitterClone.Domain.Commands;
 
@@ -34,11 +34,12 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Creat
     }
     public async Task<CreateUserCommandResult> Handle(CreateUserCommand request, CancellationToken cancellationToken = default)
     {
+
         var user = new User 
         {
             Username = request.Username,
             Email = request.Email,
-            Password = request.Password.GetHashCode().ToString() // :( fix it
+            Password = SHA256HashProvider.GetSHA256Hash(request.Password)
         };
 
         
