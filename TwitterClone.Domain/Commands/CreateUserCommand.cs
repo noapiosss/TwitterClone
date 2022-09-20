@@ -39,7 +39,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Creat
         {
             Username = request.Username,
             Email = request.Email,
-            Password = SHA256HashProvider.GetSHA256Hash(request.Password)
+            Password = PasswordHelper.GetPasswordHashWithSalt(request.Password, 10101, 128)
         };
 
         
