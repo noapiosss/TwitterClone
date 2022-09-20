@@ -42,8 +42,7 @@ public class UserController : BaseController
             return Created("http://todo.com", response);
         }, cancellationToken);
 
-    [HttpGet("{username}")]
-
+    [HttpGet("{username}/posts")]
     public Task<IActionResult> GetUserPosts([FromRoute] string username, CancellationToken cancellationToken) =>
         SafeExecute(async () => 
         {
@@ -61,4 +60,57 @@ public class UserController : BaseController
             return Ok(response);
         }, cancellationToken);
     
+    [HttpGet("{username}/followings")]
+    public Task<IActionResult> GetFollowings([FromRoute] string username, CancellationToken cancellationToken) =>
+        SafeExecute(async () => 
+        {
+            var query = new FollowingsQuery
+            {
+                Username = username
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            var response = new GetFollowingsResponse
+            {                
+                Followings = result.Followings
+            };
+
+            return Ok(response);
+        }, cancellationToken);
+
+    [HttpGet("{username}/followers")]
+    public Task<IActionResult> GetFollowers([FromRoute] string username, CancellationToken cancellationToken) =>
+        SafeExecute(async () => 
+        {
+            var query = new FollowersQuery
+            {
+                Username = username
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            var response = new GetFollowersResponse
+            {                
+                Followers = result.Followers
+            };
+
+            return Ok(response);
+        }, cancellationToken);
+
+    [HttpGet("{username}/homePagePosts")]
+    public Task<IActionResult> GetHomePagePosts([FromRoute] string username, CancellationToken cancellationToken) =>
+        SafeExecute(async () => 
+        {
+            var query = new HomePageQuery
+            {
+                Username = username
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            var response = new GetHomePagePostsResponse
+            {                
+                PostsFromFollowings = result.PostsFromFollowings
+            };
+
+            return Ok(response);
+        }, cancellationToken);
 }
