@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TwitterClone.Api.Controllers;
 
-[Route("/registration")]
-public class RegistrationController : BaseController
+[Route("/sign-in")]
+public class SignInController : BaseController
 {
     [HttpGet]
-    public ContentResult GetUserPage(CancellationToken cancellationToken)
+    public ContentResult GeSignInPage(CancellationToken cancellationToken)
     {
-        var html = System.IO.File.ReadAllText("wwwroot/registration.html");
+        var html = System.IO.File.ReadAllText("wwwroot/sign-in.html");
 
         return new ContentResult
         {
