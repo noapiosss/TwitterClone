@@ -1,0 +1,45 @@
+.username
+{
+    padding-left: 2%;
+    background-color: rgba(168, 206, 255, 0.24);;
+}
+
+.user-posts-wrapper
+{
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+
+    margin-top: 10px;
+
+    border-color: rgb(106, 106, 107);
+
+    margin-left: 30%;
+    width: 40%;
+}
+
+.user-post
+{
+    padding-left: 1%;   
+    
+    border-top-style: solid;
+    border-top-width: 1px;    
+    border-color: rgb(106, 106, 107);
+}
+
+.user-post:hover
+{
+    background-color: rgba(168, 206, 255, 0.24);
+}
+
+.post-date
+{
+
+}
+
+.post-message
+{
+    width: 98%;
+    resize: none;
+    overflow: hidden;
+}
