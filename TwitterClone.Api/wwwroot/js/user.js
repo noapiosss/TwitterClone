@@ -5,13 +5,9 @@ async function BuildPage(usernameInput)
     //const data = JSON.parse(input)
     //console.log(data)
 
-    let data;
-    await fetch(` http://localhost:5134/api/users/${usernameInput}/posts`)
-        .then((response) => response.json())
-        .then((inputData) => 
-        {
-            data = inputData;
-        });
+    ;
+    let data = await fetch(`http://localhost:5134/api/users/${usernameInput}/posts`)
+        .then((response) => response.json());
     
     BuildBody(data);    
 }
@@ -35,7 +31,7 @@ function BuildBody(data)
         postDate.id = 'post-date';
         postDate.className = 'post-date';
         postDate.innerText = (new Date(Date.parse(post.postDate))).toUTCString();;
-        postDate.href = `http://localhost:3000/posts/${post.postId}`;
+        postDate.href = `http://localhost:5134/posts/${post.postId}`;
 
         const postMessage = document.createElement('textarea');
         postMessage.id = 'post-message';

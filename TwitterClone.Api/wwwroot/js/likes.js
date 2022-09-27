@@ -1,9 +1,10 @@
 
 const userLikesWrapper = document.querySelector("#user-likes-wrapper");
 
-function BuildPage(likedByUsername)
+async function BuildPage(inputPostId)
 {
-    const likes = JSON.parse(likedByUsername);
+    const likes = await fetch(`http://localhost:5134/api/likes/${inputPostId}`)
+        .then((response) => response.json());
 
     likes.usersThatLikePost.forEach(username => 
     {
@@ -19,7 +20,7 @@ function BuildPage(likedByUsername)
             user.id = 'user-link';
             user.className = 'user-link';
             user.innerText = username;
-            user.href = `http://localhost:3000/users/${username}`;
+            user.href = `http://localhost:5134/users/${username}`;
 
         const buttonWrapper = document.createElement('div');
             buttonWrapper.id = 'button-wrapper';

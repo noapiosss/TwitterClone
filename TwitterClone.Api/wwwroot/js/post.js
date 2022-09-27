@@ -2,11 +2,12 @@ const sendButton = document.querySelector("#make-new-comment-button");
 const basePostWrapper = document.querySelector("#base-post-wrapper");
 const comments = document.querySelector("#comments-wrapper");
 
-function BuildPage(postData, likesData)
+async function BuildPage(inputPostId)
 {
-    console.log(postData)
-    const data = JSON.parse(postData);
-    const likes = JSON.parse(likesData);
+    const data = await fetch(`http://localhost:5134/api/posts/${inputPostId}`)
+        .then((response) => response.json());
+    const likes = await fetch(`http://localhost:5134/api/likes/${inputPostId}`)
+        .then((response) => response.json());;
     console.log(data)
 
 
@@ -18,7 +19,7 @@ function BuildPage(postData, likesData)
     basePostAuthorUsername.id = 'base-post-author-username';
     basePostAuthorUsername.className = 'base-post-author-username';
     basePostAuthorUsername.innerText = data.post.authorUsername;
-    basePostAuthorUsername.href = `http://localhost:3000/users/${data.post.authorUsername}`
+    basePostAuthorUsername.href = `http://localhost:5134/users/${data.post.authorUsername}`
 
     const basePostPostDate = document.createElement('a');
     basePostPostDate.id = 'base-post-post-date';
@@ -90,13 +91,13 @@ function BuildPage(postData, likesData)
         commentAuthorUsername.id = 'comment-author-username';
         commentAuthorUsername.className = 'comment-author-username';
         commentAuthorUsername.innerText = oldComment.authorUsername;
-        commentAuthorUsername.href = `http://localhost:3000/users/${oldComment.authorUsername}`
+        commentAuthorUsername.href = `http://localhost:5134/users/${oldComment.authorUsername}`
 
         const commentPostDate = document.createElement('a');
         commentPostDate.id = 'comment-date';
         commentPostDate.className = 'comment-date';
         commentPostDate.innerText = (new Date(Date.parse(oldComment.postDate))).toUTCString();;
-        commentPostDate.href = `http://localhost:3000/posts/${oldComment.postId}`;
+        commentPostDate.href = `http://localhost:5134/posts/${oldComment.postId}`;
 
         const commetTextArea = document.createElement('textarea');
         commetTextArea.id = 'comment-message';
