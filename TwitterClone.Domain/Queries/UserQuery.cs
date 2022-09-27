@@ -33,7 +33,10 @@ public class UserQueryHandler : IRequestHandler<UserQuery, UserQueryResult>
     }
     public async Task<UserQueryResult> Handle(UserQuery request, CancellationToken cancellationToken)
     {
-        var userPosts = _dbContext.Posts.Where(p => p.AuthorUsername == request.Username).ToList();
+        var userPosts = _dbContext.Posts
+            .Where(p => p.AuthorUsername == request.Username)
+            .OrderByDescending(p => p.PostDate)
+            .ToList();
 
         return new UserQueryResult
         {

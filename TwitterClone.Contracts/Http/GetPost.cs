@@ -13,5 +13,7 @@ public class GetPostRequest
 
 public class GetPostResponse
 {
-    public Post Post { get; init; }
+    public Post Post { get; set; }
+    public ICollection<string> LikedByUsername { get; set; }
+    public ICollection<Post> Comments { get; set; }
 }

@@ -19,5 +19,7 @@ public class CreateUserRequest
 
 public class CreateUserResponse
 {
-    public bool IsRegistrationSuccessful { get; init; }
+    public bool IsRegistrationSuccessful { get; set; }
+    public bool UsernameIsAlreadyInUse { get; set; }
+    public bool EmailIsAlreadyInUse { get; set; }
 }

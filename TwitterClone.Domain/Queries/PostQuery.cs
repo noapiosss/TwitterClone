@@ -20,6 +20,8 @@ public class PostQuery : IRequest<PostQueryResult>
 public class PostQueryResult
 {
     public Post Post { get; set; }
+    public ICollection<string> LikedByUsername { get; set; }
+    public ICollection<Post> Comments { get; set; }
 }
 
 public class PostQueryHandler : IRequestHandler<PostQuery, PostQueryResult>
@@ -37,9 +39,27 @@ public class PostQueryHandler : IRequestHandler<PostQuery, PostQueryResult>
             .Include(p => p.Likes)
             .First(p => p.PostId == request.PostId);
 
+        var likedByUsername = new List<string>();
+
+        foreach (var like in post.Likes)
+        {
+            likedByUsername.Add(like.LikedByUsername);
+        }
+
+        var comments = _dbContext.Posts
+            .Where(p => p.CommentTo == request.PostId).ToList();
+
         return new PostQueryResult
         {
-            Post = post
+            Post = new Post
+            {
+                PostId = post.PostId,
+                AuthorUsername = post.AuthorUsername,
+                PostDate = post.PostDate,
+                Message = post.Message
+            },
+            LikedByUsername = likedByUsername,
+            Comments = comments
         };
     }
 }

@@ -22,6 +22,9 @@ public class CreateUserCommand : IRequest<CreateUserCommandResult>
 public class CreateUserCommandResult
 {
     public bool IsRegistrationSuccessful { get; set; }
+    public bool UsernameIsAlreadyInUse { get; set; }
+    public bool EmailIsAlreadyInUse { get; set; }
+
 }
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResult>
@@ -34,6 +37,18 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Creat
     }
     public async Task<CreateUserCommandResult> Handle(CreateUserCommand request, CancellationToken cancellationToken = default)
     {
+        var usernameIsAlreadyInUse = _dbContext.Users.Any(u => u.Username == request.Username) ? true : false;
+        var emailIsAlreadyInUse = _dbContext.Users.Any(u => u.Email == request.Email) ? true : false;
+
+        if (usernameIsAlreadyInUse || emailIsAlreadyInUse)
+        {
+            return new CreateUserCommandResult
+            {
+                IsRegistrationSuccessful = false,
+                UsernameIsAlreadyInUse = usernameIsAlreadyInUse,
+                EmailIsAlreadyInUse = emailIsAlreadyInUse,
+            };
+        }
 
         var user = new User 
         {
@@ -42,24 +57,15 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Creat
             Password = PasswordHelper.GetPasswordHashWithSalt(request.Password, 10101, 128)
         };
 
-        
-        var usersList = await _dbContext.Users.ToListAsync(cancellationToken); 
-
-        if (usersList.Any(u => u.Username == user.Username || u.Email == user.Email)) // refact as db req
-        {
-            return new CreateUserCommandResult
-            {
-                IsRegistrationSuccessful = false
-            };
-        }
-
         await _dbContext.AddAsync(user, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
 
         return new CreateUserCommandResult
         {
-            IsRegistrationSuccessful = true
+            IsRegistrationSuccessful = true,
+            UsernameIsAlreadyInUse = usernameIsAlreadyInUse,
+            EmailIsAlreadyInUse = emailIsAlreadyInUse,
         };
     }
 }

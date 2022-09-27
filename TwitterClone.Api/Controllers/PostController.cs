@@ -54,7 +54,9 @@ public class PostController : BaseController
             var result = await _mediator.Send(query, cancellationToken);
             var response = new GetPostResponse
             {                
-                Post = result.Post
+                Post = result.Post,
+                LikedByUsername = result.LikedByUsername,
+                Comments = result.Comments
             };
 
             return Ok(response);

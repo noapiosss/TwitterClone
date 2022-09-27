@@ -36,7 +36,9 @@ public class UserController : BaseController
             var result = await _mediator.Send(command, cancellationToken);
             var response = new CreateUserResponse
             {
-                IsRegistrationSuccessful = result.IsRegistrationSuccessful
+                IsRegistrationSuccessful = result.IsRegistrationSuccessful,
+                UsernameIsAlreadyInUse = result.UsernameIsAlreadyInUse,
+                EmailIsAlreadyInUse = result.EmailIsAlreadyInUse
             };
 
             return Created("http://todo.com", response);
