@@ -54,7 +54,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Creat
         {
             Username = request.Username,
             Email = request.Email,
-            Password = PasswordHelper.GetPasswordHashWithSalt(request.Password, 10101, 128)
+            Password = PasswordHelper.HashString(request.Password)
         };
 
         await _dbContext.AddAsync(user, cancellationToken);

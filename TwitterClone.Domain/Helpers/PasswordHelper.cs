@@ -6,26 +6,38 @@ namespace TwitterClone.Domain.Helpers;
 
 public class PasswordHelper
 {
-    public static string GenerateSalt(int saltLength)
+    public static string GetSha256Hash(string inputData)
     {
-        var saltBytes = new byte[saltLength];
-
-        using (var provider = new RNGCryptoServiceProvider())
+        using (var sha256Hash = SHA256.Create())
         {
-            provider.GetNonZeroBytes(saltBytes);
-        }
+            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(inputData));
 
-        return Convert.ToBase64String(saltBytes);
+            var builder = new StringBuilder();
+            for (int i=0; i<bytes.Length; ++i)
+            {
+                builder.Append(bytes[i].ToString("x2"));
+            }
+
+            return builder.ToString();
+        }
     }
-
-    public static string GetPasswordHashWithSalt(string password, int nIterations, int hashLength)
+    public static string HashString(string text, string salt = "")
     {
-        var salt = GenerateSalt(128);
-        var saltBytes = Convert.FromBase64String(salt);
-
-        using (var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, saltBytes, nIterations))
+        if (String.IsNullOrEmpty(text))
         {
-            return Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(hashLength));
+            return String.Empty;
         }
+
+        using (var sha = new SHA256Managed())
+        {
+            byte[] textBytes = Encoding.UTF8.GetBytes(text+salt);
+            byte[] hashBytes = sha.ComputeHash(textBytes);
+
+            var hash = BitConverter
+                .ToString(hashBytes)
+                .Replace("-", String.Empty);
+            
+            return hash;
+        }        
     }
 }
