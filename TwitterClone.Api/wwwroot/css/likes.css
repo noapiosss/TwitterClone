@@ -36,6 +36,17 @@
     font-style: bold;
 }
 
+.you-button
+{
+    background-color: rgb(146, 201, 253);
+    color: black;
+    position: relative;
+    float: right;
+    margin-left: auto;
+    margin-right: 0;
+    border-radius: 15px;
+}
+
 .follow-button
 {
     background-color: black;

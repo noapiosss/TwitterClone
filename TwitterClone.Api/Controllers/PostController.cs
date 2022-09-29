@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +30,7 @@ public class PostController : BaseController
         {
             var command = new CreatePostCommand
             {
-                AuthorUsername = request.AuthorUsername,
+                AuthorUsername = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
                 CommentTo = request.CommentTo,
                 Message = request.Message
             };

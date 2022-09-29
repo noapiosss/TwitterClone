@@ -65,8 +65,8 @@ async function RenderBasePost(post, likes)
         .then((response) => response.json());
     const userLikes = likesData.postIdsThatUserLike;
 
-    const likeIconContainer = document.createElement('div');
-    likeIconContainer.className = 'like-icon-container';
+    const likeIconWrapper = document.createElement('div');
+    likeIconWrapper.className = 'like-icon-wrapper';
     const likeIcon = document.createElement('a');    
     likeIcon.id = 'like-icon';
     likeIcon.className = 'like-icon';    
@@ -82,7 +82,7 @@ async function RenderBasePost(post, likes)
         likeIcon.onmouseout = () => {likeIcon.style.filter = ''};
     }
 
-    likeIconContainer.onclick = async () =>
+    likeIconWrapper.onclick = async () =>
     {
         await fetch(`${window.location.origin}/api/likes`, 
             {
@@ -133,9 +133,36 @@ async function RenderBasePost(post, likes)
         likeCount.innerHTML = `<b>${newLikesCount.usersThatLikePost.length}</b> likes`;
     }
 
-    likeIconContainer.appendChild(likeIcon)
-    separator.appendChild(likeIconContainer)
-    //separator.innerText = 'here will be like, commemt, and may be repost buttons'
+    likeIconWrapper.appendChild(likeIcon)
+
+    const commentIconWrapper = document.createElement('div');
+    commentIconWrapper.className = 'comment-icon-wrapper';
+
+    const commentIcon = document.createElement('a');
+    commentIcon.id = 'comment-icon';
+    commentIcon.className = 'comment-icon';
+    commentIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3.25 4a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h2.5a.75.75 0 01.75.75v3.19l3.72-3.72a.75.75 0 01.53-.22h10a.25.25 0 00.25-.25V4.25a.25.25 0 00-.25-.25H3.25zm-1.75.25c0-.966.784-1.75 1.75-1.75h17.5c.966 0 1.75.784 1.75 1.75v12.5a1.75 1.75 0 01-1.75 1.75h-9.69l-3.573 3.573A1.457 1.457 0 015 21.043V18.5H3.25a1.75 1.75 0 01-1.75-1.75V4.25z"/></svg>';
+    commentIcon.onclick = () => 
+    {
+        const newWindowWidht = 500, newWindowHeight = 800;
+        window.open(`${document.URL}/make-comment`, 'targetWindow',
+                                `toolbar=no,
+                                location=no,
+                                status=no,
+                                menubar=no,
+                                scrollbars=yes,
+                                resizable=no,
+                                width=${newWindowWidht}px,
+                                height=${newWindowHeight}px,
+                                left=${window.screen.width/2 - newWindowWidht/2},
+                                top=${window.screen.height/2 - newWindowHeight/2}`);
+    };
+
+
+    commentIconWrapper.appendChild(commentIcon);
+
+    separator.appendChild(commentIconWrapper)
+    separator.appendChild(likeIconWrapper);
 
     basePost.appendChild(basePostAuthorUsername);
     basePost.appendChild(document.createElement('tr'));

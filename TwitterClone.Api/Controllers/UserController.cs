@@ -82,6 +82,16 @@ public class UserController : BaseController
             };
 
             return Ok(response);
-        }, cancellationToken); 
+        }, cancellationToken);
     
+    [HttpGet("username")]
+    [Authorize]
+        public Task<IActionResult> GetSessionUsername(CancellationToken cancellationToken) =>
+        SafeExecute( async () => 
+        {
+            var username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            var response = new {username};
+
+            return Ok(response);
+        }, cancellationToken);     
 }

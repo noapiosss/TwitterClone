@@ -42,15 +42,27 @@
     overflow: hidden;
 }
 
-.like-icon-container
+.like-icon-wrapper
 {
+    margin-left: 10%;
     border-radius: 50%;
     width: 20px;
 }
 
-.like-icon-container:hover
+.like-icon-wrapper:hover
 {
     background-color: rgb(255, 219, 219);
+}
+
+.comment-icon-wrapper
+{
+    width: 20px;
+}
+
+
+.comment-icon-wrapper:hover
+{
+    background-color: rgb(231, 231, 231);
 }
 
 .like-count:hover
@@ -61,6 +73,8 @@
 .separator
 {
     padding-left: 1%;
+    display: flex;
+    justify-content: center;
 
     border-top-style: dashed;
     border-top-color: black;

@@ -9,6 +9,9 @@ async function BuildPage(inputPostId)
     const followings = await fetch(`${window.location.origin}/api/followings`)
         .then((response) => response.json());
 
+    const yourUsername = await fetch(`${window.location.origin}/api/users/username`)
+        .then((response) => response.json());
+
     likes.usersThatLikePost.forEach(username => 
     {
         const userWrapper = document.createElement('div');
@@ -30,18 +33,27 @@ async function BuildPage(inputPostId)
             buttonWrapper.className = 'col button-wrapper';
 
         const followButton = document.createElement('button');
-            
-        if(!followings.followings.includes(username))
+        
+        if (username === yourUsername.username)
         {
-            followButton.id = 'follow-button';
-            followButton.className = 'follow-button';
-            followButton.innerHTML = 'Follow';
+            followButton.id = 'you-button';
+            followButton.className = 'you-button';
+            followButton.innerHTML = 'You';
         }
-        else
+        else 
         {
-            followButton.id = 'unfollow-button';
-            followButton.className = 'unfollow-button';
-            followButton.innerHTML = 'Following';            
+            if(!followings.followings.includes(username))
+            {
+                followButton.id = 'follow-button';
+                followButton.className = 'follow-button';
+                followButton.innerHTML = 'Follow';
+            }
+            else
+            {
+                followButton.id = 'unfollow-button';
+                followButton.className = 'unfollow-button';
+                followButton.innerHTML = 'Following';            
+            }
         }
 
         followButton.addEventListener('mouseover', () => {
@@ -60,6 +72,11 @@ async function BuildPage(inputPostId)
 
         followButton.onclick = async () =>
         {
+            if (username === yourUsername.username)
+            {
+                return;
+            }
+
             if (followButton.id === 'follow-button')
             {
                 followButton.id = 'unfollow-button';
