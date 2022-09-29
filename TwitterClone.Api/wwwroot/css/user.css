@@ -43,3 +43,8 @@
     resize: none;
     overflow: hidden;
 }
+
+.like-count:hover
+{
+    cursor: pointer;
+}

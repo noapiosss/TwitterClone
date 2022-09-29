@@ -28,11 +28,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
 
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(10);
-});
+//builder.Services.AddDistributedMemoryCache();
+//builder.Services.AddSession(options =>
+//{
+//    options.IdleTimeout = TimeSpan.FromMinutes(10);
+//});
 
 builder.Services.Configure<AppConfiguration>(builder.Configuration);
 
@@ -45,7 +45,7 @@ builder.Services.AddDbContext<TwitterCloneDbContext>((sp, options) =>
 
 var app = builder.Build();
 
-app.UseSession();
+//app.UseSession();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

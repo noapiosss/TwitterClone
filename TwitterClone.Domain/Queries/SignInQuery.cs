@@ -55,10 +55,10 @@ public class SignInQueryHandler : IRequestHandler<SignInQuery, SignInQueryResult
         System.Console.WriteLine(user.Password);
         System.Console.WriteLine("req");
         System.Console.WriteLine(request.Password);
-        System.Console.WriteLine(PasswordHelper.HashString(request.Password));
-        System.Console.WriteLine(PasswordHelper.HashString(request.Password));
+        System.Console.WriteLine(PasswordHelper.TestHash(request.Password));
+        System.Console.WriteLine(PasswordHelper.TestHash(request.Password));
 
-        if (user.Password != PasswordHelper.HashString(request.Password))
+        if (user.Password != PasswordHelper.TestHash(request.Password))
         {
             return new SignInQueryResult
             {

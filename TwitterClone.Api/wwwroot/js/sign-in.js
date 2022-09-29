@@ -8,7 +8,7 @@ signInBtn.onclick = async (event) =>
     const username = usernameField.value;
     const password = passwordField.value;
 
-    const response = await fetch("/sign-in", {
+    const response = await fetch(`${window.location.origin}/sign-in`, {
         method: 'POST',
         body: JSON.stringify({
             username,
@@ -23,4 +23,6 @@ signInBtn.onclick = async (event) =>
     {
         throw new Error(`status code is ${response.status}`);
     }
+
+    window.location.replace(`${document.location.origin}/home`);
 }

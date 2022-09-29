@@ -13,7 +13,7 @@ signUpBtn.addEventListener("click", () =>
         password: `${password.value}`
     };
 
-    fetch("http://localhost:5134/api/users",{
+    fetch(`${window.location.origin}/api/users`,{
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
@@ -44,6 +44,10 @@ signUpBtn.addEventListener("click", () =>
                 const usernameContainer = document.getElementById('email-container');
                 usernameContainer.appendChild(emailIsAlreadyTakenLabel);
             }
+        }
+        else
+        {
+            window.location.replace(`${document.location.origin}/sign-in`);
         }
     })
 

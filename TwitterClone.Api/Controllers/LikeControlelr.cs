@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,7 +31,7 @@ public class LikeController : BaseController
             var command = new LikePostCommand
             {
                 LikedPostId = request.LikedPostId,
-                LikedByUsername = request.LikedByUsername
+                LikedByUsername = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value
             };
 
             var result = await _mediator.Send(command, cancellationToken);
@@ -42,7 +44,7 @@ public class LikeController : BaseController
         }, cancellationToken);
 
     [HttpGet("{postId}")]
-    public Task<IActionResult> GetUserPosts([FromRoute] int postId, CancellationToken cancellationToken) =>
+    public Task<IActionResult> GetPostLikes([FromRoute] int postId, CancellationToken cancellationToken) =>
         SafeExecute(async () => 
         {
             var query = new LikeQuery
@@ -54,6 +56,24 @@ public class LikeController : BaseController
             var response = new GetLikesResponse
             {                
                 UsersThatLikePost = result.UsersThatLikePost
+            };
+
+            return Ok(response);
+        }, cancellationToken);
+
+    [HttpGet]
+    public Task<IActionResult> GetUserLikes(CancellationToken cancellationToken) =>
+        SafeExecute(async () => 
+        {
+            var query = new UserLikesQuery
+            {
+                Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            var response = new GetPostsThatUserLikeResponse
+            {                
+                PostIdsThatUserLike = result.PostIdsThatUserLike
             };
 
             return Ok(response);

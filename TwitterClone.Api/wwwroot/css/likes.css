@@ -46,3 +46,21 @@
     margin-right: 0;
     border-radius: 15px;
 }
+
+.unfollow-button
+{
+    background-color: white;
+    color: black;
+    position: relative;
+    float: right;
+    margin-left: auto;
+    margin-right: 0;
+    border-radius: 15px;
+}
+
+.unfollow-button:hover
+{
+    color: red;
+    border-color: rgb(250, 37, 37);
+    background-color: rgb(255, 169, 169);
+}

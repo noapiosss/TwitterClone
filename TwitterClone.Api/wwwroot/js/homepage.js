@@ -2,11 +2,12 @@ const userPostsWrapper = document.querySelector("#user-posts-wrapper");
 
 
 
-function BuildPage(input)
+async function BuildPage()
 {
-    const allData = JSON.parse(input)
+    const allData = await fetch(`${window.location.origin}/api/users/homepage`)
+        .then((response) => response.json());
+    
     const data = allData.postsFromFollowings;
-    console.log(data)
     
     data.forEach(post => {
 
@@ -18,13 +19,13 @@ function BuildPage(input)
         postAuthorUsername.id = 'post-author-username';
         postAuthorUsername.className = 'post-author-username';
         postAuthorUsername.innerText = post.authorUsername;
-        postAuthorUsername.href = `http://localhost:3000/users/${post.authorUsername}`
+        postAuthorUsername.href = `${window.location.origin}/users/${post.authorUsername}`
         
         const postDate = document.createElement('a');
         postDate.id = 'post-date';
         postDate.className = 'post-date';
         postDate.innerText = post.postDate;
-        postDate.href = `http://localhost:3000/posts/${post.postId}`;
+        postDate.href = `${window.location.origin}/posts/${post.postId}`;
 
         const postMessage = document.createElement('textarea');
         postMessage.id = 'post-message';

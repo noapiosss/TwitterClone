@@ -1,9 +1,12 @@
 using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using TwitterClone.Contracts.Http;
@@ -30,7 +33,7 @@ public class UserController : BaseController
             {
                 Username = request.Username,
                 Email = request.Email,
-                Password = request.Password.GetHashCode().ToString()
+                Password = request.Password
             };
 
             var result = await _mediator.Send(command, cancellationToken);
@@ -61,50 +64,15 @@ public class UserController : BaseController
 
             return Ok(response);
         }, cancellationToken);
-    
-    [HttpGet("{username}/followings")]
-    public Task<IActionResult> GetFollowings([FromRoute] string username, CancellationToken cancellationToken) =>
-        SafeExecute(async () => 
-        {
-            var query = new FollowingsQuery
-            {
-                Username = username
-            };
 
-            var result = await _mediator.Send(query, cancellationToken);
-            var response = new GetFollowingsResponse
-            {                
-                Followings = result.Followings
-            };
-
-            return Ok(response);
-        }, cancellationToken);
-
-    [HttpGet("{username}/followers")]
-    public Task<IActionResult> GetFollowers([FromRoute] string username, CancellationToken cancellationToken) =>
-        SafeExecute(async () => 
-        {
-            var query = new FollowersQuery
-            {
-                Username = username
-            };
-
-            var result = await _mediator.Send(query, cancellationToken);
-            var response = new GetFollowersResponse
-            {                
-                Followers = result.Followers
-            };
-
-            return Ok(response);
-        }, cancellationToken);
-
-    [HttpGet("{username}/homePagePosts")]
-    public Task<IActionResult> GetHomePagePosts([FromRoute] string username, CancellationToken cancellationToken) =>
+    [HttpGet("homepage")]
+    [Authorize]
+        public Task<IActionResult> GetHomePagePosts(CancellationToken cancellationToken) =>
         SafeExecute(async () => 
         {
             var query = new HomePageQuery
             {
-                Username = username
+                Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value
             };
 
             var result = await _mediator.Send(query, cancellationToken);
@@ -114,5 +82,6 @@ public class UserController : BaseController
             };
 
             return Ok(response);
-        }, cancellationToken);
+        }, cancellationToken); 
+    
 }

@@ -42,6 +42,17 @@
     overflow: hidden;
 }
 
+.like-icon-container
+{
+    border-radius: 50%;
+    width: 20px;
+}
+
+.like-icon-container:hover
+{
+    background-color: rgb(255, 219, 219);
+}
+
 .like-count:hover
 {
     cursor: pointer;
@@ -49,8 +60,6 @@
 
 .separator
 {
-    text-align: center;
-
     padding-left: 1%;
 
     border-top-style: dashed;
