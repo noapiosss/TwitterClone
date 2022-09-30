@@ -1,0 +1,27 @@
+.make-new-comment-wrapper
+{
+
+}
+
+.username
+{
+    margin-left: 1%;
+}
+
+.new-comment-message
+{
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 97%;
+    margin-left: 1%;
+    border-radius: 15px;
+    resize: none;
+}
+
+.make-new-comment-button
+{
+    margin-left: 1%;
+    background-color: rgb(75, 55, 255);
+    color: white;
+    border-radius: 15px;
+}

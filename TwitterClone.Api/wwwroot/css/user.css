@@ -14,8 +14,8 @@
 
     border-color: rgb(106, 106, 107);
 
-    margin-left: 30%;
-    width: 40%;
+    margin-bottom: 0;
+    width: 100%;
 }
 
 .user-post
@@ -34,7 +34,14 @@
 
 .post-date
 {
+    text-decoration: none;
+    color: black;
+}
 
+.post-date:hover
+{
+    color: black;
+    text-decoration: underline;
 }
 
 .post-message

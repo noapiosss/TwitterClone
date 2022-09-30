@@ -1,10 +1,38 @@
-const sendButton = document.querySelector("#make-new-comment-button");
-const basePostWrapper = document.querySelector("#base-post-wrapper");
-const comments = document.querySelector("#comments-wrapper");
+const sendButton = document.getElementById("make-new-comment-button");
+const basePostWrapper = document.getElementById("base-post-wrapper");
+const comments = document.getElementById("comments-wrapper");
+
+async function BuildHeader()
+{
+    await fetch("/header.html")
+        .then(response => {return response.text()})
+        .then(data => {document.getElementById("header-side-bar").innerHTML = data});
+
+    const usernameHeader = document.getElementById("username-p"); 
+    const homeBtn = document.getElementById("home-button");
+    const favBtn = document.getElementById("favorites-button");
+    const signOutBtn = document.getElementById("sign-out-button");
+
+    const yourUsername = await fetch(`${window.location.origin}/api/users/username`)
+        .then((response) => response.json());
+
+    usernameHeader.innerHTML = yourUsername.username;
+
+    homeBtn.onclick = () =>
+    {
+        window.location = `${window.location.origin}/home`
+    }
+
+    signOutBtn.onclick = () =>
+    {
+
+    }
+}
 
 async function BuildPage(inputPostId)
 {
-
+    BuildHeader();
+    
     const postData = await fetch(`${window.location.origin}/api/posts/${inputPostId}`)
         .then((response) => response.json()); 
 
@@ -144,7 +172,7 @@ async function RenderBasePost(post, likes)
     commentIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3.25 4a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h2.5a.75.75 0 01.75.75v3.19l3.72-3.72a.75.75 0 01.53-.22h10a.25.25 0 00.25-.25V4.25a.25.25 0 00-.25-.25H3.25zm-1.75.25c0-.966.784-1.75 1.75-1.75h17.5c.966 0 1.75.784 1.75 1.75v12.5a1.75 1.75 0 01-1.75 1.75h-9.69l-3.573 3.573A1.457 1.457 0 015 21.043V18.5H3.25a1.75 1.75 0 01-1.75-1.75V4.25z"/></svg>';
     commentIcon.onclick = () => 
     {
-        const newWindowWidht = 500, newWindowHeight = 800;
+        const newWindowWidht = 500, newWindowHeight = 150;
         window.open(`${document.URL}/make-comment`, 'targetWindow',
                                 `toolbar=no,
                                 location=no,

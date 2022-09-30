@@ -14,10 +14,8 @@
     margin-top: 10px;
 
     border-color: rgb(106, 106, 107);
-
-    margin-left: 30%;
-    margin-bottom: 0;
-    width: 40%;
+    
+    width: 100%;
 }
 
 .base-post-wrapper
@@ -27,12 +25,26 @@
 
 .base-post-author-username
 {
+    text-decoration: none;
+    color: black;
+}
 
+.base-post-author-username:hover
+{
+    text-decoration: underline;
+    color: black;
 }
 
 .base-post-post-date
 {
+    text-decoration: none;
+    color: black;
+}
 
+.base-post-post-date:hover
+{
+    text-decoration: underline;
+    color: black;
 }
 
 .base-post-message
@@ -108,12 +120,26 @@
 
 .comment-author-username
 {
-
+    text-decoration: none;
+    color: black;
 }
 
-.comment-post-date
+.comment-author-username:hover
 {
+    text-decoration: underline;
+    color: black;
+}
 
+.comment-date
+{
+    text-decoration: none;
+    color: black;
+}
+
+.comment-date:hover
+{
+    text-decoration: underline;
+    color: black;
 }
 
 .comment-message
