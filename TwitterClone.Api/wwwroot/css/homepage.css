@@ -55,3 +55,8 @@
     resize: none;
     overflow: hidden;
 }
+
+.like-count
+{
+    margin-bottom: 0px;
+}

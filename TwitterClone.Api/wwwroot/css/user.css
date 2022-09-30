@@ -51,6 +51,11 @@
     overflow: hidden;
 }
 
+.like-count
+{
+    margin-bottom: 0px;
+}
+
 .like-count:hover
 {
     cursor: pointer;
