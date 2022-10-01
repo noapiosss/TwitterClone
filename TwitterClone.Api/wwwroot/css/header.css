@@ -10,14 +10,14 @@ header
     font-size: 40px;
 }
 
-.home-button, .favorites-button, .sign-out-button
+.home-button, .favorites-button, .sign-out-button, .make-post-button
 {
     width: max-content;
     padding-inline: 10px;
     font-size: 30px;
 }
 
-.home-button:hover, .favorites-button:hover, .sign-out-button:hover
+.home-button:hover, .favorites-button:hover, .sign-out-button:hover, .make-post-button:hover
 {
     border-radius: 15px;
     background-color: rgb(209, 209, 209);
