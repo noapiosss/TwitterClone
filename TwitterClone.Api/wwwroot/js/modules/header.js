@@ -19,6 +19,11 @@ export async function BuildHeader()
         window.location = `${window.location.origin}/home`
     }
 
+    favBtn.onclick = () =>
+    {
+        window.location = `${window.location.origin}/favorites`
+    }
+
     signOutBtn.onclick = () =>
     {
 

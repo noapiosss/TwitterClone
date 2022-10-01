@@ -20,7 +20,8 @@
 
 .post-wrapper
 {
-    padding-left: 1%;    
+    padding-left: 1%;
+    background-color: rgb(239, 244, 255);
 }
 
 .post-author-username
@@ -96,6 +97,11 @@
     background-color: rgb(231, 231, 231);
 }
 
+.like-count
+{
+    margin: 0;
+}
+
 .like-count:hover
 {
     cursor: pointer;
@@ -128,8 +134,15 @@
 .separator
 {
     padding-left: 1%;
+    padding-top: 5px;
+    padding-bottom: 5px;
     display: flex;
     justify-content: center;
+    background-color: rgb(239, 244, 255);
+
+    border-top-style: dashed;
+    border-top-color: black;
+    border-top-width: 1px;
 
     border-bottom-style: dashed;
     border-bottom-color: black;
@@ -154,7 +167,7 @@
 
 .comment:hover
 {
-    background-color: rgba(168, 206, 255, 0.24);
+    background-color: rgb(239, 247, 255);
 }
 
 .comment-author-username

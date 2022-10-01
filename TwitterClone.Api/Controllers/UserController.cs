@@ -83,6 +83,25 @@ public class UserController : BaseController
 
             return Ok(response);
         }, cancellationToken);
+
+    [HttpGet("favorites")]
+    [Authorize]
+        public Task<IActionResult> GetFavoritesPostsPosts(CancellationToken cancellationToken) =>
+        SafeExecute(async () => 
+        {
+            var query = new FavoritesQuery
+            {
+                Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+            var response = new GetFavoritesPostsResponse
+            {                
+                FavoritesPosts = result.FavoritesPosts
+            };
+
+            return Ok(response);
+        }, cancellationToken);
     
     [HttpGet("username")]
     [Authorize]
