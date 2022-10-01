@@ -47,7 +47,7 @@ public class PostQueryHandler : IRequestHandler<PostQuery, PostQueryResult>
         }
 
         var comments = _dbContext.Posts
-            .Where(p => p.CommentTo == request.PostId).ToList();
+            .Where(p => p.CommentTo == request.PostId).OrderByDescending(p => p.PostId).ToList();
 
         return new PostQueryResult
         {

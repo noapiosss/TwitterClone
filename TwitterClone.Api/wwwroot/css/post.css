@@ -18,36 +18,37 @@
     width: 100%;
 }
 
-.base-post-wrapper
+.post-wrapper
 {
     padding-left: 1%;    
 }
 
-.base-post-author-username
+.post-author-username
 {
+    font-weight: bold;
     text-decoration: none;
     color: black;
 }
 
-.base-post-author-username:hover
+.post-author-username:hover
 {
     text-decoration: underline;
     color: black;
 }
 
-.base-post-post-date
+.post-date
 {
     text-decoration: none;
     color: black;
 }
 
-.base-post-post-date:hover
+.post-date:hover
 {
     text-decoration: underline;
     color: black;
 }
 
-.base-post-message
+.post-message
 {
     width: 98%;
     resize: none;
@@ -71,6 +72,24 @@
     width: 20px;
 }
 
+.comment-like-count
+{
+    margin-left: 5px;
+}
+
+.like-section-wrapper
+{
+    display: flex;
+    margin-left: 10%;
+    border-radius: 50%;
+    width: auto;
+}
+
+.like-section-wrapper:hover
+{
+    cursor: pointer;
+}
+
 
 .comment-icon-wrapper:hover
 {
@@ -82,15 +101,35 @@
     cursor: pointer;
 }
 
-.separator
+.comment-like-count-wrapper
+{
+    margin-left: 10px;
+    height: auto;
+}
+
+.comment-likes-section
+{
+    display: flex;
+    margin-left: 10%;
+    border-radius: 50%;
+    width: auto;
+}
+
+.comment-separator
 {
     padding-left: 1%;
     display: flex;
     justify-content: center;
 
-    border-top-style: dashed;
-    border-top-color: black;
-    border-top-width: 1px;
+    padding-bottom: 5px;
+    border-color: rgb(106, 106, 107);
+}
+
+.separator
+{
+    padding-left: 1%;
+    display: flex;
+    justify-content: center;
 
     border-bottom-style: dashed;
     border-bottom-color: black;
@@ -120,6 +159,7 @@
 
 .comment-author-username
 {
+    font-weight: bold;
     text-decoration: none;
     color: black;
 }

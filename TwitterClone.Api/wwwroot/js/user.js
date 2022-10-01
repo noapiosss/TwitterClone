@@ -1,6 +1,6 @@
-const userPostsWrapper = document.querySelector("#user-posts-wrapper");
+const userPostsWrapper = document.getElementById("user-posts-wrapper");
 import {BuildHeader} from "./modules/header.js";
-import {BuildPost} from "./modules/build-post.js";
+import {BuildComment} from "./modules/build-comment.js";
 
 window.document.body.onload = async () =>
 {
@@ -13,18 +13,19 @@ window.document.body.onload = async () =>
     BuildBody(data);
 }
 
-function BuildBody(data)
+async function BuildBody(data)
 {
     const username = document.createElement('h1');
     username.id = 'username';
     username.className = 'username';
     username.innerText = data.userPosts[0].authorUsername;
+    
     userPostsWrapper.appendChild(username);
     userPostsWrapper.appendChild(document.createElement('tr'));
-
-    data.userPosts.forEach(async post => 
+    
+    for (let i = 0; i <data.userPosts.length; i++)
     {
-        const userPost = await BuildPost(post);        
-        userPostsWrapper.appendChild(userPost);        
-    });
+        const comment = await BuildComment(data.userPosts[i]);
+        userPostsWrapper.appendChild(comment);
+    };
 }

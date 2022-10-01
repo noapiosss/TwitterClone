@@ -23,6 +23,18 @@ export async function BuildPost(post)
     const likes = await GetLikes(post);
     const likeCount = await BuildLikeCount(post, likes);
 
+    if (window.location.href.split('/')[3] === 'posts')
+    {
+        const postAuthorUsername = document.createElement('a')
+        postAuthorUsername.id = 'post-author-username';
+        postAuthorUsername.className = 'post-author-username';
+        postAuthorUsername.innerText = post.authorUsername;
+        postAuthorUsername.href = `${window.location.origin}/users/${post.authorUsername}`;
+
+        userPost.appendChild(postAuthorUsername);
+        userPost.appendChild(document.createElement('tr'));
+    }
+
     userPost.appendChild(postDate);
     userPost.appendChild(document.createElement('tr'));
     userPost.appendChild(postMessage);
