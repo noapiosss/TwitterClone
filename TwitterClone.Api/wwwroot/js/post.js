@@ -1,38 +1,14 @@
 const sendButton = document.getElementById("make-new-comment-button");
 const basePostWrapper = document.getElementById("base-post-wrapper");
 const comments = document.getElementById("comments-wrapper");
+import {BuildHeader} from "./modules/header.js";
+import {BuildComment} from "./modules/build-comment.js";
 
-async function BuildHeader()
-{
-    await fetch("/header.html")
-        .then(response => {return response.text()})
-        .then(data => {document.getElementById("header-side-bar").innerHTML = data});
-
-    const usernameHeader = document.getElementById("username-p"); 
-    const homeBtn = document.getElementById("home-button");
-    const favBtn = document.getElementById("favorites-button");
-    const signOutBtn = document.getElementById("sign-out-button");
-
-    const yourUsername = await fetch(`${window.location.origin}/api/users/username`)
-        .then((response) => response.json());
-
-    usernameHeader.innerHTML = yourUsername.username;
-
-    homeBtn.onclick = () =>
-    {
-        window.location = `${window.location.origin}/home`
-    }
-
-    signOutBtn.onclick = () =>
-    {
-
-    }
-}
-
-async function BuildPage(inputPostId)
+window.document.body.onload = async () =>
 {
     BuildHeader();
-    
+
+    const inputPostId = window.location.href.split('/').pop();
     const postData = await fetch(`${window.location.origin}/api/posts/${inputPostId}`)
         .then((response) => response.json()); 
 
@@ -44,8 +20,8 @@ async function BuildPage(inputPostId)
     const basePost = await RenderBasePost(post, likes);    
     basePostWrapper.appendChild(basePost);
     
-    allComments.forEach(oldComment => {
-        RenderComment(oldComment);
+    allComments.forEach(async oldComment => {
+        await comments.appendChild(BuildComment(oldComment));
     });
 }
 
@@ -230,39 +206,4 @@ async function RenderBasePost(post, likes)
     });
 
     return basePost;
-}
-
-function RenderComment(oldComment)
-{
-    const comment = document.createElement('div');
-        comment.id = 'comment';
-        comment.className = 'comment';
-
-        
-        const commentAuthorUsername = document.createElement('a');
-        commentAuthorUsername.id = 'comment-author-username';
-        commentAuthorUsername.className = 'comment-author-username';
-        commentAuthorUsername.innerText = oldComment.authorUsername;
-        commentAuthorUsername.href = `${window.location.origin}/users/${oldComment.authorUsername}`
-
-        const commentPostDate = document.createElement('a');
-        commentPostDate.id = 'comment-date';
-        commentPostDate.className = 'comment-date';
-        commentPostDate.innerText = (new Date(Date.parse(oldComment.postDate))).toUTCString();;
-        commentPostDate.href = `${window.location.origin}/posts/${oldComment.postId}`;
-
-        const commetTextArea = document.createElement('textarea');
-        commetTextArea.id = 'comment-message';
-        commetTextArea.className = 'comment-message';
-        commetTextArea.value = oldComment.message;
-        commetTextArea.readOnly = true;
-        commetTextArea.style.height = `${parseFloat(window.getComputedStyle(commetTextArea, null).getPropertyValue('font-size'))*commetTextArea.value.split('\n').length}px`;;
-       
-        comment.appendChild(commentAuthorUsername);
-        comment.appendChild(document.createElement('tr'));
-        comment.appendChild(commentPostDate);
-        comment.appendChild(document.createElement('tr'));
-        comment.appendChild(commetTextArea);
-        
-        comments.appendChild(comment);
 }

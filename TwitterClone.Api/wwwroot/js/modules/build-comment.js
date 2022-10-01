@@ -1,0 +1,34 @@
+export function BuildComment(oldComment)
+{
+    const comment = document.createElement('div');
+        comment.id = 'comment';
+        comment.className = 'comment';
+
+        
+        const commentAuthorUsername = document.createElement('a');
+        commentAuthorUsername.id = 'comment-author-username';
+        commentAuthorUsername.className = 'comment-author-username';
+        commentAuthorUsername.innerText = oldComment.authorUsername;
+        commentAuthorUsername.href = `${window.location.origin}/users/${oldComment.authorUsername}`
+
+        const commentPostDate = document.createElement('a');
+        commentPostDate.id = 'comment-date';
+        commentPostDate.className = 'comment-date';
+        commentPostDate.innerText = (new Date(Date.parse(oldComment.postDate))).toUTCString();;
+        commentPostDate.href = `${window.location.origin}/posts/${oldComment.postId}`;
+
+        const commetTextArea = document.createElement('textarea');
+        commetTextArea.id = 'comment-message';
+        commetTextArea.className = 'comment-message';
+        commetTextArea.value = oldComment.message;
+        commetTextArea.readOnly = true;
+        commetTextArea.style.height = `${parseFloat(window.getComputedStyle(commetTextArea, null).getPropertyValue('font-size'))*commetTextArea.value.split('\n').length}px`;;
+       
+        comment.appendChild(commentAuthorUsername);
+        comment.appendChild(document.createElement('tr'));
+        comment.appendChild(commentPostDate);
+        comment.appendChild(document.createElement('tr'));
+        comment.appendChild(commetTextArea);
+        
+        return comment;
+}

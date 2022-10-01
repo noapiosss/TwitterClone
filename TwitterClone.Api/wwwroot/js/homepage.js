@@ -1,35 +1,9 @@
 const userPostsWrapper = document.querySelector("#user-posts-wrapper");
+import {BuildHeader} from "./modules/header.js";
 
-async function BuildHeader()
+window.document.body.onload = async () => 
 {
-    await fetch("/header.html")
-        .then(response => {return response.text()})
-        .then(data => {document.getElementById("header-side-bar").innerHTML = data});
-
-    const usernameHeader = document.getElementById("username-p"); 
-    const homeBtn = document.getElementById("home-button");
-    const favBtn = document.getElementById("favorites-button");
-    const signOutBtn = document.getElementById("sign-out-button");
-
-    const yourUsername = await fetch(`${window.location.origin}/api/users/username`)
-        .then((response) => response.json());
-
-    usernameHeader.innerHTML = yourUsername.username;
-
-    homeBtn.onclick = () =>
-    {
-        window.location = `${window.location.origin}/home`
-    }
-
-    signOutBtn.onclick = () =>
-    {
-
-    }
-}
-
-async function BuildPage()
-{
-    BuildHeader()
+    BuildHeader();
 
     const allData = await fetch(`${window.location.origin}/api/users/homepage`)
         .then((response) => response.json());

@@ -1,40 +1,16 @@
 const userPostsWrapper = document.querySelector("#user-posts-wrapper");
+import {BuildHeader} from "./modules/header.js";
+import {BuildPost} from "./modules/build-post.js";
 
-async function BuildHeader()
-{
-    await fetch("/header.html")
-        .then(response => {return response.text()})
-        .then(data => {document.getElementById("header-side-bar").innerHTML = data});
-
-    const usernameHeader = document.getElementById("username-p"); 
-    const homeBtn = document.getElementById("home-button");
-    const favBtn = document.getElementById("favorites-button");
-    const signOutBtn = document.getElementById("sign-out-button");
-
-    const yourUsername = await fetch(`${window.location.origin}/api/users/username`)
-        .then((response) => response.json());       
-
-    usernameHeader.innerHTML = yourUsername.username;
-
-    homeBtn.onclick = () =>
-    {
-        window.location = `${window.location.origin}/home`
-    }
-
-    signOutBtn.onclick = () =>
-    {
-
-    }
-}
-
-async function BuildPage(usernameInput)
+window.document.body.onload = async () =>
 {
     BuildHeader();
 
+    const usernameInput = window.location.href.split('/').pop();
     const data = await fetch(`${window.location.origin}/api/users/${usernameInput}/posts`)
         .then((response) => response.json());   
     
-    BuildBody(data);    
+    BuildBody(data);
 }
 
 function BuildBody(data)
@@ -46,69 +22,9 @@ function BuildBody(data)
     userPostsWrapper.appendChild(username);
     userPostsWrapper.appendChild(document.createElement('tr'));
 
-    data.userPosts.forEach(async post => {
-
-        const userPost = document.createElement('div');
-        userPost.id = 'user-post';
-        userPost.className = 'user-post';
-        
-        const postDate = document.createElement('a');
-        postDate.id = 'post-date';
-        postDate.className = 'post-date';
-        postDate.innerText = (new Date(Date.parse(post.postDate))).toUTCString();;
-        postDate.href = `${window.location.origin}/posts/${post.postId}`;
-
-        const postMessage = document.createElement('textarea');
-        postMessage.id = 'post-message';
-        postMessage.className = 'post-message';
-        postMessage.value = post.message;
-        postMessage.readOnly = true;
-        postMessage.style.height = `${parseFloat(window.getComputedStyle(postMessage, null).getPropertyValue('font-size'))*postMessage.value.split('\n').length}px`;
-        
-
-        const likes = await fetch(`${window.location.origin}/api/likes/${post.postId}`)
-            .then((response) => response.json());
-
-        const likeCount = document.createElement('p')
-        likeCount.id = 'like-count';
-        likeCount.className = 'like-count';
-        likeCount.innerHTML = `<b>${likes.usersThatLikePost.length}</b> likes`;
-        likeCount.style.textDecoration = 'none';
-        likeCount.style.color = 'black';
-
-        userPost.appendChild(postDate);
-        userPost.appendChild(document.createElement('tr'));
-        userPost.appendChild(postMessage);
-        userPost.appendChild(document.createElement('tr'));
-        userPost.appendChild(likeCount);
-        
-        userPostsWrapper.appendChild(userPost);
-
-        likeCount.addEventListener('mouseout', () =>
-        {
-            likeCount.style.textDecoration = 'none';
-        })
-
-        likeCount.addEventListener('mouseover', () =>
-        {
-            likeCount.style.textDecoration = 'underline';
-        });
-
-        likeCount.addEventListener('click', () =>
-        {
-            const newWindowWidht = 500, newWindowHeight = 800;
-            window.open(`${window.location.origin}/posts/${post.postId}/likes`, 'targetWindow',
-                                    `toolbar=no,
-                                    location=no,
-                                    status=no,
-                                    menubar=no,
-                                    scrollbars=yes,
-                                    resizable=no,
-                                    width=${newWindowWidht}px,
-                                    height=${newWindowHeight}px,
-                                    left=${window.screen.width/2 - newWindowWidht/2},
-                                    top=${window.screen.height/2 - newWindowHeight/2}`);
-            
-        });
+    data.userPosts.forEach(async post => 
+    {
+        const userPost = await BuildPost(post);        
+        userPostsWrapper.appendChild(userPost);        
     });
 }
