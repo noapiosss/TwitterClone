@@ -1,43 +1,25 @@
-const postWrapper = document.getElementById("post-wrapper");
-const separator = document.getElementById("separator");
-const comments = document.getElementById("comments-wrapper");
 import {BuildHeader} from "./modules/header.js";
-import {BuildPost} from "./modules/build-post.js";
-import {BuildComment} from "./modules/build-comment.js";
-import {BuildLikeIconForMainPost, BuildLikeIconForComment, BuildCommentIcon} from "./modules/build-icons.js";
+import {BuildMainPost, BuildPost} from "./modules/build-post.js";
+
+const pageWrapper = document.getElementById("page-wrapper");
 
 window.document.body.onload = async () =>
 {
     BuildHeader();
 
-    const inputPostId = window.location.href.split('/').pop();
-    const postData = await fetch(`${window.location.origin}/api/posts/${inputPostId}`)
+    const mainPostId = window.location.href.split('/').pop();
+    const postData = await fetch(`${window.location.origin}/api/posts/${mainPostId}`)
         .then((response) => response.json()); 
 
     const post = postData.post;
-    const allComments = postData.comments;
-    const likes = postData.likedByUsername;
+    const comments = postData.comments;
     
-    const basePost = await BuildBasePost(post, likes);    
-    postWrapper.appendChild(basePost);
+    const mainPostWrapper = await BuildMainPost(post);
+    pageWrapper.append(mainPostWrapper);
     
-    for (let i = 0; i <allComments.length; i++)
+    for (let i = 0; i <comments.length; i++)
     {
-        const comment = await BuildComment(allComments[i]);
-        comments.appendChild(comment);
+        const postWrapper = await BuildPost(comments[i]);
+        pageWrapper.appendChild(postWrapper);
     };
-}
-
-async function BuildBasePost(post, likes)
-{
-    const basePost = await BuildPost(post);    
-    const commentIconWrapper = await BuildCommentIcon(post.postId);
-    const likeIconWrapper = await BuildLikeIconForMainPost(post, likes);
-
-    separator.appendChild(commentIconWrapper)
-    separator.appendChild(likeIconWrapper);
-
-    postWrapper.appendChild(basePost);   
-
-    return basePost;
 }

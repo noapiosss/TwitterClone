@@ -104,11 +104,10 @@ public class UserController : BaseController
         }, cancellationToken);
     
     [HttpGet("username")]
-    [Authorize]
         public Task<IActionResult> GetSessionUsername(CancellationToken cancellationToken) =>
         SafeExecute( async () => 
         {
-            var username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            var username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;            
             var response = new {username};
 
             return Ok(response);

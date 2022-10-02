@@ -99,10 +99,11 @@ namespace TwitterClone.Api.Controllers
         
         }
 
-        [HttpPost("sign-out")]
-        public Task<IActionResult> SignOut(CancellationToken cancellationToken)
+        [HttpGet("sign-out")]
+        public async Task<IActionResult> SignOut(CancellationToken cancellationToken)
         {
-            return Task.FromResult<IActionResult>(Ok());
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Redirect("/sign-in");
         }
 
         [HttpGet("sign-up")]

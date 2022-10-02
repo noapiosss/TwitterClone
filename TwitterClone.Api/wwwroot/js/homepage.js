@@ -1,19 +1,18 @@
-const userPostsWrapper = document.getElementById("comments-wrapper");
+const postsWrapper = document.getElementById("posts-wrapper");
 import {BuildHeader} from "./modules/header.js";
-import {BuildComment} from "./modules/build-comment.js";
+import {BuildPost} from "./modules/build-post.js";
 
 window.document.body.onload = async () => 
 {
     BuildHeader();
 
-    const allData = await fetch(`${window.location.origin}/api/users/homepage`)
-        .then((response) => response.json());
+    const postsFromFollowings = await fetch(`${window.location.origin}/api/users/homepage`)
+        .then((response) => response.json())
+        .then((result) => result.postsFromFollowings);
     
-    const data = allData.postsFromFollowings;
-    
-    for (let i = 0; i <data.length; i++)
+    for (let i = 0; i <postsFromFollowings.length; i++)
     {
-        const comment = await BuildComment(data[i]);
-        userPostsWrapper.appendChild(comment);
+        const post = await BuildPost(postsFromFollowings[i]);
+        postsWrapper.appendChild(post);
     };
 }

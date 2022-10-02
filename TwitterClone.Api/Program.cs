@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using TwitterClone.Api.Configuration;
 using TwitterClone.Domain.Commands;
 using TwitterClone.Domain.Database;
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie();
+    .AddCookie(options =>
+    {
+        options.LoginPath = new PathString("/sign-in.html");
+        options.LogoutPath = new PathString("/sign-out");
+        
+    });
 
 //builder.Services.AddDistributedMemoryCache();
 //builder.Services.AddSession(options =>
