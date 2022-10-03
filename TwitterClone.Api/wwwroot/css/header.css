@@ -15,14 +15,14 @@ header
     cursor: pointer;
 }
 
-.home-button, .favorites-button, .sign-out-button, .make-post-button
+.make-post-button, .home-button, .favorites-button, .sign-out-button
 {
     width: max-content;
     padding-inline: 10px;
     font-size: 30px;
 }
 
-.home-button:hover, .favorites-button:hover, .sign-out-button:hover, .make-post-button:hover
+.make-post-button:hover, .home-button:hover, .favorites-button:hover, .sign-out-button:hover
 {
     border-radius: 15px;
     background-color: rgb(209, 209, 209);
