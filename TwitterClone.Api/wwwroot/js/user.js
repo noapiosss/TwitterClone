@@ -1,31 +1,33 @@
-const userPostsWrapper = document.getElementById("user-posts-wrapper");
 import {BuildHeader} from "./modules/header.js";
 import {BuildPost} from "./modules/build-post.js";
+
+const postsWrapper = document.getElementById("posts-wrapper");
 
 window.document.body.onload = async () =>
 {
     BuildHeader();
 
     const usernameInput = window.location.href.split('/').pop();
-    const data = await fetch(`${window.location.origin}/api/users/${usernameInput}/posts`)
-        .then((response) => response.json());   
+    const userPosts = await fetch(`${window.location.origin}/api/users/${usernameInput}/posts`)
+        .then((response) => response.json())
+        .then((result) => result.userPosts);   
     
-    BuildBody(data);
+    BuildBody(userPosts);
 }
 
-async function BuildBody(data)
+async function BuildBody(userPosts)
 {
     const username = document.createElement('h1');
     username.id = 'username';
     username.className = 'username';
-    username.innerText = data.userPosts[0].authorUsername;
+    username.innerText = userPosts[0].authorUsername;
 
-    userPostsWrapper.appendChild(username);
-    userPostsWrapper.appendChild(document.createElement('tr'));
+    postsWrapper.appendChild(username);
+    postsWrapper.appendChild(document.createElement('tr'));
     
-    for (let i = 0; i <data.userPosts.length; i++)
+    for (let i = 0; i <userPosts.length; i++)
     {
-        const comment = await BuildPost(data.userPosts[i]);
-        userPostsWrapper.appendChild(comment);
+        const post = await BuildPost(userPosts[i]);
+        postsWrapper.appendChild(post);
     };
 }

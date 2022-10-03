@@ -16,10 +16,17 @@ window.document.body.onload = async () =>
     
     const mainPostWrapper = await BuildMainPost(post);
     pageWrapper.append(mainPostWrapper);
+
+    const postsWrapper = document.createElement('div');
+    postsWrapper.id = 'posts-wrapper';
+    postsWrapper.className = 'posts-wrapper';
     
+    console.log(comments)
     for (let i = 0; i <comments.length; i++)
     {
         const postWrapper = await BuildPost(comments[i]);
-        pageWrapper.appendChild(postWrapper);
+        postsWrapper.appendChild(postWrapper);
     };
+
+    pageWrapper.appendChild(postsWrapper);
 }

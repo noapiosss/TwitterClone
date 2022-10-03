@@ -10,7 +10,7 @@ window.document.body.onload = async () =>
         .then((response) => response.json())
         .then((result) => result.postsFromFollowings);
     
-    for (let i = 0; i <postsFromFollowings.length; i++)
+    for (let i = 0; i < postsFromFollowings.length; i++)
     {
         const post = await BuildPost(postsFromFollowings[i]);
         postsWrapper.appendChild(post);

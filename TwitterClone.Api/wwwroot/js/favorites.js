@@ -10,9 +10,9 @@ window.document.body.onload = async () =>
         .then((response) => response.json())
         .then((result) => result.favoritesPosts);
     
-    for (let i = 0; i <favoritesPosts.length; i++)
+    for (let i = 0; i < favoritesPosts.length; i++)
     {
-        const favoritesPost = await BuildPost(favoritesPosts[i]);
-        postsWrapper.appendChild(favoritesPost);
+        const post = await BuildPost(favoritesPosts[i]);
+        postsWrapper.appendChild(post);
     };
 }
