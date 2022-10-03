@@ -1,5 +1,6 @@
 .username-header
 {
+    padding-left: 10px;
     display: flex;
     justify-self: left;
 }
@@ -17,6 +18,7 @@
 
 .followings-followers-wrapper
 {
+    padding-left: 10px;
     display: flex;
     justify-self: left;
 }
