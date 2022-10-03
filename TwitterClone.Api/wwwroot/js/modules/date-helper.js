@@ -11,5 +11,11 @@ export function GetPostDate(postDate)
     if (dateDifference < 1000*60*60*24*2) return `yesterday`;
     if (dateDifference < 1000*60*60*24*364) return `${monthNames[postDate.getMonth()]} ${postDate.getDate()}`;
     
-    return `${monthNames[postDate.getMonth()]} ${postDate.getDate()}, ${postDate.getYear()}`
+    return `${monthNames[postDate.getMonth()]} ${postDate.getDate()}, ${postDate.getFullYear()}`;
+}
+
+export function GetMainPostDate(postDate)
+{
+    
+    return `${postDate.getHours()}:${postDate.getMinutes()} ${monthNames[postDate.getMonth()]} ${postDate.getDate()}, ${postDate.getFullYear()}`;
 }

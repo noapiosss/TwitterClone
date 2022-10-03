@@ -19,6 +19,7 @@
 
 .post-author-username
 {
+    font-size: large;
     font-weight: bold;
     color: black;
     text-decoration: none;
@@ -45,15 +46,19 @@
 
 .post-message
 {
-    border: 0;
+    font-size: x-large;
     resize: none;
-    padding-left: 1%;
+    margin:s 0;
     width: 98%;
 }
 
 .post-icons-wrapper
 {
-    padding: 5px;
+    margin-left: 5%;
+    margin-right: 5%;
+    
+    height: 30px;
+
     display: flex;
     justify-content: center;
 

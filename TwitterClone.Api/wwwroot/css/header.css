@@ -10,6 +10,11 @@ header
     font-size: 40px;
 }
 
+.username-label:hover
+{
+    cursor: pointer;
+}
+
 .home-button, .favorites-button, .sign-out-button, .make-post-button
 {
     width: max-content;

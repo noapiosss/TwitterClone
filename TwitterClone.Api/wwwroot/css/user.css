@@ -1,0 +1,45 @@
+.username-header
+{
+    display: flex;
+    justify-self: left;
+}
+
+.username
+{
+
+}
+
+.posts-count
+{
+    font-size: small;
+    color: gray;
+}
+
+.followings-followers-wrapper
+{
+    display: flex;
+    justify-self: left;
+}
+
+.followings-wrapper
+{
+    font-size: small;
+}
+
+.followings-wrapper:hover
+{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.followers-wrapper
+{
+    font-size: small;
+    padding-left: 20px;
+}
+
+.followers-wrapper:hover
+{
+    text-decoration: underline;
+    cursor: pointer;
+}

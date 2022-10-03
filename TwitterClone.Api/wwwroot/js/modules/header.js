@@ -11,8 +11,12 @@ export async function BuildHeader()
     const homeBtn = document.getElementById("home-button");
     const favBtn = document.getElementById("favorites-button");
     const signOutBtn = document.getElementById("sign-out-button");
-    
+
     usernameHeader.innerHTML = yourUsername;
+    usernameHeader.onclick = () =>
+    {
+        window.location.replace(`${window.location.origin}/users/${yourUsername}`);
+    }
 
     makePostBtn.onclick = () =>
     {

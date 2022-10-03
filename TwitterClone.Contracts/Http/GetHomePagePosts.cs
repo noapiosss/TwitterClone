@@ -13,5 +13,5 @@ public class GetHomePagePostsRequest
 
 public class GetHomePagePostsResponse
 {
-    public ICollection<Post> PostsFromFollowings { get; init; }
+    public ICollection<Post> HomepagePosts { get; init; }
 }

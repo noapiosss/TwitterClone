@@ -78,7 +78,7 @@ public class UserController : BaseController
             var result = await _mediator.Send(query, cancellationToken);
             var response = new GetHomePagePostsResponse
             {                
-                PostsFromFollowings = result.PostsFromFollowings
+                HomepagePosts = result.HomepagePosts
             };
 
             return Ok(response);

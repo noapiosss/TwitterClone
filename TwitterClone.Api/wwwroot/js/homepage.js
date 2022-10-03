@@ -8,7 +8,7 @@ window.document.body.onload = async () =>
 
     const postsFromFollowings = await fetch(`${window.location.origin}/api/users/homepage`)
         .then((response) => response.json())
-        .then((result) => result.postsFromFollowings);
+        .then((result) => result.homepagePosts);
     
     for (let i = 0; i < postsFromFollowings.length; i++)
     {

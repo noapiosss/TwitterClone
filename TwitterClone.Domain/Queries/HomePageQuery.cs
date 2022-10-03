@@ -19,7 +19,7 @@ public class HomePageQuery : IRequest<HomePageQueryResult>
 
 public class HomePageQueryResult
 {
-    public ICollection<Post> PostsFromFollowings { get; set; }
+    public ICollection<Post> HomepagePosts { get; set; }
 }
 
 public class HomePageQueryHandler : IRequestHandler<HomePageQuery, HomePageQueryResult>
@@ -36,15 +36,20 @@ public class HomePageQueryHandler : IRequestHandler<HomePageQuery, HomePageQuery
         var usersFromFollowings = _dbContext.Followings
             .Where(f => f.FollowByUsername == request.Username)
             .Include(f => f.FollowForUser.Posts)
-            .ToList();     
+            .ToList();
 
-        var postsFromFollowings = new List<Post>();
+        var userOwnPosts = _dbContext.Posts
+            .Where(p => p.AuthorUsername == request.Username)
+            .ToList();
+        
+        var homepagePosts = new List<Post>();
+        homepagePosts.AddRange(userOwnPosts);
 
         foreach (var userFromFollowing in usersFromFollowings)
         {
             foreach (var post in userFromFollowing.FollowForUser.Posts)
             {
-                postsFromFollowings.Add(new Post
+                homepagePosts.Add(new Post
                 {
                     PostId = post.PostId,
                     AuthorUsername = post.AuthorUsername,
@@ -53,10 +58,10 @@ public class HomePageQueryHandler : IRequestHandler<HomePageQuery, HomePageQuery
                 });
             }
         }
-
+        
         return new HomePageQueryResult
         {
-            PostsFromFollowings = postsFromFollowings
+            HomepagePosts = homepagePosts.OrderByDescending(p => p.PostId).ToList()
         };
     }
 }

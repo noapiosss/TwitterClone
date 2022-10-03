@@ -1,10 +1,11 @@
-const likesWrapper = document.getElementById("likes-wrapper");
 
-async function BuildPage(inputPostId)
+const userFollowingsWrapper = document.getElementById("followings-wrapper");
+
+async function BuildPage(inputUsername)
 {
-    const likes = await fetch(`${window.location.origin}/api/likes/${inputPostId}`)
+    const userFollowings = await fetch(`${window.location.origin}/api/${inputUsername}/followings`)
         .then((response) => response.json())
-        .then((result) => result.usersThatLikePost);
+        .then((result) => result.followings);
     
     const yourFollowings = await fetch(`${window.location.origin}/api/followings`)
         .then((response) => response.json())
@@ -14,7 +15,7 @@ async function BuildPage(inputPostId)
         .then((response) => response.json())
         .then((result) => result.username);
 
-    likes.forEach(username => 
+    userFollowings.forEach(username => 
     {
         const userWrapper = document.createElement('div');
             userWrapper.id = 'user-wrapper';
@@ -105,12 +106,11 @@ async function BuildPage(inputPostId)
                 })
             })
         }
-        
+
         userLinkWrapper.appendChild(user);
         buttonWrapper.appendChild(followButton);
         userWrapper.appendChild(userLinkWrapper);
         userWrapper.appendChild(buttonWrapper);
-        likesWrapper.appendChild(userWrapper);
+        userFollowingsWrapper.appendChild(userWrapper);
     });
-
 }

@@ -1,5 +1,5 @@
 import {BuildMainPostInteractiveSection, BuildPostInteractiveSection} from "./build-icons.js"
-import {GetPostDate} from "./date-helper.js";
+import {GetPostDate, GetMainPostDate} from "./date-helper.js";
 
 export async function BuildMainPost(post)
 {
@@ -44,7 +44,7 @@ function BuildMainPostDate(post)
     const postDate = document.createElement('a');
     postDate.id = 'main-post-date';
     postDate.className = 'main-post-date';
-    postDate.innerText = (new Date(Date.parse(post.postDate))).toUTCString();;
+    postDate.innerText = GetMainPostDate(new Date(Date.parse(post.postDate)));
     postDate.href = `${window.location.origin}/posts/${post.postId}`;
 
     return postDate;
@@ -52,12 +52,10 @@ function BuildMainPostDate(post)
 
 function BuildMainPostMessage(post)
 {
-    const postMessage = document.createElement('textarea');
+    const postMessage = document.createElement('p');
     postMessage.id = 'main-post-message';
     postMessage.className = 'main-post-message';
-    postMessage.value = post.message;
-    postMessage.readOnly = true;
-    postMessage.style.height = `${parseFloat(window.getComputedStyle(postMessage, null).getPropertyValue('font-size'))*postMessage.value.split('\n').length}px`;
+    postMessage.innerText = post.message;
 
     return postMessage;
 }
@@ -113,12 +111,10 @@ function BuildPostDate(post)
 
 function BuildPostMessage(post)
 {
-    const postMessage = document.createElement('textarea');
+    const postMessage = document.createElement('p');
     postMessage.id = 'post-message';
     postMessage.className = 'post-message';
-    postMessage.value = post.message;
-    postMessage.readOnly = true;
-    postMessage.style.height = `${parseFloat(window.getComputedStyle(postMessage, null).getPropertyValue('font-size'))*postMessage.value.split('\n').length}px`;
+    postMessage.innerText = post.message;
 
     return postMessage;
 }
