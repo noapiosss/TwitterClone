@@ -11,9 +11,12 @@ internal static class DbContextHelper
     public static TwitterCloneDbContext CreateTestDb()
     {
         var tempFile = Path.GetTempFileName();
-
+        return CreateTestDb($"Data Source={tempFile}");
+    }
+    public static TwitterCloneDbContext CreateTestDb(string connectionString)
+    {
         var options = new DbContextOptionsBuilder<TwitterCloneDbContext>()
-            .UseSqlite($"Data Source={tempFile}")
+            .UseSqlite(connectionString)
             .Options;
 
         var dbContext = new TwitterCloneDbContext(options);

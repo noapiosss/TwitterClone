@@ -20,10 +20,10 @@ public class CreatePostCommand : IRequest<CreatePostCommandResult>
 
 public class CreatePostCommandResult
 {
-    public Post Post { get; init; }
+    public bool PostIsCreated { get; init; }
 }
 
-public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, CreatePostCommandResult>
+internal class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, CreatePostCommandResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 
@@ -33,6 +33,22 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Creat
     }
     public async Task<CreatePostCommandResult> Handle(CreatePostCommand request, CancellationToken cancellationToken = default)
     {
+        var userIsExists = _dbContext.Users.Any(u => u.Username == request.AuthorUsername) ? true : false;
+        var originPostIsExists = true;
+        if (request.CommentTo != null)
+        {
+            originPostIsExists = _dbContext.Posts.Any(p => p.PostId == request.CommentTo) ? true : false;
+        }
+        var messageIsEmpty = String.IsNullOrWhiteSpace(request.Message);
+
+        if (!userIsExists || !originPostIsExists || messageIsEmpty)
+        {
+            return new CreatePostCommandResult
+            {
+                PostIsCreated = false
+            };
+        }
+
         var post = new Post
         {
             AuthorUsername = request.AuthorUsername,
@@ -47,7 +63,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Creat
 
         return new CreatePostCommandResult
         {
-            Post = post
+            PostIsCreated = true
         };
     }
 }

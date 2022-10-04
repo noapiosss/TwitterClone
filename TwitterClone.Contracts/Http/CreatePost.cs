@@ -20,5 +20,5 @@ public class CreatePostRequest
 
 public class CreatePostResponse
 {
-    public Post Post { get; init; }
+    public bool PostIsCreated { get; init; }
 }

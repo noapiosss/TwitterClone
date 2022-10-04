@@ -38,7 +38,7 @@ public class PostController : BaseController
             var result = await _mediator.Send(command, cancellationToken);
             var response = new CreatePostResponse
             {
-                Post = result.Post
+                PostIsCreated = result.PostIsCreated
             };
 
             return Created("http://todo.com", response);

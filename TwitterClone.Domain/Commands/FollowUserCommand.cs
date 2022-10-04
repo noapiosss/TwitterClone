@@ -22,7 +22,7 @@ public class FollowUserCommandResult
     public bool FollowStatusIsChanged { get; init; }
 }
 
-public class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, FollowUserCommandResult>
+internal class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, FollowUserCommandResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 

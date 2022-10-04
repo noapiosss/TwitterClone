@@ -1,17 +1,13 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 
 using MediatR;
 using Shouldly;
 
-using Microsoft.EntityFrameworkCore;
-
 using TwitterClone.Domain.Commands;
-using TwitterClone.Domain.Database;
-using System.IO;
 using TwitterClone.UnitTests.Helpers;
+using TwitterClone.Domain.Database;
 
 namespace TwitterClone.UnitTests.Commands;
 

@@ -6,7 +6,6 @@ using MediatR;
 
 using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using TwitterClone.Domain.Helpers;
 
@@ -27,7 +26,7 @@ public class CreateUserCommandResult
 
 }
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResult>
+internal class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 
@@ -56,10 +55,6 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Creat
             Email = request.Email,
             Password = PasswordHelper.TestHash(request.Password)
         };
-
-
-        System.Console.WriteLine(request.Password);
-        System.Console.WriteLine(user.Password);
 
         await _dbContext.AddAsync(user, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);

@@ -1,5 +1,10 @@
-.username-header
+.username-info
 {
+    background-color: rgb(245, 245, 255);
+}
+
+.username-header
+{    
     padding-left: 10px;
     display: flex;
     justify-self: left;

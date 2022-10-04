@@ -25,23 +25,32 @@ public class UserQueryHandlerTest : IDisposable
     }
 
     [Fact]
-    public async Task HandleShouldReturnUser()
+    public async Task HandleShouldReturnUserPosts()
     {
         // Arrange
+        var username = Guid.NewGuid().ToString();
         var user = new User
         {
-            Username = Guid.NewGuid().ToString(),
+            Username = username,
             Email = Guid.NewGuid().ToString(),
             Password = Guid.NewGuid().ToString()
         };
-        user.AuthoredPosts.Add(new Post
-        {
-            PostDate = new DateTime(2005, 01, 02),
-            Message = Guid.NewGuid().ToString()
-        });
 
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
+        var postsCount = 10;
+
+        for (int i = 0; i < postsCount; ++i)
+        {
+            var userPost = new Post
+            {
+                AuthorUsername  = username,
+                PostDate = new DateTime(2005, 5, 5, 5, 5, 5),
+                Message = Guid.NewGuid().ToString()
+            };
+            await _dbContext.AddAsync(userPost);
+            await _dbContext.SaveChangesAsync();
+        }
 
         var query = new UserQuery
         {
@@ -53,10 +62,7 @@ public class UserQueryHandlerTest : IDisposable
 
         // Assert
         result.ShouldNotBeNull();
-        result.User.ShouldNotBeNull();
-        result.User.Username.ShouldBe(user.Username);
-        result.User.Email.ShouldBe(user.Email);
-        result.User.Password.ShouldBe(user.Password.GetHashCode().ToString());
+        result.UserPosts.Count.ShouldBeEquivalentTo(postsCount);
 
     }
 

@@ -1,7 +1,3 @@
-using System;
-
-using MediatR;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 using TwitterClone.Api.Configuration;
-using TwitterClone.Domain.Commands;
-using TwitterClone.Domain.Database;
 using Microsoft.AspNetCore.Http;
+using TwitterClone.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,16 +29,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         
     });
 
-//builder.Services.AddDistributedMemoryCache();
-//builder.Services.AddSession(options =>
-//{
-//    options.IdleTimeout = TimeSpan.FromMinutes(10);
-//});
-
 builder.Services.Configure<AppConfiguration>(builder.Configuration);
 
-builder.Services.AddMediatR(typeof(CreateUserCommand));
-builder.Services.AddDbContext<TwitterCloneDbContext>((sp, options) => 
+builder.Services.AddDomainServices((sp, options) => 
 {
     var configuration = sp.GetRequiredService<IOptionsMonitor<AppConfiguration>>();
     options.UseNpgsql(configuration.CurrentValue.ConnectionString);
@@ -51,14 +39,12 @@ builder.Services.AddDbContext<TwitterCloneDbContext>((sp, options) =>
 
 var app = builder.Build();
 
-//app.UseSession();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseStaticFiles();
 

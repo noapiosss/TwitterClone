@@ -22,7 +22,7 @@ public class DeletePostCommandResult
     public bool IsDeleteSuccessful { get; init; }
 }
 
-public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, DeletePostCommandResult>
+internal class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, DeletePostCommandResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 
