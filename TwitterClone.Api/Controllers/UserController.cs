@@ -51,7 +51,7 @@ public class UserController : BaseController
     public Task<IActionResult> GetUserPosts([FromRoute] string username, CancellationToken cancellationToken) =>
         SafeExecute(async () => 
         {
-            var query = new UserQuery
+            var query = new UserPostsQuery
             {
                 Username = username
             };

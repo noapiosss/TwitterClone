@@ -10,33 +10,33 @@ using TwitterClone.Domain.Database;
 
 namespace TwitterClone.Domain.Queries;
 
-public class UserQuery : IRequest<UserQueryResult>
+public class UserPostsQuery : IRequest<UserPostsQueryResult>
 {
     public string Username { get; init; }
 }
 
-public class UserQueryResult
+public class UserPostsQueryResult
 {
     public ICollection<Post> UserPosts { get; set; }
 }
 
-internal class UserQueryHandler : IRequestHandler<UserQuery, UserQueryResult>
+internal class UserPostsQueryHandler : IRequestHandler<UserPostsQuery, UserPostsQueryResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 
 
-    public UserQueryHandler(TwitterCloneDbContext dbContext)
+    public UserPostsQueryHandler(TwitterCloneDbContext dbContext)
     {
         _dbContext = dbContext;
     }
-    public async Task<UserQueryResult> Handle(UserQuery request, CancellationToken cancellationToken)
+    public async Task<UserPostsQueryResult> Handle(UserPostsQuery request, CancellationToken cancellationToken)
     {
         var userPosts = _dbContext.Posts
             .Where(p => p.AuthorUsername == request.Username)
             .OrderByDescending(p => p.PostDate)
             .ToList();
 
-        return new UserQueryResult
+        return new UserPostsQueryResult
         {
             UserPosts = userPosts
         };
