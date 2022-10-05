@@ -70,6 +70,7 @@ public class PostController : BaseController
         {
             var command = new DeletePostCommand
             {
+                Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
                 PostId = request.PostId
             };
 
@@ -78,7 +79,7 @@ public class PostController : BaseController
             var result = await _mediator.Send(command, cancellationToken);
             var response = new DeletePostResponse
             {
-                IsDeleteSuccessful = result.IsDeleteSuccessful
+                DeleteIsSuccessful = result.DeleteIsSuccessful
             };
 
             return Ok(response);

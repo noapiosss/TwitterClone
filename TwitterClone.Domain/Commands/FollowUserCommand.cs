@@ -38,6 +38,14 @@ internal class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, Fol
             FollowForUsername = request.FollowForUsername
         };
 
+        if (!_dbContext.Users.Any(u => u.Username == request.FollowByUsername) || !_dbContext.Users.Any(u => u.Username == request.FollowForUsername))
+        {
+            return new FollowUserCommandResult
+            {
+                FollowStatusIsChanged = false
+            };
+        }
+
         if (_dbContext.Followings.Where(f => f.FollowByUsername == request.FollowByUsername && f.FollowForUsername == request.FollowForUsername).Count() == 0)
         {
             await _dbContext.AddAsync(following, cancellationToken);

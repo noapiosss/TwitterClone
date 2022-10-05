@@ -38,6 +38,15 @@ public class LikePostCommandHandler : IRequestHandler<LikePostCommand, LikePostC
             LikedByUsername = request.LikedByUsername
         };
 
+        if (!_dbContext.Posts.Any(p => p.PostId == request.LikedPostId) || !_dbContext.Users.Any(u => u.Username == request.LikedByUsername))
+        {
+            return new LikePostCommandResult
+            {
+                LikeStatusIsChanged = false
+            };
+
+        }
+
         if (_dbContext.Likes.Where(l => l.LikedPostId == request.LikedPostId && l.LikedByUsername == request.LikedByUsername).Count() == 0)
         {
             await _dbContext.AddAsync(like, cancellationToken);

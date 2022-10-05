@@ -14,12 +14,13 @@ namespace TwitterClone.Domain.Commands;
 
 public class DeletePostCommand : IRequest<DeletePostCommandResult>
 {
+    public string Username { get; set; }
     public int PostId { get; set; }
 }
 
 public class DeletePostCommandResult
 {
-    public bool IsDeleteSuccessful { get; init; }
+    public bool DeleteIsSuccessful { get; init; }
 }
 
 internal class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, DeletePostCommandResult>
@@ -34,11 +35,11 @@ internal class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, Del
     {
         var post = await _dbContext.Posts.FirstOrDefaultAsync(p => p.PostId == request.PostId);
 
-        if (post == null)
+        if (post == null || post.AuthorUsername != request.Username)
         {
             return new DeletePostCommandResult
             {
-                IsDeleteSuccessful = false
+                DeleteIsSuccessful = false
             };
         }
 
@@ -48,7 +49,7 @@ internal class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, Del
 
         return new DeletePostCommandResult
         {
-            IsDeleteSuccessful = true
+            DeleteIsSuccessful = true
         };
     }
 }
