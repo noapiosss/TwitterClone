@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using Microsoft.EntityFrameworkCore;
-
-using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
 
 namespace TwitterClone.Domain.Queries;
@@ -22,7 +19,7 @@ public class LikeQueryResult
     public ICollection<string> UsersThatLikePost { get; set; }
 }
 
-public class LikeQueryHandler : IRequestHandler<LikeQuery, LikeQueryResult>
+internal class LikeQueryHandler : IRequestHandler<LikeQuery, LikeQueryResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 

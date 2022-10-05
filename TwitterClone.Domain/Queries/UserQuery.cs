@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using Microsoft.EntityFrameworkCore;
-
 using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
 
@@ -22,7 +20,7 @@ public class UserQueryResult
     public ICollection<Post> UserPosts { get; set; }
 }
 
-public class UserQueryHandler : IRequestHandler<UserQuery, UserQueryResult>
+internal class UserQueryHandler : IRequestHandler<UserQuery, UserQueryResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 

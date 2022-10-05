@@ -22,7 +22,7 @@ public class FavoritesQueryResult
     public ICollection<Post> FavoritesPosts { get; set; }
 }
 
-public class FavoritesQueryHandler : IRequestHandler<FavoritesQuery, FavoritesQueryResult>
+internal class FavoritesQueryHandler : IRequestHandler<FavoritesQuery, FavoritesQueryResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 

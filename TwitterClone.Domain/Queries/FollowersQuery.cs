@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using Microsoft.EntityFrameworkCore;
-
-using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
 
 namespace TwitterClone.Domain.Queries;
@@ -22,7 +19,7 @@ public class FollowersQueryResult
     public ICollection<string> Followers { get; set; }
 }
 
-public class FollowingQueryHandler : IRequestHandler<FollowersQuery, FollowersQueryResult>
+internal class FollowingQueryHandler : IRequestHandler<FollowersQuery, FollowersQueryResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 

@@ -22,7 +22,7 @@ public class HomePageQueryResult
     public ICollection<Post> HomepagePosts { get; set; }
 }
 
-public class HomePageQueryHandler : IRequestHandler<HomePageQuery, HomePageQueryResult>
+internal class HomePageQueryHandler : IRequestHandler<HomePageQuery, HomePageQueryResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 

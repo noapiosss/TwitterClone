@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using Microsoft.EntityFrameworkCore;
-
-using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
 using TwitterClone.Domain.Helpers;
 
@@ -26,7 +23,7 @@ public class SignInQueryResult
     public bool PasswordIsCorrect { get; set; }
 }
 
-public class SignInQueryHandler : IRequestHandler<SignInQuery, SignInQueryResult>
+internal class SignInQueryHandler : IRequestHandler<SignInQuery, SignInQueryResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 

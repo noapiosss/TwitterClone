@@ -24,7 +24,7 @@ public class PostQueryResult
     public ICollection<Post> Comments { get; set; }
 }
 
-public class PostQueryHandler : IRequestHandler<PostQuery, PostQueryResult>
+internal class PostQueryHandler : IRequestHandler<PostQuery, PostQueryResult>
 {
     private readonly TwitterCloneDbContext _dbContext;
 
