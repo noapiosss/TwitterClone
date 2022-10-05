@@ -47,7 +47,7 @@ internal class SignInQueryHandler : IRequestHandler<SignInQuery, SignInQueryResu
             };
         }
 
-        if (user.Password != PasswordHelper.TestHash(request.Password))
+        if (user.Password != PasswordHelper.GetPasswordHash(request.Password))
         {
             return new SignInQueryResult
             {
