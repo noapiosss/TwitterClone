@@ -26,19 +26,7 @@ namespace TwitterClone.Api.Controllers
         public SessionController (IMediator mediator)
         {
             _mediator = mediator;
-        }
-
-        [HttpGet("sign-in")]
-        public ContentResult GetSignInPage(CancellationToken cancellationToken)
-        {
-            var html = System.IO.File.ReadAllText("wwwroot/sign-in.html");
-
-            return new ContentResult
-            {
-                Content = html,
-                ContentType = "text/html"
-            };
-        }
+        }        
 
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] SignInRequest request, CancellationToken cancellationToken)
@@ -104,28 +92,6 @@ namespace TwitterClone.Api.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("/sign-in");
-        }
-
-        [HttpGet("sign-up")]
-        public ContentResult GetSignUpPage(CancellationToken cancellationToken)
-        {
-            var html = System.IO.File.ReadAllText("wwwroot/sign-up.html");
-
-            return new ContentResult
-            {
-                Content = html,
-                ContentType = "text/html"
-            };
-        }
-
-        [HttpPost("sign-up")]
-        public Task<IActionResult> SignUp(CancellationToken cancellationToken)
-        {
-            return Task.FromResult<IActionResult>(Ok());
-        }
-
-        
-    }
-
-    
+        }        
+    }    
 }

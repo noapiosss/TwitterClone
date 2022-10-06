@@ -11,8 +11,7 @@ async function BuildPage(inputPostId)
         .then((result) => result.followings);
 
     const yourUsername = await fetch(`${window.location.origin}/api/users/username`)
-        .then((response) => response.json())
-        .then((result) => result.username);
+        .then((response) => response.text());
 
     likes.forEach(username => 
     {
