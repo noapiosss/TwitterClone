@@ -54,10 +54,9 @@ export async function BuildHeader()
 async function CheckSession()
 {
     const username = await fetch(`${window.location.origin}/api/users/username`)
-        .then((response) => response.json())
-        .then((result) => result.username);
+        .then((response) => response.text());
     
-    if (username === 'null')
+    if (username === '')
     {
         window.location.replace(`${window.location.origin}/sign-in`)
     }

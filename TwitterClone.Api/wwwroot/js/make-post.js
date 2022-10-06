@@ -4,15 +4,16 @@ const sendBtn = document.getElementById('make-new-post-button');
 
 async function BuildPage()
 {
-    username.innerHTML = await fetch(`${window.location.origin}/api/users/username`)
-        .then((response) => response.json())
-        .then((result) => result.username);    
+    const usernameFromSession = await fetch(`${window.location.origin}/api/users/username`)
+        .then((response) => response.text());
     
+    username.innerHTML = usernameFromSession;
+
     sendBtn.onclick = async () =>
     {
         let post = 
         {
-            authorUsername: `${username}`,
+            authorUsername: `${usernameFromSession}`,
             message: `${message.value}`
         };
         

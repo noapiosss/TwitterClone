@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using TwitterClone.Domain.Database;
 
 namespace TwitterClone.Domain.Queries;
@@ -30,17 +32,19 @@ internal class FollowingsQueryHandler : IRequestHandler<FollowingsQuery, Followi
     }
     public async Task<FollowingsQueryResult> Handle(FollowingsQuery request, CancellationToken cancellationToken)
     {
-        var followings = _dbContext.Followings.Where(f => f.FollowByUsername == request.Username).ToList();
-        var followingsUsername = new List<string>();
-
-        foreach (var following in followings)
+        if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
         {
-            followingsUsername.Add(following.FollowForUsername);
-        }        
+            //probably should be exception
+            return null;
+        }
+
+        var followings = await _dbContext.Followings
+            .Where(f => f.FollowByUsername == request.Username)
+            .ToListAsync();    
 
         return new FollowingsQueryResult
         {
-            Followings = followingsUsername
+            Followings = followings.Select(f => f.FollowForUsername).ToList()
         };
     }
 }

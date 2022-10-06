@@ -54,7 +54,7 @@ internal class HomePageQueryHandler : IRequestHandler<HomePageQuery, HomePageQue
         
         return new HomePageQueryResult
         {
-            HomepagePosts = homepagePosts
+            HomepagePosts = homepagePosts.OrderByDescending(p => p.PostId).ToList()
         };
     }
 }

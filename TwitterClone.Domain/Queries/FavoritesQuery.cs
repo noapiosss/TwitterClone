@@ -33,22 +33,20 @@ internal class FavoritesQueryHandler : IRequestHandler<FavoritesQuery, Favorites
     }
     public async Task<FavoritesQueryResult> Handle(FavoritesQuery request, CancellationToken cancellationToken)
     {
-        var likedPosts = _dbContext.Likes
-            .Where(l => l.LikedByUsername == request.Username)
-            .Include(l => l.LikedPost)
-            .ToList();
-        
-        List<Post> favoritesPosts = new List<Post>();
-        
-        foreach(var post in likedPosts)
+        if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
         {
-            favoritesPosts.Add(post.LikedPost);
+            //probably should be exception
+            return null;
         }
 
-
+        var likedPosts = await _dbContext.Likes
+            .Where(l => l.LikedByUsername == request.Username)
+            .Include(l => l.LikedPost)
+            .ToListAsync();
+            
         return new FavoritesQueryResult
         {
-            FavoritesPosts = favoritesPosts.OrderByDescending(f => f.PostId).ToList()
+            FavoritesPosts = likedPosts.Select(l => l.LikedPost).OrderByDescending(p => p.PostId).ToList()
         };
     }
 }
