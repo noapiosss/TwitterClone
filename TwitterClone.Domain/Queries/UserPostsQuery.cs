@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
 
@@ -31,10 +33,16 @@ internal class UserPostsQueryHandler : IRequestHandler<UserPostsQuery, UserPosts
     }
     public async Task<UserPostsQueryResult> Handle(UserPostsQuery request, CancellationToken cancellationToken)
     {
-        var userPosts = _dbContext.Posts
+        if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
+        {
+            //probably need exception
+            return null;
+        }
+
+        var userPosts = await _dbContext.Posts
             .Where(p => p.AuthorUsername == request.Username)
             .OrderByDescending(p => p.PostDate)
-            .ToList();
+            .ToListAsync();
 
         return new UserPostsQueryResult
         {

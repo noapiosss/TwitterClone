@@ -8,6 +8,7 @@ using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace TwitterClone.Domain.Commands;
 
@@ -38,7 +39,8 @@ public class LikePostCommandHandler : IRequestHandler<LikePostCommand, LikePostC
             LikedByUsername = request.LikedByUsername
         };
 
-        if (!_dbContext.Posts.Any(p => p.PostId == request.LikedPostId) || !_dbContext.Users.Any(u => u.Username == request.LikedByUsername))
+        if (!(await _dbContext.Posts.AnyAsync(p => p.PostId == request.LikedPostId)) ||
+            !(await _dbContext.Users.AnyAsync(u => u.Username == request.LikedByUsername)))
         {
             return new LikePostCommandResult
             {
@@ -47,7 +49,7 @@ public class LikePostCommandHandler : IRequestHandler<LikePostCommand, LikePostC
 
         }
 
-        if (_dbContext.Likes.Where(l => l.LikedPostId == request.LikedPostId && l.LikedByUsername == request.LikedByUsername).Count() == 0)
+        if (await _dbContext.Likes.Where(l => l.LikedPostId == request.LikedPostId && l.LikedByUsername == request.LikedByUsername).CountAsync() == 0)
         {
             await _dbContext.AddAsync(like, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);

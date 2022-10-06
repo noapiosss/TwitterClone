@@ -35,19 +35,20 @@ internal class PostQueryHandler : IRequestHandler<PostQuery, PostQueryResult>
     }
     public async Task<PostQueryResult> Handle(PostQuery request, CancellationToken cancellationToken)
     {
-        var post = _dbContext.Posts
+        var post = await _dbContext.Posts
             .Include(p => p.Likes)
-            .First(p => p.PostId == request.PostId);
+            .FirstOrDefaultAsync(p => p.PostId == request.PostId);
 
-        var likedByUsername = new List<string>();
-
-        foreach (var like in post.Likes)
+        if (post == null)
         {
-            likedByUsername.Add(like.LikedByUsername);
+            //probable souhld be exception
+            return null;
         }
 
-        var comments = _dbContext.Posts
-            .Where(p => p.CommentTo == request.PostId).OrderByDescending(p => p.PostId).ToList();
+        var comments = await _dbContext.Posts
+            .Where(p => p.CommentTo == request.PostId)
+            .OrderByDescending(p => p.PostId)
+            .ToListAsync();
 
         return new PostQueryResult
         {
@@ -58,7 +59,7 @@ internal class PostQueryHandler : IRequestHandler<PostQuery, PostQueryResult>
                 PostDate = post.PostDate,
                 Message = post.Message
             },
-            LikedByUsername = likedByUsername,
+            LikedByUsername = post.Likes.Select(l => l.LikedByUsername).ToList(),
             Comments = comments
         };
     }

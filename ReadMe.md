@@ -2,7 +2,7 @@
 
 As a final project was chosen "Twitter clone"
 
-## User stiries
+## User stories
 
 1. As a user I want signup/signin on the website
 2. As a user I want to make/delete my post

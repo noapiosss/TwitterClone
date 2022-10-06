@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using TwitterClone.Domain.Database;
 using TwitterClone.Domain.Helpers;
 
@@ -34,8 +36,8 @@ internal class SignInQueryHandler : IRequestHandler<SignInQuery, SignInQueryResu
     }
     public async Task<SignInQueryResult> Handle(SignInQuery request, CancellationToken cancellationToken)
     {
-        var user = _dbContext.Users
-            .FirstOrDefault(u => u.Username == request.Username);
+        var user = await _dbContext.Users
+            .FirstOrDefaultAsync(u => u.Username == request.Username);
 
         if (user == null)
         {

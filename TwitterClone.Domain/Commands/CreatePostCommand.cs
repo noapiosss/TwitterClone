@@ -8,6 +8,7 @@ using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace TwitterClone.Domain.Commands;
 
@@ -33,11 +34,11 @@ internal class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Cre
     }
     public async Task<CreatePostCommandResult> Handle(CreatePostCommand request, CancellationToken cancellationToken = default)
     {
-        var userIsExists = _dbContext.Users.Any(u => u.Username == request.AuthorUsername) ? true : false;
+        var userIsExists = await _dbContext.Users.AnyAsync(u => u.Username == request.AuthorUsername) ? true : false;
         var originPostIsExists = true;
         if (request.CommentTo != null)
         {
-            originPostIsExists = _dbContext.Posts.Any(p => p.PostId == request.CommentTo) ? true : false;
+            originPostIsExists = await _dbContext.Posts.AnyAsync(p => p.PostId == request.CommentTo) ? true : false;
         }
         var messageIsEmpty = String.IsNullOrWhiteSpace(request.Message);
 

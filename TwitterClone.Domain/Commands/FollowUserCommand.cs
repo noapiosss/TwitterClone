@@ -8,6 +8,7 @@ using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace TwitterClone.Domain.Commands;
 
@@ -38,7 +39,8 @@ internal class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, Fol
             FollowForUsername = request.FollowForUsername
         };
 
-        if (!_dbContext.Users.Any(u => u.Username == request.FollowByUsername) || !_dbContext.Users.Any(u => u.Username == request.FollowForUsername))
+        if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.FollowByUsername)) ||
+            !(await _dbContext.Users.AnyAsync(u => u.Username == request.FollowForUsername)))
         {
             return new FollowUserCommandResult
             {
@@ -46,7 +48,7 @@ internal class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, Fol
             };
         }
 
-        if (_dbContext.Followings.Where(f => f.FollowByUsername == request.FollowByUsername && f.FollowForUsername == request.FollowForUsername).Count() == 0)
+        if (await _dbContext.Followings.Where(f => f.FollowByUsername == request.FollowByUsername && f.FollowForUsername == request.FollowForUsername).CountAsync() == 0)
         {
             await _dbContext.AddAsync(following, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);

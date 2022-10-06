@@ -33,35 +33,28 @@ internal class HomePageQueryHandler : IRequestHandler<HomePageQuery, HomePageQue
     }
     public async Task<HomePageQueryResult> Handle(HomePageQuery request, CancellationToken cancellationToken)
     {
-        var usersFromFollowings = _dbContext.Followings
+        if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
+        {
+            //probably should be exception
+            return null;
+        }
+
+        var userFollowings = await _dbContext.Followings
             .Where(f => f.FollowByUsername == request.Username)
             .Include(f => f.FollowForUser.Posts)
-            .ToList();
+            .ToListAsync();
 
-        var userOwnPosts = _dbContext.Posts
+        var userOwnPosts = await _dbContext.Posts
             .Where(p => p.AuthorUsername == request.Username)
-            .ToList();
+            .ToListAsync();
         
         var homepagePosts = new List<Post>();
         homepagePosts.AddRange(userOwnPosts);
-
-        foreach (var userFromFollowing in usersFromFollowings)
-        {
-            foreach (var post in userFromFollowing.FollowForUser.Posts)
-            {
-                homepagePosts.Add(new Post
-                {
-                    PostId = post.PostId,
-                    AuthorUsername = post.AuthorUsername,
-                    PostDate = post.PostDate,
-                    Message = post.Message
-                });
-            }
-        }
+        homepagePosts.AddRange(userFollowings.SelectMany(f => f.FollowForUser.Posts).ToList());
         
         return new HomePageQueryResult
         {
-            HomepagePosts = homepagePosts.OrderByDescending(p => p.PostId).ToList()
+            HomepagePosts = homepagePosts
         };
     }
 }

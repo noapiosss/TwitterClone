@@ -13,19 +13,57 @@ using TwitterClone.UnitTests.Helpers;
 
 namespace TwitterClone.UnitTests.Queries;
 
-public class DeletePostCommandHandlerTest : IDisposable
+public class FollowUserCommandHandlerTest : IDisposable
 {
     private readonly TwitterCloneDbContext _dbContext;
-    private readonly IRequestHandler<DeletePostCommand, DeletePostCommandResult> _handler;
+    private readonly IRequestHandler<FollowUserCommand, FollowUserCommandResult> _handler;
 
-    public DeletePostCommandHandlerTest()
+    public FollowUserCommandHandlerTest()
     {
         _dbContext = DbContextHelper.CreateTestDb();
-        _handler = new DeletePostCommandHandler(_dbContext);
+        _handler = new FollowUserCommandHandler(_dbContext);
     }
 
     [Fact]
-    public async Task PostShouldBeDeleted()
+    public async Task UserCouldFollowAnotherUser()
+    {
+        // Arrange
+        var username1 = Guid.NewGuid().ToString();
+        var user1 = new User
+        {
+            Username = username1,
+            Email = Guid.NewGuid().ToString(),
+            Password = Guid.NewGuid().ToString()
+        };
+
+        var username2 = Guid.NewGuid().ToString();
+        var user2 = new User
+        {
+            Username = username2,
+            Email = Guid.NewGuid().ToString(),
+            Password = Guid.NewGuid().ToString()
+        };
+
+        await _dbContext.AddAsync(user1);
+        await _dbContext.AddAsync(user2);
+        await _dbContext.SaveChangesAsync();
+        
+        var command = new FollowUserCommand
+        {
+            FollowByUsername = username1,
+            FollowForUsername = username2
+        };
+
+        // Act
+        var result = await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.ShouldNotBeNull();        
+        result.FollowStatusIsChanged.ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task UserCouldNotFollowUnexistingUser()
     {
         // Arrange
         var username = Guid.NewGuid().ToString();
@@ -39,19 +77,10 @@ public class DeletePostCommandHandlerTest : IDisposable
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
         
-        var post = new Post
+        var command = new FollowUserCommand
         {
-            AuthorUsername = username,
-            Message = Guid.NewGuid().ToString()
-        };
-
-        await _dbContext.AddAsync(post);
-        await _dbContext.SaveChangesAsync();
-
-        var command = new DeletePostCommand
-        {
-            Username = username,
-            PostId = 1
+            FollowByUsername = username,
+            FollowForUsername = Guid.NewGuid().ToString()
         };
 
         // Act
@@ -59,12 +88,11 @@ public class DeletePostCommandHandlerTest : IDisposable
 
         // Assert
         result.ShouldNotBeNull();        
-        result.DeleteIsSuccessful.ShouldBeTrue();
-
+        result.FollowStatusIsChanged.ShouldBeFalse();
     }
 
     [Fact]
-    public async Task PostShouldNotBeDeletedIfInvalidPostId()
+    public async Task UnexistingUserCouldNotFollowUser()
     {
         // Arrange
         var username = Guid.NewGuid().ToString();
@@ -78,19 +106,10 @@ public class DeletePostCommandHandlerTest : IDisposable
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
         
-        var post = new Post
+        var command = new FollowUserCommand
         {
-            AuthorUsername = username,
-            Message = Guid.NewGuid().ToString()
-        };
-
-        await _dbContext.AddAsync(post);
-        await _dbContext.SaveChangesAsync();
-
-        var command = new DeletePostCommand
-        {
-            Username = username,
-            PostId = 999
+            FollowByUsername = Guid.NewGuid().ToString(),
+            FollowForUsername = username
         };
 
         // Act
@@ -98,47 +117,7 @@ public class DeletePostCommandHandlerTest : IDisposable
 
         // Assert
         result.ShouldNotBeNull();        
-        result.DeleteIsSuccessful.ShouldBeFalse();
-
-    }
-
-    [Fact]
-    public async Task PostShouldNotBeDeletedIfInvalidUsername()
-    {
-        // Arrange
-        var username = Guid.NewGuid().ToString();
-        var user = new User
-        {
-            Username = username,
-            Email = Guid.NewGuid().ToString(),
-            Password = Guid.NewGuid().ToString()
-        };
-
-        await _dbContext.AddAsync(user);
-        await _dbContext.SaveChangesAsync();
-        
-        var post = new Post
-        {
-            AuthorUsername = username,
-            Message = Guid.NewGuid().ToString()
-        };
-
-        await _dbContext.AddAsync(post);
-        await _dbContext.SaveChangesAsync();
-
-        var command = new DeletePostCommand
-        {
-            Username = Guid.NewGuid().ToString(),
-            PostId = 1
-        };
-
-        // Act
-        var result = await _handler.Handle(command, CancellationToken.None);
-
-        // Assert
-        result.ShouldNotBeNull();        
-        result.DeleteIsSuccessful.ShouldBeFalse();
-
+        result.FollowStatusIsChanged.ShouldBeFalse();
     }
 
     public void Dispose()

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using TwitterClone.Domain.Database;
 
 namespace TwitterClone.Domain.Queries;
@@ -30,18 +32,19 @@ internal class UserLikesQueryHandler : IRequestHandler<UserLikesQuery, UserLikes
     }
     public async Task<UserLikesQueryResult> Handle(UserLikesQuery request, CancellationToken cancellationToken)
     {
-        var likes = _dbContext.Likes.Where(l => l.LikedByUsername == request.Username).ToList();
-        
-        List<int> postIdsThatUserLike = new List<int>();
-        
-        foreach(var like in likes)
+        if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
         {
-            postIdsThatUserLike.Add(like.LikedPostId);
+            //probably should be exception
+            return null;
         }
+
+        var likes = await _dbContext.Likes
+            .Where(l => l.LikedByUsername == request.Username)
+            .ToListAsync();
 
         return new UserLikesQueryResult
         {
-            PostIdsThatUserLike = postIdsThatUserLike
+            PostIdsThatUserLike = likes.Select(l => l.LikedPostId).ToList()
         };
     }
 }
