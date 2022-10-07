@@ -37,12 +37,34 @@ public class UserController : BaseController
             };
 
             var result = await _mediator.Send(command, cancellationToken);
+            
+            if (!result.IsRegistrationSuccessful)
+            {
+                if (result.UsernameIsAlreadyInUse)
+                {
+                    return BadRequest(new ErrorResponse
+                    {
+                        Code = ErrorCode.UsernameIsAlreadyInUse,
+                        Message = "username is already in use"
+                    });
+                }
+
+                if (result.EmailIsAlreadyInUse)
+                {
+                    return BadRequest(new ErrorResponse
+                    {
+                        Code = ErrorCode.EmailIsAlreadyInUse,
+                        Message = "email is already in use"
+                    });
+                }
+            }            
+            
             var response = new CreateUserResponse
             {
                 IsRegistrationSuccessful = result.IsRegistrationSuccessful,
                 UsernameIsAlreadyInUse = result.UsernameIsAlreadyInUse,
                 EmailIsAlreadyInUse = result.EmailIsAlreadyInUse
-            };
+            };            
 
             return Created("http://todo.com", response);
         }, cancellationToken);
@@ -57,6 +79,16 @@ public class UserController : BaseController
             };
 
             var result = await _mediator.Send(query, cancellationToken);
+
+            if (result == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.UserNotFound,
+                    Message = "user not exists"
+                });
+            }
+
             var response = new GetUserPostsResponse
             {                
                 UserPosts = result.UserPosts
@@ -66,10 +98,17 @@ public class UserController : BaseController
         }, cancellationToken);
 
     [HttpGet("homepage")]
-    [Authorize]
         public Task<IActionResult> GetHomePagePosts(CancellationToken cancellationToken) =>
-        SafeExecute(async () => 
+        SafeExecute(async () =>
         {
+            if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name) == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.Unauthorized,
+                    Message = "current request require authorization"
+                });
+            }
             var query = new HomePageQuery
             {
                 Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value
@@ -77,7 +116,7 @@ public class UserController : BaseController
 
             var result = await _mediator.Send(query, cancellationToken);
             var response = new GetHomePagePostsResponse
-            {                
+            {
                 HomepagePosts = result.HomepagePosts
             };
 
@@ -85,10 +124,18 @@ public class UserController : BaseController
         }, cancellationToken);
 
     [HttpGet("favorites")]
-    [Authorize]
         public Task<IActionResult> GetFavoritesPostsPosts(CancellationToken cancellationToken) =>
         SafeExecute(async () => 
         {
+            if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name) == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.Unauthorized,
+                    Message = "current request require authorization"
+                });
+            }
+
             var query = new FavoritesQuery
             {
                 Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value

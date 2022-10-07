@@ -54,16 +54,18 @@ namespace TwitterClone.Api.Controllers
             {
                 if(!response.UserIsFound)
                 {
-                    return BadRequest(new 
+                    return BadRequest(new ErrorResponse
                     {
+                        Code = ErrorCode.UserNotFound,
                         Message = "user not found"
                     });
                 }
 
                 if(!response.PasswordIsCorrect)
                 {
-                    return BadRequest(new
+                    return BadRequest(new ErrorResponse
                     {
+                        Code = ErrorCode.WrongPassword,
                         Message = "wrong password"
                     });
                 }
@@ -91,7 +93,7 @@ namespace TwitterClone.Api.Controllers
         public async Task<IActionResult> SignOut(CancellationToken cancellationToken)
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Redirect("/sign-in");
+            return Ok();
         }        
     }    
 }

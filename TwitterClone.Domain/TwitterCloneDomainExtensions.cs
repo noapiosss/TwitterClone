@@ -11,7 +11,7 @@ using TwitterClone.Domain.Database;
 
 namespace TwitterClone.Domain;
 
-public static class WishlishDomainExtensions
+public static class TwitterCloneDomainExtensions
 {
     public static IServiceCollection AddDomainServices(this IServiceCollection services,
         Action<IServiceProvider, DbContextOptionsBuilder> dbOptionsAction)
