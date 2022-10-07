@@ -21,6 +21,9 @@ public class DeletePostCommand : IRequest<DeletePostCommandResult>
 public class DeletePostCommandResult
 {
     public bool DeleteIsSuccessful { get; init; }
+    public bool AccessIsDenied { get; init; }
+    public bool PostExist { get; set; }
+
 }
 
 internal class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, DeletePostCommandResult>
@@ -34,12 +37,22 @@ internal class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, Del
     public async Task<DeletePostCommandResult> Handle(DeletePostCommand request, CancellationToken cancellationToken = default)
     {
         var post = await _dbContext.Posts.FirstOrDefaultAsync(p => p.PostId == request.PostId);
-
-        if (post == null || post.AuthorUsername != request.Username)
+        
+        if (post == null)
         {
             return new DeletePostCommandResult
             {
-                DeleteIsSuccessful = false
+                DeleteIsSuccessful = false,
+                PostExist = false
+            };
+        }
+        
+        if (post.AuthorUsername != request.Username)
+        {
+            return new DeletePostCommandResult
+            {
+                DeleteIsSuccessful = false,
+                AccessIsDenied = true,
             };
         }
 

@@ -41,7 +41,6 @@ internal class PostQueryHandler : IRequestHandler<PostQuery, PostQueryResult>
 
         if (post == null)
         {
-            //probable souhld be exception
             return null;
         }
 

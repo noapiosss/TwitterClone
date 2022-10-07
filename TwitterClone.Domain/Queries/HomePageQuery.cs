@@ -35,7 +35,6 @@ internal class HomePageQueryHandler : IRequestHandler<HomePageQuery, HomePageQue
     {
         if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
         {
-            //probably should be exception
             return null;
         }
 

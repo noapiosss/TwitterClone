@@ -21,6 +21,8 @@ public class LikePostCommand : IRequest<LikePostCommandResult>
 public class LikePostCommandResult
 {
     public bool LikeStatusIsChanged { get; init; }
+    public bool PostExists { get; init; }
+    public bool UserExists { get; init; }
 }
 
 public class LikePostCommandHandler : IRequestHandler<LikePostCommand, LikePostCommandResult>
@@ -39,12 +41,16 @@ public class LikePostCommandHandler : IRequestHandler<LikePostCommand, LikePostC
             LikedByUsername = request.LikedByUsername
         };
 
-        if (!(await _dbContext.Posts.AnyAsync(p => p.PostId == request.LikedPostId)) ||
-            !(await _dbContext.Users.AnyAsync(u => u.Username == request.LikedByUsername)))
+        var postExists = await _dbContext.Posts.AnyAsync(p => p.PostId == request.LikedPostId);
+        var userExists = await _dbContext.Users.AnyAsync(u => u.Username == request.LikedByUsername);
+
+        if (!postExists || !userExists)
         {
             return new LikePostCommandResult
             {
-                LikeStatusIsChanged = false
+                LikeStatusIsChanged = false,
+                PostExists = postExists,
+                UserExists = userExists
             };
 
         }

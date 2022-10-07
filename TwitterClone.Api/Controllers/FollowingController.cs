@@ -26,10 +26,27 @@ public class FollowingController : BaseController
     }
 
     [HttpPatch("follow")]
-    [Authorize]
-    public Task<IActionResult> FollowingPost([FromBody] FollowUserCommand request, CancellationToken cancellationToken) =>
+    public Task<IActionResult> FollowUser([FromBody] FollowUserCommand request, CancellationToken cancellationToken) =>
         SafeExecute(async () =>
         {
+            if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name) == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.Unauthorized,
+                    Message = "current request require authorization"
+                });
+            }
+
+            if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value == request.FollowForUsername)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.NotAcceptable,
+                    Message = "follow for yourself is not allowed"
+                });
+            }
+
             var command = new FollowUserCommand
             {
                 FollowByUsername = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
@@ -37,6 +54,28 @@ public class FollowingController : BaseController
             };
 
             var result = await _mediator.Send(command, cancellationToken);
+
+            if (!result.FollowStatusIsChanged)
+            {
+                if(!result.FollowByUserExists)
+                {
+                    return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.UserNotFound,
+                    Message = "follower user not found"
+                });
+                }
+
+                if(!result.FollowForUserExists)
+                {
+                    return BadRequest(new ErrorResponse
+                    {
+                        Code = ErrorCode.UserNotFound,
+                        Message = "user not found"
+                    });
+                }
+            }
+
             var response = new FollowUserResponse
             {
                 FollowStatusIsChanged = result.FollowStatusIsChanged
@@ -47,10 +86,18 @@ public class FollowingController : BaseController
 
     
     [HttpGet("followings")]
-    [Authorize]
     public Task<IActionResult> GetOwnFollowings(CancellationToken cancellationToken) =>
         SafeExecute(async () => 
         {
+            if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name) == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.Unauthorized,
+                    Message = "current request require authorization"
+                });
+            }
+
             var query = new FollowingsQuery
             {
                 Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value
@@ -66,10 +113,18 @@ public class FollowingController : BaseController
         }, cancellationToken);
 
     [HttpGet("followers")]
-    [Authorize]
     public Task<IActionResult> GetOwnFollowers(CancellationToken cancellationToken) =>
         SafeExecute(async () => 
         {
+            if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name) == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.Unauthorized,
+                    Message = "current request require authorization"
+                });
+            }
+
             var query = new FollowersQuery
             {
                 Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value
@@ -94,6 +149,16 @@ public class FollowingController : BaseController
             };
 
             var result = await _mediator.Send(query, cancellationToken);
+
+            if (result == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.UserNotFound,
+                    Message = "user not found"
+                });
+            }
+
             var response = new GetFollowingsResponse
             {                
                 Followings = result.Followings
@@ -112,6 +177,16 @@ public class FollowingController : BaseController
             };
 
             var result = await _mediator.Send(query, cancellationToken);
+
+            if (result == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.UserNotFound,
+                    Message = "user not found"
+                });
+            }
+
             var response = new GetFollowersResponse
             {                
                 Followers = result.Followers

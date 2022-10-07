@@ -34,17 +34,17 @@ internal class UserLikesQueryHandler : IRequestHandler<UserLikesQuery, UserLikes
     {
         if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
         {
-            //probably should be exception
             return null;
         }
 
-        var likes = await _dbContext.Likes
+        var postIdsThatUserLike = await _dbContext.Likes
             .Where(l => l.LikedByUsername == request.Username)
+            .Select(l => l.LikedPostId)
             .ToListAsync();
 
         return new UserLikesQueryResult
         {
-            PostIdsThatUserLike = likes.Select(l => l.LikedPostId).ToList()
+            PostIdsThatUserLike = postIdsThatUserLike
         };
     }
 }

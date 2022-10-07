@@ -34,17 +34,17 @@ internal class FollowingsQueryHandler : IRequestHandler<FollowingsQuery, Followi
     {
         if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
         {
-            //probably should be exception
             return null;
         }
 
         var followings = await _dbContext.Followings
             .Where(f => f.FollowByUsername == request.Username)
-            .ToListAsync();    
+            .Select(f => f.FollowForUsername)
+            .ToListAsync();
 
         return new FollowingsQueryResult
         {
-            Followings = followings.Select(f => f.FollowForUsername).ToList()
+            Followings = followings
         };
     }
 }

@@ -21,6 +21,8 @@ public class FollowUserCommand : IRequest<FollowUserCommandResult>
 public class FollowUserCommandResult
 {
     public bool FollowStatusIsChanged { get; init; }
+    public bool FollowByUserExists { get; init; }
+    public bool FollowForUserExists { get; init; }
 }
 
 internal class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, FollowUserCommandResult>
@@ -39,12 +41,16 @@ internal class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, Fol
             FollowForUsername = request.FollowForUsername
         };
 
-        if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.FollowByUsername)) ||
-            !(await _dbContext.Users.AnyAsync(u => u.Username == request.FollowForUsername)))
+        var followByUserExists = await _dbContext.Users.AnyAsync(u => u.Username == request.FollowByUsername);
+        var followForUserExists = await _dbContext.Users.AnyAsync(u => u.Username == request.FollowForUsername);
+
+        if (!followByUserExists || !followForUserExists)
         {
             return new FollowUserCommandResult
             {
-                FollowStatusIsChanged = false
+                FollowStatusIsChanged = false,
+                FollowByUserExists = followByUserExists,
+                FollowForUserExists = followForUserExists
             };
         }
 

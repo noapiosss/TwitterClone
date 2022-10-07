@@ -37,13 +37,14 @@ internal class LikeQueryHandler : IRequestHandler<LikeQuery, LikeQueryResult>
             return null;
         }
 
-        var postLikes = await _dbContext.Likes
+        var usersThatLikePost = await _dbContext.Likes
             .Where(l => l.LikedPostId == request.PostId)
+            .Select(l => l.LikedByUsername)
             .ToListAsync();
 
         return new LikeQueryResult
         {
-            UsersThatLikePost = postLikes.Select(l => l.LikedByUsername).ToList()
+            UsersThatLikePost = usersThatLikePost
         };
     }
 }

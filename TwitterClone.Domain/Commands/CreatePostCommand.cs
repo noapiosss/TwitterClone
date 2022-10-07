@@ -22,6 +22,10 @@ public class CreatePostCommand : IRequest<CreatePostCommandResult>
 public class CreatePostCommandResult
 {
     public bool PostIsCreated { get; init; }
+    public Post Post { get; init; }
+    public bool AuthorExists { get; init; }
+    public bool OriginPostExists { get; init; }
+    public bool MessageIsEmpty { get; init; }
 }
 
 internal class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, CreatePostCommandResult>
@@ -34,19 +38,22 @@ internal class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Cre
     }
     public async Task<CreatePostCommandResult> Handle(CreatePostCommand request, CancellationToken cancellationToken = default)
     {
-        var userIsExists = await _dbContext.Users.AnyAsync(u => u.Username == request.AuthorUsername) ? true : false;
-        var originPostIsExists = true;
+        var authorExists = await _dbContext.Users.AnyAsync(u => u.Username == request.AuthorUsername) ? true : false;
+        var originPostExists = true;
         if (request.CommentTo != null)
         {
-            originPostIsExists = await _dbContext.Posts.AnyAsync(p => p.PostId == request.CommentTo) ? true : false;
+            originPostExists = await _dbContext.Posts.AnyAsync(p => p.PostId == request.CommentTo) ? true : false;
         }
         var messageIsEmpty = String.IsNullOrWhiteSpace(request.Message);
 
-        if (!userIsExists || !originPostIsExists || messageIsEmpty)
+        if (!authorExists || !originPostExists || messageIsEmpty)
         {
             return new CreatePostCommandResult
             {
-                PostIsCreated = false
+                PostIsCreated = false,
+                AuthorExists = authorExists,
+                OriginPostExists = originPostExists,
+                MessageIsEmpty = messageIsEmpty       
             };
         }
 
@@ -61,10 +68,10 @@ internal class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Cre
         await _dbContext.AddAsync(post, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-
         return new CreatePostCommandResult
         {
-            PostIsCreated = true
+            PostIsCreated = true,
+            Post = post
         };
     }
 }

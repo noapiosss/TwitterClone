@@ -28,6 +28,15 @@ public class LikeController : BaseController
     public Task<IActionResult> LikePost([FromBody] LikePostRequest request, CancellationToken cancellationToken) =>
         SafeExecute(async () =>
         {
+            if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name) == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.Unauthorized,
+                    Message = "current request require authorization"
+                });
+            }
+
             var command = new LikePostCommand
             {
                 LikedPostId = request.LikedPostId,
@@ -35,12 +44,34 @@ public class LikeController : BaseController
             };
 
             var result = await _mediator.Send(command, cancellationToken);
+
+            if (!result.LikeStatusIsChanged)
+            {
+                if(!result.PostExists)
+                {
+                    return BadRequest(new ErrorResponse
+                    {
+                        Code = ErrorCode.PostNotFound,
+                        Message = "post not found"
+                    });
+                }
+
+                if(!result.UserExists)
+                {
+                    return BadRequest(new ErrorResponse
+                    {
+                        Code = ErrorCode.UserNotFound,
+                        Message = "user not exists"
+                    });
+                }
+            }
+
             var response = new LikePostResponse
             {
                 LikeStatusIsChanged = result.LikeStatusIsChanged
             };
 
-            return Created("http://todo.com", response);
+            return Ok(response);
         }, cancellationToken);
 
     [HttpGet("{postId}")]
@@ -53,6 +84,16 @@ public class LikeController : BaseController
             };
 
             var result = await _mediator.Send(query, cancellationToken);
+
+            if (result == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.PostNotFound,
+                    Message = "post not found"
+                });
+            }
+
             var response = new GetLikesResponse
             {                
                 UsersThatLikePost = result.UsersThatLikePost
@@ -65,12 +106,31 @@ public class LikeController : BaseController
     public Task<IActionResult> GetUserLikes(CancellationToken cancellationToken) =>
         SafeExecute(async () => 
         {
+            if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name) == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.Unauthorized,
+                    Message = "current request require authorization"
+                });
+            }
+
             var query = new UserLikesQuery
             {
                 Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value
             };
 
             var result = await _mediator.Send(query, cancellationToken);
+
+            if (result == null)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Code = ErrorCode.PostNotFound,
+                    Message = "post not found"
+                });
+            }
+
             var response = new GetPostsThatUserLikeResponse
             {                
                 PostIdsThatUserLike = result.PostIdsThatUserLike

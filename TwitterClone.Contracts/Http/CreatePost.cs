@@ -21,4 +21,8 @@ public class CreatePostRequest
 public class CreatePostResponse
 {
     public bool PostIsCreated { get; init; }
+    public Post Post { get; init; }
+    public bool AuthorExists { get; init; }
+    public bool OriginPostExists { get; init; }
+    public bool MessageIsEmpty { get; init; }
 }

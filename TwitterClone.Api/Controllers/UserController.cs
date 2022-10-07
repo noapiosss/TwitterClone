@@ -109,6 +109,7 @@ public class UserController : BaseController
                     Message = "current request require authorization"
                 });
             }
+            
             var query = new HomePageQuery
             {
                 Username = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value

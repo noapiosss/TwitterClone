@@ -35,7 +35,6 @@ internal class UserPostsQueryHandler : IRequestHandler<UserPostsQuery, UserPosts
     {
         if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
         {
-            //probably need exception
             return null;
         }
 

@@ -16,5 +16,7 @@ public class LikePostRequest
 
 public class LikePostResponse
 {
-    public bool LikeStatusIsChanged { get; init; }
+    public bool LikeStatusIsChanged { get; init; }    
+    public bool PostExists { get; init; }
+    public bool UserExists { get; init; }
 }
