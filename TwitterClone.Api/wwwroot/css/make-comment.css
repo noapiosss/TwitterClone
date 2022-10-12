@@ -20,8 +20,7 @@
 
 .make-new-comment-button
 {
+    margin-top: 5px;
     margin-left: 1%;
-    background-color: rgb(75, 55, 255);
-    color: white;
     border-radius: 15px;
 }
