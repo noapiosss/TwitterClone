@@ -1,0 +1,17 @@
+.create-account-link
+{
+    font-size: small;
+    text-align: center;
+}
+
+.user-not-found-label
+{
+    font-size: small;
+    color: red;
+}
+
+.wrong-password-label
+{
+    font-size: small;
+    color: red;
+}

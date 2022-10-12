@@ -66,7 +66,7 @@ public class UserController : BaseController
                 EmailIsAlreadyInUse = result.EmailIsAlreadyInUse
             };
 
-            return Created("http://todo.com", response);
+            return Ok(response);
         }, cancellationToken);
 
     [HttpGet("{username}/posts")]

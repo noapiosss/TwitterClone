@@ -1,0 +1,11 @@
+.username-is-already-taken-label
+{
+    font-size: small;
+    color: red;
+}
+
+.email-is-already-taken-label
+{
+    font-size: small;
+    color: red;
+}
