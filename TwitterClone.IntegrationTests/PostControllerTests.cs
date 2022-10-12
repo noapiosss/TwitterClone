@@ -50,7 +50,7 @@ public class PostControllerTests
             Password = _user.Password
         };
         await _client.PostAsJsonAsync("/sign-in", signInRequest);
-        
+
         var createPostRequest = new CreatePostRequest
         {
             Message = Guid.NewGuid().ToString()
@@ -58,7 +58,7 @@ public class PostControllerTests
 
         // Act
         using var response = await _client.PutAsJsonAsync("/api/posts", createPostRequest);
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
         var result = await response.Content.ReadFromJsonAsync<CreatePostResponse>();
@@ -75,7 +75,7 @@ public class PostControllerTests
             Password = _user.Password
         };
         await _client.PostAsJsonAsync("/sign-in", signInRequest);
-        
+
         var createPostRequest = new CreatePostRequest
         {
             CommentTo = -1,
@@ -84,7 +84,7 @@ public class PostControllerTests
 
         // Act
         using var response = await _client.PutAsJsonAsync("/api/posts", createPostRequest);
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var result = await response.Content.ReadFromJsonAsync<ErrorResponse>();
@@ -101,7 +101,7 @@ public class PostControllerTests
             Password = _user.Password
         };
         await _client.PostAsJsonAsync("/sign-in", signInRequest);
-        
+
         var createPostWithoutMessageRequest = new CreatePostRequest
         {
         };
@@ -110,12 +110,12 @@ public class PostControllerTests
         {
             Message = "   "
         };
-        
+
 
         // Act
         using var responseWithoutMessage = await _client.PutAsJsonAsync("/api/posts", createPostWithoutMessageRequest);
         using var responseWithEmptyMessage = await _client.PutAsJsonAsync("/api/posts", createPostWithEmptyMessageRequest);
-        
+
         // Assert
         responseWithoutMessage.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         responseWithEmptyMessage.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -134,11 +134,11 @@ public class PostControllerTests
             AuthorUsername = Guid.NewGuid().ToString(),
             Message = Guid.NewGuid().ToString()
         };
-        
+
 
         // Act
         using var response = await _client.PutAsJsonAsync("/api/posts", createPostWithoutMessageRequest);
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var result = await response.Content.ReadFromJsonAsync<ErrorResponse>();
@@ -155,18 +155,18 @@ public class PostControllerTests
             Password = _user.Password
         };
         await _client.PostAsJsonAsync("/sign-in", signInRequest);
-        
+
         var message = Guid.NewGuid().ToString();
         var createPostRequest = new CreatePostRequest
         {
             Message = message
-        };        
+        };
         var createPostResult = await (await _client.PutAsJsonAsync("/api/posts", createPostRequest))
             .Content.ReadFromJsonAsync<CreatePostResponse>();
-        
+
         // Act
         using var response = await _client.GetAsync($"/api/posts/{createPostResult.Post.PostId}");
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var result = await response.Content.ReadFromJsonAsync<GetPostResponse>();
@@ -190,10 +190,10 @@ public class PostControllerTests
     public async void GetPostShouldReturnBadRequestIfPostNotExists()
     {
         // Arrange
-        
+
         // Act
         using var response = await _client.GetAsync($"/api/posts/{-1}");
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var result = await response.Content.ReadFromJsonAsync<ErrorResponse>();
@@ -210,25 +210,25 @@ public class PostControllerTests
             Password = _user.Password
         };
         await _client.PostAsJsonAsync("/sign-in", signInRequest);
-        
+
         var createPostRequest = new CreatePostRequest
         {
             Message = Guid.NewGuid().ToString()
-        };        
+        };
         await _client.PutAsJsonAsync("/api/posts", createPostRequest);
 
         var postId = (await _dbContext.Posts.FirstAsync(p => p.AuthorUsername == _user.Username)).PostId;
         var deletePostRequest = new HttpRequestMessage(HttpMethod.Delete, "/api/posts");
         deletePostRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         deletePostRequest.Content = JsonContent.Create(new DeletePostRequest
-            {
-                PostId = postId
-            });
+        {
+            PostId = postId
+        });
         deletePostRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
-        
+
         // Act
         using var response = await _client.SendAsync(deletePostRequest);
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var result = await response.Content.ReadFromJsonAsync<DeletePostResponse>();
@@ -244,14 +244,14 @@ public class PostControllerTests
         var deletePostRequest = new HttpRequestMessage(HttpMethod.Delete, "/api/posts");
         deletePostRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         deletePostRequest.Content = JsonContent.Create(new DeletePostRequest
-            {
-                PostId = postId
-            });
+        {
+            PostId = postId
+        });
         deletePostRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
-        
+
         // Act
         using var response = await _client.SendAsync(deletePostRequest);
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var result = await response.Content.ReadFromJsonAsync<ErrorResponse>();
@@ -272,14 +272,14 @@ public class PostControllerTests
         var deletePostRequest = new HttpRequestMessage(HttpMethod.Delete, "/api/posts");
         deletePostRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         deletePostRequest.Content = JsonContent.Create(new DeletePostRequest
-            {
-                PostId = -1
-            });
+        {
+            PostId = -1
+        });
         deletePostRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
-        
+
         // Act
         using var response = await _client.SendAsync(deletePostRequest);
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var result = await response.Content.ReadFromJsonAsync<ErrorResponse>();

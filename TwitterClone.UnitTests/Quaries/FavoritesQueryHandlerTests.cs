@@ -41,11 +41,11 @@ public class FavoritesQueryHandlerTest : IDisposable
 
         await _dbContext.AddAsync(mainUser);
         await _dbContext.SaveChangesAsync();
-        
+
         var rnd = new Random();
 
         var anotherUsernames = new List<string>();
-        var anotherUsersCount = rnd.Next(1,10);
+        var anotherUsersCount = rnd.Next(1, 10);
 
         for (int i = 0; i < anotherUsersCount; ++i)
         {
@@ -66,7 +66,7 @@ public class FavoritesQueryHandlerTest : IDisposable
         {
             var post = new Post
             {
-                AuthorUsername = anotherUsernames[rnd.Next(1, anotherUsersCount)-1],
+                AuthorUsername = anotherUsernames[rnd.Next(1, anotherUsersCount) - 1],
                 Message = Guid.NewGuid().ToString()
             };
             await _dbContext.AddAsync(post);
@@ -85,7 +85,7 @@ public class FavoritesQueryHandlerTest : IDisposable
             await _dbContext.AddAsync(like);
         }
 
-        await _dbContext.SaveChangesAsync();        
+        await _dbContext.SaveChangesAsync();
 
         var query = new FavoritesQuery
         {

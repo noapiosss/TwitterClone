@@ -56,14 +56,14 @@ public class LikeControllerTests
         var allPostIds = await _dbContext.Posts.Select(p => p.PostId).ToListAsync();
         var randomPostId = allPostIds[rnd.Next(allPostIds.Count)];
         var wasLiked = await _dbContext.Likes.AnyAsync(l => l.LikedPostId == randomPostId && l.LikedByUsername == _user.Username);
-        
+
         var likePostRequest = new HttpRequestMessage(HttpMethod.Patch, "/api/likes");
         likePostRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         likePostRequest.Content = JsonContent.Create(new LikePostRequest
-            {
-                LikedPostId = randomPostId
-            });
-        likePostRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");        
+        {
+            LikedPostId = randomPostId
+        });
+        likePostRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
 
         // Act
         using var response = await _client.SendAsync(likePostRequest);
@@ -84,10 +84,10 @@ public class LikeControllerTests
         var likePostRequest = new HttpRequestMessage(HttpMethod.Patch, "/api/likes");
         likePostRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         likePostRequest.Content = JsonContent.Create(new LikePostRequest
-            {
-                LikedPostId = 1,
-                LikedByUsername = _user.Username
-            });
+        {
+            LikedPostId = 1,
+            LikedByUsername = _user.Username
+        });
         likePostRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
 
         // Act
@@ -109,14 +109,14 @@ public class LikeControllerTests
             Password = _user.Password
         };
         await _client.PostAsJsonAsync("/sign-in", signInRequest);
-        
+
         var likePostRequest = new HttpRequestMessage(HttpMethod.Patch, "/api/likes");
         likePostRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         likePostRequest.Content = JsonContent.Create(new LikePostRequest
-            {
-                LikedPostId = -1,
-                LikedByUsername = _user.Username
-            });
+        {
+            LikedPostId = -1,
+            LikedByUsername = _user.Username
+        });
         likePostRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
 
         // Act
@@ -177,7 +177,7 @@ public class LikeControllerTests
         await _client.PostAsJsonAsync("/sign-in", signInRequest);
 
         var rnd = new Random();
-        var randomLikeActionCount = rnd.Next(1,10);
+        var randomLikeActionCount = rnd.Next(1, 10);
         var allPostIds = await _dbContext.Posts.Select(p => p.PostId).ToListAsync();
 
         for (int i = 0; i < randomLikeActionCount; ++i)
@@ -185,10 +185,10 @@ public class LikeControllerTests
             var likePostRequest = new HttpRequestMessage(HttpMethod.Patch, "/api/likes");
             likePostRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             likePostRequest.Content = JsonContent.Create(new LikePostRequest
-                {
-                    LikedByUsername = _user.Username,
-                    LikedPostId = allPostIds[rnd.Next(allPostIds.Count)]
-                });
+            {
+                LikedByUsername = _user.Username,
+                LikedPostId = allPostIds[rnd.Next(allPostIds.Count)]
+            });
             likePostRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
             await _client.SendAsync(likePostRequest);
         }
@@ -211,7 +211,7 @@ public class LikeControllerTests
     public async void GetUserLikesShouldReturnBadRequestIfUnauthorized()
     {
         // Arrange
-         
+
         // Act
         using var response = await _client.GetAsync($"/api/likes");
 

@@ -39,7 +39,7 @@ public class PostQueryHandlerTest : IDisposable
         };
 
         await _dbContext.AddAsync(user);
-        await _dbContext.SaveChangesAsync();        
+        await _dbContext.SaveChangesAsync();
 
         var postMessage = Guid.NewGuid().ToString();
         var post = new Post
@@ -59,10 +59,10 @@ public class PostQueryHandlerTest : IDisposable
 
         await _dbContext.AddAsync(like);
         await _dbContext.SaveChangesAsync();
-        
+
         var rnd = new Random();
-        
-        var commentsCount = rnd.Next(1, 10); 
+
+        var commentsCount = rnd.Next(1, 10);
 
         for (int i = 0; i < commentsCount; ++i)
         {
@@ -72,7 +72,7 @@ public class PostQueryHandlerTest : IDisposable
                 CommentTo = 1,
                 Message = Guid.NewGuid().ToString()
             };
-            
+
             await _dbContext.AddAsync(comment);
         }
 
@@ -91,7 +91,7 @@ public class PostQueryHandlerTest : IDisposable
         result.Post.AuthorUsername.ShouldBeEquivalentTo(username);
         result.Post.Message.ShouldBeEquivalentTo(postMessage);
         result.LikedByUsername.Count.ShouldBeEquivalentTo(1);
-        result.Comments.Count.ShouldBeEquivalentTo(commentsCount);        
+        result.Comments.Count.ShouldBeEquivalentTo(commentsCount);
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public class PostQueryHandlerTest : IDisposable
         var result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.ShouldBeNull();  
+        result.ShouldBeNull();
     }
 
     public void Dispose()

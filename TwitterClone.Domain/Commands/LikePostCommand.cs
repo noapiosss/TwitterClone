@@ -1,14 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace TwitterClone.Domain.Commands;
 
@@ -41,8 +42,8 @@ public class LikePostCommandHandler : IRequestHandler<LikePostCommand, LikePostC
             LikedByUsername = request.LikedByUsername
         };
 
-        var postExists = await _dbContext.Posts.AnyAsync(p => p.PostId == request.LikedPostId);
-        var userExists = await _dbContext.Users.AnyAsync(u => u.Username == request.LikedByUsername);
+        var postExists = await _dbContext.Posts.AnyAsync(p => p.PostId == request.LikedPostId, cancellationToken);
+        var userExists = await _dbContext.Users.AnyAsync(u => u.Username == request.LikedByUsername, cancellationToken);
 
         if (!postExists || !userExists)
         {
@@ -55,11 +56,11 @@ public class LikePostCommandHandler : IRequestHandler<LikePostCommand, LikePostC
 
         }
 
-        if (await _dbContext.Likes.Where(l => l.LikedPostId == request.LikedPostId && l.LikedByUsername == request.LikedByUsername).CountAsync() == 0)
+        if (!await _dbContext.Likes.AnyAsync(l => l.LikedPostId == request.LikedPostId && l.LikedByUsername == request.LikedByUsername, cancellationToken))
         {
             await _dbContext.AddAsync(like, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-        } 
+        }
         else
         {
             _dbContext.Likes.Attach(like);

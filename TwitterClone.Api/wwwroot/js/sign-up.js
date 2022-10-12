@@ -2,8 +2,17 @@ const username = document.getElementById("username");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const signUpBtn = document.getElementById("sign-up-button");
+const usernameIsAlreadyTakenLabel = document.getElementById("username-is-already-taken-label");
+const emailIsAlreadyTakenLabel = document.getElementById("email-is-already-taken-label");
 
-
+document.body.onload = async () => 
+{
+    if (await fetch(`${window.location.origin}/api/users/username`)
+        .then((response) => response.text()) !== "")
+    {
+        window.location.replace(`${document.location.origin}/home`);
+    }
+}
 
 signUpBtn.addEventListener("click", () => 
 {
@@ -21,37 +30,30 @@ signUpBtn.addEventListener("click", () =>
         },
         body: JSON.stringify(newUser)
     })
-    .then((response) => response.json())
-    .then((result) => {
-        console.log(result.isRegistrationSuccessful);
-        console.log(result.usernameIsAlreadyInUse);
-        console.log(result.emailIsAlreadyInUse);
-        if (!result.isRegistrationSuccessful)
+    .then((response) => {
+        if (response.ok)
         {
-            if (result.usernameIsAlreadyInUse)
-            {
-                const usernameIsAlreadyTakenLabel = document.createElement('label');
-                usernameIsAlreadyTakenLabel.innerText = "Username is already in use!";
-                usernameIsAlreadyTakenLabel.style.color = "red";
-                const usernameContainer = document.getElementById('username-container');
-                usernameContainer.appendChild(usernameIsAlreadyTakenLabel);
-            }
-            if (result.emailIsAlreadyInUse)
-            {
-                const emailIsAlreadyTakenLabel = document.createElement('label');
-                emailIsAlreadyTakenLabel.innerText = "Email is already in use!";
-                emailIsAlreadyTakenLabel.style.color = "red";
-                const usernameContainer = document.getElementById('email-container');
-                usernameContainer.appendChild(emailIsAlreadyTakenLabel);
-            }
+            window.location.replace(`${document.location.origin}/home`);
+        }
+        return response.json();
+    })
+    .then((result) => {
+        if (result.message === "username is already in use")
+        {
+            usernameIsAlreadyTakenLabel.innerText = "Username is already in use!";
         }
         else
         {
-            window.location.replace(`${document.location.origin}/sign-in`);
+            usernameIsAlreadyTakenLabel.innerText = "";
+        }
+
+        if (result.message === "email is already in use")
+        {
+            emailIsAlreadyTakenLabel.innerText = "Email is already in use!";
+        }
+        else
+        {
+            emailIsAlreadyTakenLabel.innerText = "";
         }
     })
-
-    //username.value = "";
-    //email.value = "";
-    //password.value = "";
 });

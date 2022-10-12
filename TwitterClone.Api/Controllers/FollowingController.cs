@@ -20,7 +20,7 @@ public class FollowingController : BaseController
 {
     private readonly IMediator _mediator;
 
-    public FollowingController (IMediator mediator)
+    public FollowingController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -57,16 +57,16 @@ public class FollowingController : BaseController
 
             if (!result.FollowStatusIsChanged)
             {
-                if(!result.FollowByUserExists)
+                if (!result.FollowByUserExists)
                 {
                     return BadRequest(new ErrorResponse
-                {
-                    Code = ErrorCode.UserNotFound,
-                    Message = "follower user not found"
-                });
+                    {
+                        Code = ErrorCode.UserNotFound,
+                        Message = "follower user not found"
+                    });
                 }
 
-                if(!result.FollowForUserExists)
+                if (!result.FollowForUserExists)
                 {
                     return BadRequest(new ErrorResponse
                     {
@@ -84,10 +84,10 @@ public class FollowingController : BaseController
             return Ok(response);
         }, cancellationToken);
 
-    
+
     [HttpGet("followings")]
     public Task<IActionResult> GetOwnFollowings(CancellationToken cancellationToken) =>
-        SafeExecute(async () => 
+        SafeExecute(async () =>
         {
             if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name) == null)
             {
@@ -105,7 +105,7 @@ public class FollowingController : BaseController
 
             var result = await _mediator.Send(query, cancellationToken);
             var response = new GetFollowingsResponse
-            {                
+            {
                 Followings = result.Followings
             };
 
@@ -114,7 +114,7 @@ public class FollowingController : BaseController
 
     [HttpGet("followers")]
     public Task<IActionResult> GetOwnFollowers(CancellationToken cancellationToken) =>
-        SafeExecute(async () => 
+        SafeExecute(async () =>
         {
             if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name) == null)
             {
@@ -132,7 +132,7 @@ public class FollowingController : BaseController
 
             var result = await _mediator.Send(query, cancellationToken);
             var response = new GetFollowersResponse
-            {                
+            {
                 Followers = result.Followers
             };
 
@@ -141,7 +141,7 @@ public class FollowingController : BaseController
 
     [HttpGet("{username}/followings")]
     public Task<IActionResult> GetUserFollowings([FromRoute] string username, CancellationToken cancellationToken) =>
-        SafeExecute(async () => 
+        SafeExecute(async () =>
         {
             var query = new FollowingsQuery
             {
@@ -160,7 +160,7 @@ public class FollowingController : BaseController
             }
 
             var response = new GetFollowingsResponse
-            {                
+            {
                 Followings = result.Followings
             };
 
@@ -169,7 +169,7 @@ public class FollowingController : BaseController
 
     [HttpGet("{username}/followers")]
     public Task<IActionResult> GetUserFollowers([FromRoute] string username, CancellationToken cancellationToken) =>
-        SafeExecute(async () => 
+        SafeExecute(async () =>
         {
             var query = new FollowersQuery
             {
@@ -188,7 +188,7 @@ public class FollowingController : BaseController
             }
 
             var response = new GetFollowersResponse
-            {                
+            {
                 Followers = result.Followers
             };
 

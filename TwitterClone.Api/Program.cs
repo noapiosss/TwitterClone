@@ -1,12 +1,12 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 using TwitterClone.Api.Configuration;
-using Microsoft.AspNetCore.Http;
 using TwitterClone.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,12 +26,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.LoginPath = new PathString("/sign-in.html");
         options.LogoutPath = new PathString("/sign-out");
-        
+
     });
 
 builder.Services.Configure<AppConfiguration>(builder.Configuration);
 
-builder.Services.AddDomainServices((sp, options) => 
+builder.Services.AddDomainServices((sp, options) =>
 {
     var configuration = sp.GetRequiredService<IOptionsMonitor<AppConfiguration>>();
     options.UseNpgsql(configuration.CurrentValue.ConnectionString);

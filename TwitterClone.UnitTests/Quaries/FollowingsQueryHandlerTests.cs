@@ -41,11 +41,11 @@ public class FollowingsQueryHandlerTest : IDisposable
 
         await _dbContext.AddAsync(mainUser);
         await _dbContext.SaveChangesAsync();
-        
+
         var rnd = new Random();
 
         var usernamesThatFollowed = new List<string>();
-        var countOfFollowings = rnd.Next(1,10);
+        var countOfFollowings = rnd.Next(1, 10);
 
         for (int i = 0; i < countOfFollowings; ++i)
         {
@@ -86,7 +86,7 @@ public class FollowingsQueryHandlerTest : IDisposable
         result.ShouldNotBeNull();
         result.Followings.Count.ShouldBeEquivalentTo(countOfFollowings);
     }
-    
+
     [Fact]
     public async Task HandlerShouldReturnNullIfUserUnexists()
     {
@@ -101,7 +101,7 @@ public class FollowingsQueryHandlerTest : IDisposable
 
         // Assert
         result.ShouldBeNull();
-    }  
+    }
 
     public void Dispose()
     {

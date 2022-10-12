@@ -10,9 +10,9 @@ public class CreatePostRequest
     [Required]
     [MaxLength(50)]
     public string AuthorUsername { get; init; }
-    
+
     public int? CommentTo { get; init; }
-    
+
     [Required]
     [MaxLength(255)]
     public string Message { get; init; }

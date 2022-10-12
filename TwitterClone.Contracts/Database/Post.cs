@@ -15,19 +15,19 @@ public class Post
 
     [Column("author")]
     public string AuthorUsername { get; set; }
-    public User Author {get;set;}
+    public User Author { get; set; }
 
     [Column("comment_to")]
     public int? CommentTo { get; set; }
 
     [Column("post_date")]
     public DateTime PostDate { get; set; }
-    
+
     [Required]
     [MaxLength(256)]
     [Column("message")]
     public string Message { get; set; }
-    
+
     public ICollection<Like> Likes { get; set; }
-    
+
 }

@@ -7,8 +7,8 @@ using MediatR;
 using Shouldly;
 
 using TwitterClone.Contracts.Database;
-using TwitterClone.Domain.Database;
 using TwitterClone.Domain.Commands;
+using TwitterClone.Domain.Database;
 using TwitterClone.UnitTests.Helpers;
 
 namespace TwitterClone.UnitTests.Queries;
@@ -47,7 +47,7 @@ public class FollowUserCommandHandlerTest : IDisposable
         await _dbContext.AddAsync(user1);
         await _dbContext.AddAsync(user2);
         await _dbContext.SaveChangesAsync();
-        
+
         var command = new FollowUserCommand
         {
             FollowByUsername = username1,
@@ -58,7 +58,7 @@ public class FollowUserCommandHandlerTest : IDisposable
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.ShouldNotBeNull();        
+        result.ShouldNotBeNull();
         result.FollowStatusIsChanged.ShouldBeTrue();
     }
 
@@ -76,7 +76,7 @@ public class FollowUserCommandHandlerTest : IDisposable
 
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
-        
+
         var command = new FollowUserCommand
         {
             FollowByUsername = username,
@@ -87,7 +87,7 @@ public class FollowUserCommandHandlerTest : IDisposable
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.ShouldNotBeNull();        
+        result.ShouldNotBeNull();
         result.FollowStatusIsChanged.ShouldBeFalse();
     }
 
@@ -105,7 +105,7 @@ public class FollowUserCommandHandlerTest : IDisposable
 
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
-        
+
         var command = new FollowUserCommand
         {
             FollowByUsername = Guid.NewGuid().ToString(),
@@ -116,7 +116,7 @@ public class FollowUserCommandHandlerTest : IDisposable
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.ShouldNotBeNull();        
+        result.ShouldNotBeNull();
         result.FollowStatusIsChanged.ShouldBeFalse();
     }
 

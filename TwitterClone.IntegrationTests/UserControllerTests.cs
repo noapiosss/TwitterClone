@@ -58,7 +58,7 @@ public class UserControllerTests
 
         // Act
         using var response = await _client.PutAsJsonAsync("/api/users", request);
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
@@ -85,7 +85,7 @@ public class UserControllerTests
 
         // Act
         using var response = await _client.PutAsJsonAsync("/api/users", request);
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var result = await response.Content.ReadFromJsonAsync<ErrorResponse>();
@@ -109,7 +109,7 @@ public class UserControllerTests
 
         // Act
         using var response = await _client.PutAsJsonAsync("/api/users", request);
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var result = await response.Content.ReadFromJsonAsync<ErrorResponse>();
@@ -135,7 +135,7 @@ public class UserControllerTests
 
         // Act
         using var response = await _client.GetAsync($"/api/users/{_user.Username}/posts");
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var result = (await response.Content.ReadFromJsonAsync<GetUserPostsResponse>()).UserPosts.ToList();
@@ -144,7 +144,7 @@ public class UserControllerTests
             .OrderByDescending(p => p.PostDate)
             .ToListAsync();
         result.Count.ShouldBeEquivalentTo(resultDb.Count());
-        for (int i = 0; i <  resultDb.Count; ++i)
+        for (int i = 0; i < resultDb.Count; ++i)
         {
             result[i].PostId.ShouldBeEquivalentTo(resultDb[i].PostId);
         }
@@ -157,7 +157,7 @@ public class UserControllerTests
 
         // Act
         using var response = await _client.GetAsync($"/api/users/{Guid.NewGuid().ToString()}/posts");
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var result = await response.Content.ReadFromJsonAsync<ErrorResponse>();
@@ -179,7 +179,7 @@ public class UserControllerTests
 
         // Act
         using var response = await _client.GetAsync($"/api/users/homepage");
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var result = (await response.Content.ReadFromJsonAsync<GetHomePagePostsResponse>()).HomepagePosts.ToList();
@@ -192,7 +192,7 @@ public class UserControllerTests
         var userOwnPosts = await _dbContext.Posts
             .Where(p => p.AuthorUsername == _user.Username)
             .ToListAsync();
-        
+
         var resultDb = new List<Post>();
         resultDb.AddRange(userOwnPosts);
         resultDb.AddRange(userFollowings.SelectMany(f => f.FollowForUser.Posts).ToList());
@@ -202,7 +202,7 @@ public class UserControllerTests
         for (int i = 0; i < result.Count; ++i)
         {
             result[i].PostId.ShouldBeEquivalentTo(resultDb[i].PostId);
-        }        
+        }
     }
 
     [Fact]
@@ -212,7 +212,7 @@ public class UserControllerTests
 
         // Act
         using var response = await _client.GetAsync("/api/users/homepage");
-        
+
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var result = await response.Content.ReadFromJsonAsync<ErrorResponse>();
@@ -231,7 +231,7 @@ public class UserControllerTests
         await _client.PostAsJsonAsync("/sign-in", signInRequest);
 
         var rnd = new Random();
-        var randomLikeActionCount = rnd.Next(1,10);
+        var randomLikeActionCount = rnd.Next(1, 10);
         var allPostIds = await _dbContext.Posts.Select(p => p.PostId).ToListAsync();
 
         for (int i = 0; i < randomLikeActionCount; ++i)
@@ -239,10 +239,10 @@ public class UserControllerTests
             var likePostRequest = new HttpRequestMessage(HttpMethod.Patch, "/api/likes");
             likePostRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             likePostRequest.Content = JsonContent.Create(new LikePostRequest
-                {
-                    LikedByUsername = _user.Username,
-                    LikedPostId = allPostIds[rnd.Next(allPostIds.Count)]
-                });
+            {
+                LikedByUsername = _user.Username,
+                LikedPostId = allPostIds[rnd.Next(allPostIds.Count)]
+            });
             likePostRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
             await _client.SendAsync(likePostRequest);
         }

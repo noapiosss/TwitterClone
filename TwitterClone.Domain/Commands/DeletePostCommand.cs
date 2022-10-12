@@ -1,14 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace TwitterClone.Domain.Commands;
 
@@ -36,8 +37,8 @@ internal class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, Del
     }
     public async Task<DeletePostCommandResult> Handle(DeletePostCommand request, CancellationToken cancellationToken = default)
     {
-        var post = await _dbContext.Posts.FirstOrDefaultAsync(p => p.PostId == request.PostId);
-        
+        var post = await _dbContext.Posts.FirstOrDefaultAsync(p => p.PostId == request.PostId, cancellationToken);
+
         if (post == null)
         {
             return new DeletePostCommandResult
@@ -46,7 +47,7 @@ internal class DeletePostCommandHandler : IRequestHandler<DeletePostCommand, Del
                 PostExist = false
             };
         }
-        
+
         if (post.AuthorUsername != request.Username)
         {
             return new DeletePostCommandResult

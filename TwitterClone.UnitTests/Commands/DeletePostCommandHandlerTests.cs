@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,10 +8,9 @@ using MediatR;
 using Shouldly;
 
 using TwitterClone.Contracts.Database;
-using TwitterClone.Domain.Database;
 using TwitterClone.Domain.Commands;
+using TwitterClone.Domain.Database;
 using TwitterClone.UnitTests.Helpers;
-using System.Linq;
 
 namespace TwitterClone.UnitTests.Queries;
 
@@ -39,7 +39,7 @@ public class DeletePostCommandHandlerTest : IDisposable
 
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
-        
+
         var post = new Post
         {
             AuthorUsername = username,
@@ -59,7 +59,7 @@ public class DeletePostCommandHandlerTest : IDisposable
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.ShouldNotBeNull();        
+        result.ShouldNotBeNull();
         result.DeleteIsSuccessful.ShouldBeTrue();
 
     }
@@ -78,7 +78,7 @@ public class DeletePostCommandHandlerTest : IDisposable
 
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
-        
+
         var post = new Post
         {
             AuthorUsername = username,
@@ -98,7 +98,7 @@ public class DeletePostCommandHandlerTest : IDisposable
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.ShouldNotBeNull();        
+        result.ShouldNotBeNull();
         result.DeleteIsSuccessful.ShouldBeFalse();
 
     }
@@ -117,7 +117,7 @@ public class DeletePostCommandHandlerTest : IDisposable
 
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
-        
+
         var post = new Post
         {
             AuthorUsername = username,
@@ -137,7 +137,7 @@ public class DeletePostCommandHandlerTest : IDisposable
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.ShouldNotBeNull();        
+        result.ShouldNotBeNull();
         result.DeleteIsSuccessful.ShouldBeFalse();
     }
 

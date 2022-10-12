@@ -19,7 +19,7 @@ public class LikeController : BaseController
 {
     private readonly IMediator _mediator;
 
-    public LikeController (IMediator mediator)
+    public LikeController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -47,7 +47,7 @@ public class LikeController : BaseController
 
             if (!result.LikeStatusIsChanged)
             {
-                if(!result.PostExists)
+                if (!result.PostExists)
                 {
                     return BadRequest(new ErrorResponse
                     {
@@ -56,7 +56,7 @@ public class LikeController : BaseController
                     });
                 }
 
-                if(!result.UserExists)
+                if (!result.UserExists)
                 {
                     return BadRequest(new ErrorResponse
                     {
@@ -76,7 +76,7 @@ public class LikeController : BaseController
 
     [HttpGet("{postId}")]
     public Task<IActionResult> GetPostLikes([FromRoute] int postId, CancellationToken cancellationToken) =>
-        SafeExecute(async () => 
+        SafeExecute(async () =>
         {
             var query = new LikeQuery
             {
@@ -95,7 +95,7 @@ public class LikeController : BaseController
             }
 
             var response = new GetLikesResponse
-            {                
+            {
                 UsersThatLikePost = result.UsersThatLikePost
             };
 
@@ -104,7 +104,7 @@ public class LikeController : BaseController
 
     [HttpGet]
     public Task<IActionResult> GetUserLikes(CancellationToken cancellationToken) =>
-        SafeExecute(async () => 
+        SafeExecute(async () =>
         {
             if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name) == null)
             {
@@ -132,7 +132,7 @@ public class LikeController : BaseController
             }
 
             var response = new GetPostsThatUserLikeResponse
-            {                
+            {
                 PostIdsThatUserLike = result.PostIdsThatUserLike
             };
 

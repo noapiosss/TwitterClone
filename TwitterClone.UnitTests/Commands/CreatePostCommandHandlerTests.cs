@@ -7,8 +7,8 @@ using MediatR;
 using Shouldly;
 
 using TwitterClone.Contracts.Database;
-using TwitterClone.Domain.Database;
 using TwitterClone.Domain.Commands;
+using TwitterClone.Domain.Database;
 using TwitterClone.UnitTests.Helpers;
 
 namespace TwitterClone.UnitTests.Queries;
@@ -38,7 +38,7 @@ public class CreatePostCommandHandlerTest : IDisposable
 
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
-        
+
         var command = new CreatePostCommand
         {
             AuthorUsername = username,
@@ -49,7 +49,7 @@ public class CreatePostCommandHandlerTest : IDisposable
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.ShouldNotBeNull();        
+        result.ShouldNotBeNull();
         result.PostIsCreated.ShouldBeTrue();
 
     }

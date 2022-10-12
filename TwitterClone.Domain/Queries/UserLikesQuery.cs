@@ -32,7 +32,7 @@ internal class UserLikesQueryHandler : IRequestHandler<UserLikesQuery, UserLikes
     }
     public async Task<UserLikesQueryResult> Handle(UserLikesQuery request, CancellationToken cancellationToken)
     {
-        if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
+        if (!await _dbContext.Users.AnyAsync(u => u.Username == request.Username, cancellationToken))
         {
             return null;
         }
@@ -40,7 +40,7 @@ internal class UserLikesQueryHandler : IRequestHandler<UserLikesQuery, UserLikes
         var postIdsThatUserLike = await _dbContext.Likes
             .Where(l => l.LikedByUsername == request.Username)
             .Select(l => l.LikedPostId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return new UserLikesQueryResult
         {

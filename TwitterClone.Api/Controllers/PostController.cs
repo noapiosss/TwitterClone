@@ -19,7 +19,7 @@ public class PostController : BaseController
 {
     private readonly IMediator _mediator;
 
-    public PostController (IMediator mediator)
+    public PostController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -56,7 +56,7 @@ public class PostController : BaseController
                         Message = "author doest not exist"
                     });
                 }
-                
+
                 if (!result.OriginPostExists)
                 {
                     return BadRequest(new ErrorResponse
@@ -87,7 +87,7 @@ public class PostController : BaseController
 
     [HttpGet("{postId}")]
     public Task<IActionResult> GetPost([FromRoute] int postId, CancellationToken cancellationToken) =>
-        SafeExecute(async () => 
+        SafeExecute(async () =>
         {
             var query = new PostQuery
             {
@@ -106,7 +106,7 @@ public class PostController : BaseController
             }
 
             var response = new GetPostResponse
-            {                
+            {
                 Post = result.Post,
                 LikedByUsername = result.LikedByUsername,
                 Comments = result.Comments
@@ -117,7 +117,7 @@ public class PostController : BaseController
 
     [HttpDelete]
     public Task<IActionResult> DeletePost([FromBody] DeletePostRequest request, CancellationToken cancellationToken) =>
-        SafeExecute(async () => 
+        SafeExecute(async () =>
         {
             if (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name) == null)
             {

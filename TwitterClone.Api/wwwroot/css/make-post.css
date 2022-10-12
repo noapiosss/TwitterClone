@@ -1,6 +1,6 @@
 .make-new-post-wrapper
 {
-
+    padding-bottom: 5px;
 }
 
 .username
@@ -20,8 +20,7 @@
 
 .make-new-post-button
 {
+    margin-top: 5px;
     margin-left: 1%;
-    background-color: rgb(75, 55, 255);
-    color: white;
     border-radius: 15px;
 }

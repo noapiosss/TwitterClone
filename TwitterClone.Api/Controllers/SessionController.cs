@@ -1,32 +1,32 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 using TwitterClone.Contracts.Http;
 using TwitterClone.Domain.Queries;
-using Microsoft.AspNetCore.Authorization;
-using System.Linq;
 
 namespace TwitterClone.Api.Controllers
 {
-    
+
     public class SessionController : BaseController
     {
         private readonly IMediator _mediator;
 
-        public SessionController (IMediator mediator)
+        public SessionController(IMediator mediator)
         {
             _mediator = mediator;
-        }        
+        }
 
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] SignInRequest request, CancellationToken cancellationToken)
@@ -52,7 +52,7 @@ namespace TwitterClone.Api.Controllers
 
             if (!response.IsAuthenticated)
             {
-                if(!response.UserIsFound)
+                if (!response.UserIsFound)
                 {
                     return BadRequest(new ErrorResponse
                     {
@@ -61,7 +61,7 @@ namespace TwitterClone.Api.Controllers
                     });
                 }
 
-                if(!response.PasswordIsCorrect)
+                if (!response.PasswordIsCorrect)
                 {
                     return BadRequest(new ErrorResponse
                     {
@@ -86,7 +86,7 @@ namespace TwitterClone.Api.Controllers
                 authProperties);
 
             return Ok();
-        
+
         }
 
         [HttpGet("sign-out")]
@@ -94,6 +94,6 @@ namespace TwitterClone.Api.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok();
-        }        
-    }    
+        }
+    }
 }

@@ -9,7 +9,7 @@ public class FollowUserRequest
 {
     [Required]
     public string FollowByUsername { get; init; }
-    
+
     [Required]
     public string FollowForUsername { get; init; }
 }

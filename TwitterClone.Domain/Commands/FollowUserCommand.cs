@@ -1,14 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace TwitterClone.Domain.Commands;
 
@@ -41,8 +42,8 @@ internal class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, Fol
             FollowForUsername = request.FollowForUsername
         };
 
-        var followByUserExists = await _dbContext.Users.AnyAsync(u => u.Username == request.FollowByUsername);
-        var followForUserExists = await _dbContext.Users.AnyAsync(u => u.Username == request.FollowForUsername);
+        var followByUserExists = await _dbContext.Users.AnyAsync(u => u.Username == request.FollowByUsername, cancellationToken);
+        var followForUserExists = await _dbContext.Users.AnyAsync(u => u.Username == request.FollowForUsername, cancellationToken);
 
         if (!followByUserExists || !followForUserExists)
         {
@@ -54,11 +55,11 @@ internal class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, Fol
             };
         }
 
-        if (await _dbContext.Followings.Where(f => f.FollowByUsername == request.FollowByUsername && f.FollowForUsername == request.FollowForUsername).CountAsync() == 0)
+        if (!await _dbContext.Followings.AnyAsync(f => f.FollowByUsername == request.FollowByUsername && f.FollowForUsername == request.FollowForUsername, cancellationToken))
         {
             await _dbContext.AddAsync(following, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-        } 
+        }
         else
         {
             _dbContext.Followings.Attach(following);
