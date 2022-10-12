@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+
 using TwitterClone.Contracts.Database;
 
 namespace TwitterClone.Domain.Database;
 
 public class TwitterCloneDbContext : DbContext
-{  
+{
     public DbSet<User> Users { get; init; }
     public DbSet<Post> Posts { get; init; }
     public DbSet<Following> Followings { get; init; }
@@ -12,7 +13,7 @@ public class TwitterCloneDbContext : DbContext
 
     public TwitterCloneDbContext() : base()
     {
-    }  
+    }
     public TwitterCloneDbContext(DbContextOptions<TwitterCloneDbContext> options) : base(options)
     {
     }
@@ -23,7 +24,7 @@ public class TwitterCloneDbContext : DbContext
             .HasMany(u => u.Posts)
             .WithOne(p => p.Author)
             .HasForeignKey(u => u.AuthorUsername);
-        
+
         modelBuilder.Entity<Like>().HasKey(nameof(Like.LikedPostId), nameof(Like.LikedByUsername));
         modelBuilder.Entity<Like>()
             .HasOne(l => l.LikedBy)
@@ -32,7 +33,7 @@ public class TwitterCloneDbContext : DbContext
         modelBuilder.Entity<Like>()
             .HasOne(l => l.LikedPost)
             .WithMany(p => p.Likes)
-            .HasForeignKey(l => l.LikedPostId);        
+            .HasForeignKey(l => l.LikedPostId);
 
         modelBuilder.Entity<Following>().HasKey(nameof(Following.FollowByUsername), nameof(Following.FollowForUsername));
         modelBuilder.Entity<Following>()
@@ -47,6 +48,6 @@ public class TwitterCloneDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        
+
     }
 }

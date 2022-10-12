@@ -56,14 +56,14 @@ public class FollowingControllerTests
         var allUsernames = await _dbContext.Users.Select(u => u.Username).ToListAsync();
         var randomUsername = allUsernames[rnd.Next(allUsernames.Count)];
         var wasFollowed = await _dbContext.Followings.AnyAsync(f => f.FollowByUsername == _user.Username && f.FollowForUsername == randomUsername);
-        
+
         var followUserRequest = new HttpRequestMessage(HttpMethod.Patch, "/api/follow");
         followUserRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         followUserRequest.Content = JsonContent.Create(new FollowUserRequest
-            {
-                FollowForUsername = randomUsername
-            });
-        followUserRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");        
+        {
+            FollowForUsername = randomUsername
+        });
+        followUserRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
 
         // Act
         using var response = await _client.SendAsync(followUserRequest);
@@ -85,15 +85,15 @@ public class FollowingControllerTests
 
         var allUsernames = await _dbContext.Users.Select(u => u.Username).ToListAsync();
         var randomUsername = allUsernames[rnd.Next(allUsernames.Count)];
-        
+
         var followUserRequest = new HttpRequestMessage(HttpMethod.Patch, "/api/follow");
         followUserRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         followUserRequest.Content = JsonContent.Create(new FollowUserRequest
-            {
-                FollowByUsername = _user.Username,
-                FollowForUsername = randomUsername
-            });
-        followUserRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");        
+        {
+            FollowByUsername = _user.Username,
+            FollowForUsername = randomUsername
+        });
+        followUserRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
 
         // Act
         using var response = await _client.SendAsync(followUserRequest);
@@ -114,14 +114,14 @@ public class FollowingControllerTests
             Password = _user.Password
         };
         await _client.PostAsJsonAsync("/sign-in", signInRequest);
-        
+
         var followUserRequest = new HttpRequestMessage(HttpMethod.Patch, "/api/follow");
         followUserRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         followUserRequest.Content = JsonContent.Create(new FollowUserRequest
-            {
-                FollowForUsername = _user.Username
-            });
-        followUserRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");        
+        {
+            FollowForUsername = _user.Username
+        });
+        followUserRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
 
         // Act
         using var response = await _client.SendAsync(followUserRequest);
@@ -142,14 +142,14 @@ public class FollowingControllerTests
             Password = _user.Password
         };
         await _client.PostAsJsonAsync("/sign-in", signInRequest);
-        
+
         var followUserRequest = new HttpRequestMessage(HttpMethod.Patch, "/api/follow");
         followUserRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         followUserRequest.Content = JsonContent.Create(new FollowUserRequest
-            {
-                FollowForUsername = Guid.NewGuid().ToString()
-            });
-        followUserRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");        
+        {
+            FollowForUsername = Guid.NewGuid().ToString()
+        });
+        followUserRequest.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json-patch+json");
 
         // Act
         using var response = await _client.SendAsync(followUserRequest);
@@ -169,7 +169,7 @@ public class FollowingControllerTests
             Username = _user.Username,
             Password = _user.Password
         };
-        await _client.PostAsJsonAsync("/sign-in", signInRequest);    
+        await _client.PostAsJsonAsync("/sign-in", signInRequest);
 
         // Act
         using var response = await _client.GetAsync("/api/followings");
@@ -208,7 +208,7 @@ public class FollowingControllerTests
             Username = _user.Username,
             Password = _user.Password
         };
-        await _client.PostAsJsonAsync("/sign-in", signInRequest);    
+        await _client.PostAsJsonAsync("/sign-in", signInRequest);
 
         // Act
         using var response = await _client.GetAsync("/api/followers");

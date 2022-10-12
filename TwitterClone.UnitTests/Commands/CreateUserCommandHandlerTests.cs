@@ -3,11 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
+
 using Shouldly;
 
 using TwitterClone.Domain.Commands;
-using TwitterClone.UnitTests.Helpers;
 using TwitterClone.Domain.Database;
+using TwitterClone.UnitTests.Helpers;
 
 namespace TwitterClone.UnitTests.Commands;
 
@@ -34,7 +35,7 @@ public class CreateUserCommandHandlerTests : IDisposable
             Username = newUsername,
             Email = newEmail,
             Password = newPassword
-        };        
+        };
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -58,14 +59,14 @@ public class CreateUserCommandHandlerTests : IDisposable
         var thirdUsername = Guid.NewGuid().ToString();
         var thirdEmail = firstEmail;
         var thirdPassword = Guid.NewGuid().ToString();
-        
+
         var addFirstUserCommand = new CreateUserCommand
         {
             Username = firsetUsername,
             Email = firstEmail,
             Password = firstPassword
         };
-        
+
         var addScondUserCommand = new CreateUserCommand
         {
             Username = secondUsername,

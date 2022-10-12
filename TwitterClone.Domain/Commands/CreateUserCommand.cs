@@ -1,14 +1,15 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using TwitterClone.Contracts.Database;
 using TwitterClone.Domain.Database;
-using System.Linq;
 using TwitterClone.Domain.Helpers;
-using Microsoft.EntityFrameworkCore;
 
 namespace TwitterClone.Domain.Commands;
 
@@ -37,8 +38,8 @@ internal class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Cre
     }
     public async Task<CreateUserCommandResult> Handle(CreateUserCommand request, CancellationToken cancellationToken = default)
     {
-        var usernameIsAlreadyInUse = await _dbContext.Users.AnyAsync(u => u.Username == request.Username) ? true : false;
-        var emailIsAlreadyInUse = await _dbContext.Users.AnyAsync(u => u.Email == request.Email) ? true : false;
+        var usernameIsAlreadyInUse = await _dbContext.Users.AnyAsync(u => u.Username == request.Username);
+        var emailIsAlreadyInUse = await _dbContext.Users.AnyAsync(u => u.Email == request.Email);
 
         if (usernameIsAlreadyInUse || emailIsAlreadyInUse)
         {
@@ -50,7 +51,7 @@ internal class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Cre
             };
         }
 
-        var user = new User 
+        var user = new User
         {
             Username = request.Username,
             Email = request.Email,

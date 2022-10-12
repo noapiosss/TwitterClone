@@ -11,7 +11,7 @@ public class CreateUserRequest
     [Required]
     [MaxLength(50)]
     public string Email { get; init; }
-    
+
     [Required]
     [MaxLength(50)]
     public string Password { get; init; }

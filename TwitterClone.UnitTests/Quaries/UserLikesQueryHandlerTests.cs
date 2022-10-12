@@ -42,7 +42,7 @@ public class UserLikesQueryHandlerTest : IDisposable
         await _dbContext.SaveChangesAsync();
 
         var rnd = new Random();
-        
+
         var anotherUsersCount = rnd.Next(1, 10);
         for (int i = 0; i < anotherUsersCount; ++i)
         {
@@ -70,7 +70,7 @@ public class UserLikesQueryHandlerTest : IDisposable
         }
 
         await _dbContext.SaveChangesAsync();
-        
+
         var likedPostsCount = rnd.Next(0, anotherPostsCount);
         for (int i = 1; i <= likedPostsCount; ++i)
         {
@@ -81,19 +81,19 @@ public class UserLikesQueryHandlerTest : IDisposable
             };
             await _dbContext.AddAsync(like);
         }
-        
+
         await _dbContext.SaveChangesAsync();
 
         var query = new UserLikesQuery
         {
-            Username = likerUsername            
+            Username = likerUsername
         };
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.PostIdsThatUserLike.Count.ShouldBeEquivalentTo(likedPostsCount);        
+        result.PostIdsThatUserLike.Count.ShouldBeEquivalentTo(likedPostsCount);
     }
 
     [Fact]
@@ -102,14 +102,14 @@ public class UserLikesQueryHandlerTest : IDisposable
         // Arrange
         var query = new UserLikesQuery
         {
-            Username = Guid.NewGuid().ToString()            
+            Username = Guid.NewGuid().ToString()
         };
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
-        result.ShouldBeNull();        
+        result.ShouldBeNull();
     }
 
     public void Dispose()

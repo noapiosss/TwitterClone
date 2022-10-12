@@ -32,7 +32,7 @@ internal class LikeQueryHandler : IRequestHandler<LikeQuery, LikeQueryResult>
     }
     public async Task<LikeQueryResult> Handle(LikeQuery request, CancellationToken cancellationToken)
     {
-        if (!(await _dbContext.Posts.AnyAsync(p => p.PostId == request.PostId)))
+        if (!await _dbContext.Posts.AnyAsync(p => p.PostId == request.PostId))
         {
             return null;
         }

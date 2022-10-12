@@ -44,7 +44,7 @@ public class UserPostsQueryHandlerTest : IDisposable
         {
             var userPost = new Post
             {
-                AuthorUsername  = username,
+                AuthorUsername = username,
                 PostDate = new DateTime(2005, 5, 5, 5, 5, 5),
                 Message = Guid.NewGuid().ToString()
             };

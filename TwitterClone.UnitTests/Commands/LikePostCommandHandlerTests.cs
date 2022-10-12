@@ -7,8 +7,8 @@ using MediatR;
 using Shouldly;
 
 using TwitterClone.Contracts.Database;
-using TwitterClone.Domain.Database;
 using TwitterClone.Domain.Commands;
+using TwitterClone.Domain.Database;
 using TwitterClone.UnitTests.Helpers;
 
 namespace TwitterClone.UnitTests.Queries;
@@ -47,7 +47,7 @@ public class LikePostCommandHandlerTest : IDisposable
 
         await _dbContext.AddAsync(post);
         await _dbContext.SaveChangesAsync();
-        
+
         var command = new LikePostCommand
         {
             LikedPostId = 1,
@@ -58,7 +58,7 @@ public class LikePostCommandHandlerTest : IDisposable
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.ShouldNotBeNull();        
+        result.ShouldNotBeNull();
         result.LikeStatusIsChanged.ShouldBeTrue();
     }
 
@@ -76,7 +76,7 @@ public class LikePostCommandHandlerTest : IDisposable
 
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
-        
+
         var command = new LikePostCommand
         {
             LikedPostId = 1,
@@ -87,7 +87,7 @@ public class LikePostCommandHandlerTest : IDisposable
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.ShouldNotBeNull();        
+        result.ShouldNotBeNull();
         result.LikeStatusIsChanged.ShouldBeFalse();
     }
 
@@ -114,7 +114,7 @@ public class LikePostCommandHandlerTest : IDisposable
 
         await _dbContext.AddAsync(post);
         await _dbContext.SaveChangesAsync();
-        
+
         var command = new LikePostCommand
         {
             LikedPostId = 1,
@@ -125,7 +125,7 @@ public class LikePostCommandHandlerTest : IDisposable
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        result.ShouldNotBeNull();        
+        result.ShouldNotBeNull();
         result.LikeStatusIsChanged.ShouldBeFalse();
     }
 

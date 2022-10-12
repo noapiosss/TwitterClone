@@ -32,7 +32,7 @@ internal class FollowersQueryHandler : IRequestHandler<FollowersQuery, Followers
     }
     public async Task<FollowersQueryResult> Handle(FollowersQuery request, CancellationToken cancellationToken)
     {
-        if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
+        if (!await _dbContext.Users.AnyAsync(u => u.Username == request.Username))
         {
             return null;
         }

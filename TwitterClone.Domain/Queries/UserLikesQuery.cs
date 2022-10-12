@@ -32,7 +32,7 @@ internal class UserLikesQueryHandler : IRequestHandler<UserLikesQuery, UserLikes
     }
     public async Task<UserLikesQueryResult> Handle(UserLikesQuery request, CancellationToken cancellationToken)
     {
-        if (!(await _dbContext.Users.AnyAsync(u => u.Username == request.Username)))
+        if (!await _dbContext.Users.AnyAsync(u => u.Username == request.Username))
         {
             return null;
         }

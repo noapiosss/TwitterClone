@@ -15,8 +15,8 @@ public static class TwitterCloneDomainExtensions
 {
     public static IServiceCollection AddDomainServices(this IServiceCollection services,
         Action<IServiceProvider, DbContextOptionsBuilder> dbOptionsAction)
-        {
-            return services.AddMediatR(typeof(CreateUserCommand))
-                .AddDbContext<TwitterCloneDbContext>(dbOptionsAction);;
-        }
+    {
+        return services.AddMediatR(typeof(CreateUserCommand))
+            .AddDbContext<TwitterCloneDbContext>(dbOptionsAction); ;
+    }
 }

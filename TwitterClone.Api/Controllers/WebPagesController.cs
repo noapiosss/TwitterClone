@@ -1,4 +1,5 @@
 using System.Threading;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace TwitterClone.Api.Controllers;
@@ -15,8 +16,8 @@ public class WebPagesController : BaseController
             Content = html,
             ContentType = "text/html"
         };
-    }        
-    
+    }
+
     [HttpGet("sign-in")]
     public ContentResult GetSignInPage(CancellationToken cancellationToken)
     {
@@ -29,7 +30,7 @@ public class WebPagesController : BaseController
         };
     }
 
-    
+
     [HttpGet("home")]
     public ContentResult GetHomePage(CancellationToken cancellationToken)
     {

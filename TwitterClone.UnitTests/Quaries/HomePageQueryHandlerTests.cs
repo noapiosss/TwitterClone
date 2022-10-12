@@ -41,7 +41,7 @@ public class HomePageQueryHandlerTest : IDisposable
 
         await _dbContext.AddAsync(mainUser);
         await _dbContext.SaveChangesAsync();
-        
+
         var rnd = new Random();
 
         var countOfOwnPosts = rnd.Next(1, 10);
@@ -80,7 +80,7 @@ public class HomePageQueryHandlerTest : IDisposable
         await _dbContext.SaveChangesAsync();
 
         int countOfFollowingsPosts = rnd.Next(1, 20);
-        
+
         for (int i = 0; i < countOfFollowingsPosts; ++i)
         {
             var followingPost = new Post

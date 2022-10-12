@@ -41,7 +41,7 @@ public class SignInQueryHandlerTest : IDisposable
 
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
-        
+
         var query = new SignInQuery
         {
             Username = username,
@@ -91,7 +91,7 @@ public class SignInQueryHandlerTest : IDisposable
 
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
-        
+
         var query = new SignInQuery
         {
             Username = username,
