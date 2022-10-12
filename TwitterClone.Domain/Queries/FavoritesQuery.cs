@@ -33,7 +33,7 @@ internal class FavoritesQueryHandler : IRequestHandler<FavoritesQuery, Favorites
     }
     public async Task<FavoritesQueryResult> Handle(FavoritesQuery request, CancellationToken cancellationToken)
     {
-        if (!await _dbContext.Users.AnyAsync(u => u.Username == request.Username))
+        if (!await _dbContext.Users.AnyAsync(u => u.Username == request.Username, cancellationToken))
         {
             return null;
         }
@@ -41,7 +41,7 @@ internal class FavoritesQueryHandler : IRequestHandler<FavoritesQuery, Favorites
         var likedPosts = await _dbContext.Likes
             .Where(l => l.LikedByUsername == request.Username)
             .Include(l => l.LikedPost)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return new FavoritesQueryResult
         {

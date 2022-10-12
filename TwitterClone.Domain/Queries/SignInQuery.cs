@@ -37,7 +37,7 @@ internal class SignInQueryHandler : IRequestHandler<SignInQuery, SignInQueryResu
     public async Task<SignInQueryResult> Handle(SignInQuery request, CancellationToken cancellationToken)
     {
         var user = await _dbContext.Users
-            .FirstOrDefaultAsync(u => u.Username == request.Username);
+            .FirstOrDefaultAsync(u => u.Username == request.Username, cancellationToken);
 
         if (user == null)
         {

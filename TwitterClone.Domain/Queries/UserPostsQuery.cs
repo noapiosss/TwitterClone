@@ -33,7 +33,7 @@ internal class UserPostsQueryHandler : IRequestHandler<UserPostsQuery, UserPosts
     }
     public async Task<UserPostsQueryResult> Handle(UserPostsQuery request, CancellationToken cancellationToken)
     {
-        if (!await _dbContext.Users.AnyAsync(u => u.Username == request.Username))
+        if (!await _dbContext.Users.AnyAsync(u => u.Username == request.Username, cancellationToken))
         {
             return null;
         }
@@ -41,7 +41,7 @@ internal class UserPostsQueryHandler : IRequestHandler<UserPostsQuery, UserPosts
         var userPosts = await _dbContext.Posts
             .Where(p => p.AuthorUsername == request.Username)
             .OrderByDescending(p => p.PostDate)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return new UserPostsQueryResult
         {

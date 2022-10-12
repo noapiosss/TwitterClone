@@ -38,8 +38,8 @@ internal class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Cre
     }
     public async Task<CreateUserCommandResult> Handle(CreateUserCommand request, CancellationToken cancellationToken = default)
     {
-        var usernameIsAlreadyInUse = await _dbContext.Users.AnyAsync(u => u.Username == request.Username);
-        var emailIsAlreadyInUse = await _dbContext.Users.AnyAsync(u => u.Email == request.Email);
+        var usernameIsAlreadyInUse = await _dbContext.Users.AnyAsync(u => u.Username == request.Username, cancellationToken);
+        var emailIsAlreadyInUse = await _dbContext.Users.AnyAsync(u => u.Email == request.Email, cancellationToken);
 
         if (usernameIsAlreadyInUse || emailIsAlreadyInUse)
         {

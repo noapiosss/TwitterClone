@@ -37,7 +37,7 @@ internal class PostQueryHandler : IRequestHandler<PostQuery, PostQueryResult>
     {
         var post = await _dbContext.Posts
             .Include(p => p.Likes)
-            .FirstOrDefaultAsync(p => p.PostId == request.PostId);
+            .FirstOrDefaultAsync(p => p.PostId == request.PostId, cancellationToken);
 
         if (post == null)
         {
@@ -47,7 +47,7 @@ internal class PostQueryHandler : IRequestHandler<PostQuery, PostQueryResult>
         var comments = await _dbContext.Posts
             .Where(p => p.CommentTo == request.PostId)
             .OrderByDescending(p => p.PostId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return new PostQueryResult
         {

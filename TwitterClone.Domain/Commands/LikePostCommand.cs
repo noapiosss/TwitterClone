@@ -42,8 +42,8 @@ public class LikePostCommandHandler : IRequestHandler<LikePostCommand, LikePostC
             LikedByUsername = request.LikedByUsername
         };
 
-        var postExists = await _dbContext.Posts.AnyAsync(p => p.PostId == request.LikedPostId);
-        var userExists = await _dbContext.Users.AnyAsync(u => u.Username == request.LikedByUsername);
+        var postExists = await _dbContext.Posts.AnyAsync(p => p.PostId == request.LikedPostId, cancellationToken);
+        var userExists = await _dbContext.Users.AnyAsync(u => u.Username == request.LikedByUsername, cancellationToken);
 
         if (!postExists || !userExists)
         {
@@ -56,7 +56,7 @@ public class LikePostCommandHandler : IRequestHandler<LikePostCommand, LikePostC
 
         }
 
-        if (!await _dbContext.Likes.AnyAsync(l => l.LikedPostId == request.LikedPostId && l.LikedByUsername == request.LikedByUsername))
+        if (!await _dbContext.Likes.AnyAsync(l => l.LikedPostId == request.LikedPostId && l.LikedByUsername == request.LikedByUsername, cancellationToken))
         {
             await _dbContext.AddAsync(like, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);

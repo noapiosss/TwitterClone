@@ -39,13 +39,13 @@ internal class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Cre
     }
     public async Task<CreatePostCommandResult> Handle(CreatePostCommand request, CancellationToken cancellationToken = default)
     {
-        var authorExists = await _dbContext.Users.AnyAsync(u => u.Username == request.AuthorUsername);
+        var authorExists = await _dbContext.Users.AnyAsync(u => u.Username == request.AuthorUsername, cancellationToken);
         var originPostExists = true;
         if (request.CommentTo != null)
         {
-            originPostExists = await _dbContext.Posts.AnyAsync(p => p.PostId == request.CommentTo);
+            originPostExists = await _dbContext.Posts.AnyAsync(p => p.PostId == request.CommentTo, cancellationToken);
         }
-        var messageIsEmpty = String.IsNullOrWhiteSpace(request.Message);
+        var messageIsEmpty = string.IsNullOrWhiteSpace(request.Message);
 
         if (!authorExists || !originPostExists || messageIsEmpty)
         {

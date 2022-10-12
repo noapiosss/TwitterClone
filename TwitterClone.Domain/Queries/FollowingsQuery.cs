@@ -32,7 +32,7 @@ internal class FollowingsQueryHandler : IRequestHandler<FollowingsQuery, Followi
     }
     public async Task<FollowingsQueryResult> Handle(FollowingsQuery request, CancellationToken cancellationToken)
     {
-        if (!await _dbContext.Users.AnyAsync(u => u.Username == request.Username))
+        if (!await _dbContext.Users.AnyAsync(u => u.Username == request.Username, cancellationToken))
         {
             return null;
         }
@@ -40,7 +40,7 @@ internal class FollowingsQueryHandler : IRequestHandler<FollowingsQuery, Followi
         var followings = await _dbContext.Followings
             .Where(f => f.FollowByUsername == request.Username)
             .Select(f => f.FollowForUsername)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return new FollowingsQueryResult
         {

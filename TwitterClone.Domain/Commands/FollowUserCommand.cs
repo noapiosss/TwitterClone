@@ -42,8 +42,8 @@ internal class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, Fol
             FollowForUsername = request.FollowForUsername
         };
 
-        var followByUserExists = await _dbContext.Users.AnyAsync(u => u.Username == request.FollowByUsername);
-        var followForUserExists = await _dbContext.Users.AnyAsync(u => u.Username == request.FollowForUsername);
+        var followByUserExists = await _dbContext.Users.AnyAsync(u => u.Username == request.FollowByUsername, cancellationToken);
+        var followForUserExists = await _dbContext.Users.AnyAsync(u => u.Username == request.FollowForUsername, cancellationToken);
 
         if (!followByUserExists || !followForUserExists)
         {
@@ -55,7 +55,7 @@ internal class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, Fol
             };
         }
 
-        if (!await _dbContext.Followings.AnyAsync(f => f.FollowByUsername == request.FollowByUsername && f.FollowForUsername == request.FollowForUsername))
+        if (!await _dbContext.Followings.AnyAsync(f => f.FollowByUsername == request.FollowByUsername && f.FollowForUsername == request.FollowForUsername, cancellationToken))
         {
             await _dbContext.AddAsync(following, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
